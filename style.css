@@ -1,4 +1,9 @@
 
+@font-face {
+    font-family: font-awesome;
+    src: url('fonts/fa-solid-900.woff') format('woff');
+}
+
 /* The side navigation menu */
 #sidebar {
     height: 100%; /* 100% Full-height */
@@ -41,4 +46,27 @@
 #main {
     transition: margin-left .5s;
     padding: 20px;
+}
+
+.button {
+    background-color: #c6ecd9;
+    color: #206040;
+    border-radius: 50%;
+    font-family: font-awesome;
+    padding: 5px;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.button:hover {
+    box-shadow: 0 0 10px black;
+}
+
+body {
+    background-color: #26734d;
 }

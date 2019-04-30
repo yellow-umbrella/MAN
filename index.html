@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Hello World!</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script>
+            let p5 = require('p5');
+            function toggleMenu(width) {
+                document.getElementById("sidebar").style.width = width;
+            }
+            function switchTo(sketch) {
+                let main = document.getElementById("main");
+                main.removeChild(main.firstChild);
+                delete require.cache[require.resolve('./sketches/'+sketch)]
+                require("./sketches/"+sketch);
+            }
+        </script>
+    </head>
+    <body>
+        <div id="sidebar"> 
+            <span class="close" onclick="toggleMenu('0')">&times;</span>
+            <span onclick="switchTo('green')">Green</span>
+            <span onclick="switchTo('blue')">Blue</span>
+            <span onclick="switchTo('red')">Red</span>
+        </div>
+        <span onclick="toggleMenu('200px')">Menu</span>
+        <div id="main"> </div>
+    </body>
+</html>

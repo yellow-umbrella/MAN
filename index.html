@@ -6,25 +6,31 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
         <script>
             let p5 = require('p5');
-            function toggleMenu(width) {
-                document.getElementById("sidebar").style.width = width;
+            function toggleMenu(width, id) {
+                document.getElementById(id).style.width = width;
             }
             function switchTo(sketch) {
                 let main = document.getElementById("main");
                 main.removeChild(main.firstChild);
                 delete require.cache[require.resolve('./sketches/'+sketch)]
                 require("./sketches/"+sketch);
+                document.getElementById("help").src = "./frames/"+sketch+".html";
             }
         </script>
     </head>
     <body>
-        <div id="sidebar"> 
-            <span class="close" onclick="toggleMenu('0')">&times;</span>
+        <div class="sidebar" id="sidebar-left"> 
+            <span class="close" onclick="toggleMenu('0', 'sidebar-left')">&times;</span>
             <span onclick="switchTo('green')">&bull; Green fjngn dg</span>
             <span onclick="switchTo('blue')">&bull; Blue</span>
             <span onclick="switchTo('red')">&bull; Red</span>
         </div>
-        <div class="button" onclick="toggleMenu('200px')">&#xf0c9;</div>
+        <div class="button left" onclick="toggleMenu('200px','sidebar-left')">&#xf0c9;</div>
+        <div class="sidebar" id="sidebar-right">
+            <span class="close" onclick="toggleMenu('0','sidebar-right')">&times;</span> 
+            <iframe id="help" src="./frames/start.html"></iframe>
+        </div>
+        <div class="button right" onclick="toggleMenu('200px','sidebar-right')">&#xf661;</div>
         <div id="main"> </div>
     </body>
 </html>

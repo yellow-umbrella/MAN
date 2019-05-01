@@ -4,22 +4,27 @@
     src: url('fonts/fa-solid-900.woff') format('woff');
 }
 
-/* The side navigation menu */
-#sidebar {
-    height: 100%; /* 100% Full-height */
+.sidebar {
+    height: 100%;
     width: 0;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
     background-color: #0d261a;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 30px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the#sidebar */
+    overflow-x: hidden;
+    padding-top: 30px;
+    transition: 0.5s;
 }
 
-/* The navigation menu links */
-#sidebar span {
+#sidebar-left {
+    left: 0;
+}
+
+#sidebar-right {
+    right: 0;
+}
+
+.sidebar span {
     padding: 8px 8px 8px 8px;
     text-decoration: none;
     font-size: 20px;
@@ -31,20 +36,26 @@
     font-family: sans-serif;
 }
 
-#sidebar span:hover {
+.sidebar span:hover {
     color: #c6ecd9;
 }
 
-/* Position and style the close button (top right corner) */
-#sidebar .close {
+.sidebar .close {
     position: absolute;
     top: -10px;
-    right: 0;
     font-size: 36px;
     margin-right: 0px !important;
+    margin-left: 0px !important;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#sidebar-left .close {
+    right: 0;
+}
+
+#sidebar-right .close {
+    left: 0;
+}
+
 #main {
     transition: margin-left .5s;
     padding: 20px;
@@ -65,10 +76,26 @@
     transition: .3s;
 }
 
+.button.left {
+    float: left;
+}
+
+.button.right {
+    float: right;
+}
+
 .button:hover {
     box-shadow: 0 0 10px black;
 }
 
 body {
     background-color: #26734d;
+}
+
+iframe {
+    border: 0;
+    overflow: hidden;
+    height: 500px;
+    width: 200px;
+    margin-right: -7337px;
 }

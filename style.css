@@ -73,15 +73,22 @@
     line-height: 30px;
     text-align: center;
     cursor: pointer;
-    transition: .3s;
+    transition: box-shadow 0.3s;
+    position: absolute;
 }
 
 .button.left {
-    float: left;
+    left: 5px;
 }
 
 .button.right {
-    float: right;
+    right: 5px;
+}
+
+.button.bottom {
+    bottom: 5px;
+    right: 5px;
+    transition: right 0.5s;
 }
 
 .button:hover {

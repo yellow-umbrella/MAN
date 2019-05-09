@@ -8,6 +8,8 @@
             let p5 = require('p5');
             function toggleMenu(width, id) {
                 document.getElementById(id).style.width = width;
+                if (id == "sidebar-right" && width == "200px") document.getElementById("button-bottom").style.right = "205px";
+                if (id == "sidebar-right" && width == "0") document.getElementById("button-bottom").style.right = "5px";
             }
             function switchTo(sketch) {
                 let main = document.getElementById("main");
@@ -21,7 +23,7 @@
     <body>
         <div class="sidebar" id="sidebar-left"> 
             <span class="close" onclick="toggleMenu('0', 'sidebar-left')">&times;</span>
-            <span onclick="switchTo('green')">&bull; Green fjngn dg</span>
+            <span onclick="switchTo('green')">&bull; Green</span>
             <span onclick="switchTo('blue')">&bull; Blue</span>
             <span onclick="switchTo('red')">&bull; Red</span>
         </div>
@@ -31,6 +33,7 @@
             <iframe id="help" src="./frames/start.html"></iframe>
         </div>
         <div class="button right" onclick="toggleMenu('200px','sidebar-right')">&#xf661;</div>
+        <div class="button bottom" id="button-bottom">&#xf141;</div>
         <div id="main"> </div>
     </body>
 </html>

@@ -1,5 +1,6 @@
 let particles = [];
 let gCharge;
+let button;
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
@@ -8,6 +9,10 @@ function setup() {
 
     gCharge = createSlider(-2, 2, 0, 0.1);
     gCharge.position(50, height-50);
+
+    button = createButton('&#xf2f9;');
+    button.position(50, height-25);
+    button.mousePressed(change);
 }
 
 function draw() {
@@ -30,10 +35,14 @@ function mousePressed() {
 }
 
 function keyPressed() {
-    if (keyCode === 32 && particles.length < 100) {
+    if (keyCode === 32 && particles.length == 0) {
         for (let i = 0; i <= 100; i++)
         particles.push(new Particle(random(-2, 2), random(4, width-4), random(4, height-4))); 
     }
+}
+
+function change() {
+    particles = [];
 }
 
 class Particle {

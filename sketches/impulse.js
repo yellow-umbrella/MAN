@@ -1,3 +1,4 @@
+let sketch = (P) => { with (P) {
 let balls = [];
 let start;
 let running;
@@ -5,7 +6,7 @@ let ready;
 let borderH;
 let borderV;
 
-function setup() {
+P.setup = function() {
     createCanvas(windowWidth, windowHeight);
     fill(255,0,0);
     start = createButton('&#xf2f9;'); //change
@@ -16,7 +17,7 @@ function setup() {
     borderV = 50;
 }
 
-function draw() {
+P.draw = function() {
     background(51);
     line(0, borderH, borderV, borderH);
     line(borderV, 0, borderV, borderH);
@@ -30,7 +31,7 @@ function draw() {
     }
 }
 
-function mousePressed() {
+P.mousePressed = function() {
     if (mouseX > borderV || mouseY > borderH) {
         if (ready && !running) {
             balls[0].kick(mouseX, mouseY);
@@ -133,3 +134,6 @@ class Ball {
           }
     }
 }
+}}
+
+new p5(sketch, 'main');

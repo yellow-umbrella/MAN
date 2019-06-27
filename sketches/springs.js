@@ -1,3 +1,4 @@
+let sketch = (P) => { with (P) {
 let spring;
 let ball;
 let gravity;
@@ -7,7 +8,7 @@ let sliderMass;
 let mass;
 let button;
 
-function setup() {
+P.setup = function() {
     createCanvas(windowWidth, windowHeight);
     fill(255, 0, 0);
     stroke(255, 255, 255);
@@ -20,7 +21,7 @@ function setup() {
     sliderCoeff.position(windowWidth - 200, 100);
 }
 
-function draw() {
+P.draw = function() {
     background(51);
 
     coeff = sliderCoeff.value();
@@ -34,7 +35,7 @@ function draw() {
     ball.show();
 }
 
-function mousePressed() {
+P.mousePressed = function() {
 	ball.pos.set(mouseX, mouseY);
 	ball.vel.set(0, 0);
 }
@@ -92,3 +93,6 @@ class Spring {
 	    this.ball.apply(tension);
     }
 } 
+}}
+
+new p5(sketch, 'main');

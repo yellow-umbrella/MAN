@@ -1,3 +1,4 @@
+let sketch = (P) => { with (P) {
 let gravity;
 let ball;
 let ground;
@@ -5,7 +6,7 @@ let button;
 let slider;
 let wind;
 
-function setup() {
+P.setup = function() {
     createCanvas(windowWidth, windowHeight);
     fill(255,0,0);
     stroke(255,255,255);
@@ -20,7 +21,7 @@ function setup() {
     textSize(18);
 }
 
-function draw() {
+P.draw = function() {
     background(51);
     line(0, ground, width, ground);
     text('Вітер:', 100, ground + 30);
@@ -37,7 +38,7 @@ function change() {
     slider.value('0');
 }
 
-function mouseReleased() {
+P.mouseReleased = function() {
     if (mouseY <= ground) {
         ball.kick(mouseX, mouseY);
     }
@@ -78,3 +79,6 @@ class Ball {
         } while (!friend.update());
     }
 }
+}}
+
+new p5(sketch, 'main');

@@ -1,8 +1,9 @@
+let sketch = (P) => { with (P) {
 let particles = [];
 let gCharge;
 let button;
 
-function setup() {
+P.setup = function() {
     createCanvas(windowWidth, windowHeight)
     colorMode(HSL, 360, 100, 100);
     stroke(255);
@@ -15,7 +16,7 @@ function setup() {
     button.mousePressed(change);
 }
 
-function draw() {
+P.draw = function() {
     background(150, 50, 30);
     for (let i = 0; i < particles.length; i++) {
         particles[i].apply(i);
@@ -27,14 +28,14 @@ function draw() {
     }
 }
 
-function mousePressed() {
+P.mousePressed = function() {
     if (mouseX > 4 && mouseX < width-4 && mouseY > 4 && mouseY < height-4 && particles.length < 100 
         && (mouseX > 179 || mouseX < 50) && (mouseY > height-50 || mouseY < height-71)) {
         particles.push(new Particle(gCharge.value(), mouseX, mouseY));
     }
 }
 
-function keyPressed() {
+P.keyPressed = function() {
     if (keyCode === 32 && particles.length == 0) {
         for (let i = 0; i <= 100; i++)
         particles.push(new Particle(random(-2, 2), random(4, width-4), random(4, height-4))); 
@@ -122,3 +123,6 @@ class Particle {
         }
     }
 }
+}}
+
+new p5(sketch, 'main');

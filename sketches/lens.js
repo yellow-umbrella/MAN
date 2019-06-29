@@ -1,5 +1,4 @@
-let sketch = (P) => { with (P) {
-
+let sketch = new p5((P) => { with (P) {
 let focus;
 let slider;
 let ready;
@@ -7,9 +6,9 @@ let started;
 let ray;
 
 P.setup = function() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     slider = createSlider(-width/2, width/2, 25, 10);
-    slider.position(50, 50);
+    slider.position(5, 50);
     ready = false;
     started = false;
 }
@@ -21,7 +20,7 @@ P.draw = function() {
     focus = slider.value();
     if (started || ready) {
         if (started) {
-            ray.difract();
+            ray.diffract();
         }
         ray.show();
     }
@@ -39,16 +38,18 @@ function showLens() {
 }
 
 P.mousePressed = function() {
-    let x = mouseX - width/2;
-    let y = mouseY - height/2;
-    if (ready) {
-        ray.direct(x, y);
-        ready = false;
-        started = true;
-    } else {
-        ray = new Ray(x, y);
-        ready = true;
-        started = false;
+    if (mouseY < height && mouseX > 0 && mouseX < width && mouseY < height) {
+        let x = mouseX - width/2;
+        let y = mouseY - height/2;
+        if (ready) {
+            ray.direct(x, y);
+            ready = false;
+            started = true;
+        } else {
+            ray = new Ray(x, y);
+            ready = true;
+            started = false;
+        }
     }
 }
 
@@ -57,9 +58,6 @@ class Ray {
         this.start = createVector(x,y);
         this.crack = createVector(x,y);
         this.end = createVector(x,y);
-        this.A;
-        this.B;
-        this.C;
     }
     show() {
         strokeWeight(2);
@@ -78,7 +76,7 @@ class Ray {
             this.crack.y = this.C/this.B;
         }
     }
-    difract() {
+    diffract() {
         let x = focus;
         let y = (this.C - this.A*x)/this.B;
         y -= this.crack.y;
@@ -89,10 +87,6 @@ class Ray {
         this.end.x = width/2;
     }
 }
+}}, 'main');
 
-
-
-
-}}
-
-new p5(sketch, 'main');
+document.getElementById('main').style.height = sketch.height+marginTop + 'px'

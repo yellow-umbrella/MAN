@@ -26,7 +26,7 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-    if (mouseY < height && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
         if (ready && !running) {
             balls[0].kick(mouseX, mouseY);
             running = true;

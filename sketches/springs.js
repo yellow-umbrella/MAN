@@ -36,7 +36,7 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-    if (mouseY < height && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
         ball.pos.set(mouseX, mouseY);
         ball.vel.set(0, 0);
     }

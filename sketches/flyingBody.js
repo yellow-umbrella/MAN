@@ -26,7 +26,7 @@ P.draw = function() {
     wind = createVector(slider.value()*0.5, 0);
     ball.update();
     ball.show();
-    if (mouseIsPressed && mouseY < ground && mouseX > 0) {
+    if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
 }
@@ -37,7 +37,7 @@ function reset() {
 }
 
 P.mouseReleased = function() {
-    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0) {
         ball.kick(mouseX, mouseY);
     }
 }

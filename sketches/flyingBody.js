@@ -16,6 +16,7 @@ P.setup = function() {
     button = createButton('&#xf2f9;');
     button.position(50, ground + 50);
     button.mousePressed(change);
+    button.class('button');
     slider = createSlider(-10, 10, 0, 1);
     slider.position(100, ground + 50);
     textSize(18);

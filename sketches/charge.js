@@ -14,10 +14,11 @@ P.setup = function() {
     button = createButton('&#xf2f9;');
     button.position(50, height-25);
     button.mousePressed(change);
+    button.class('button');
 }
 
 P.draw = function() {
-    background(150, 50, 30);
+    background(20);
     for (let i = 0; i < particles.length; i++) {
         particles[i].apply(i);
     }

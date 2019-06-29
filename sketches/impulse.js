@@ -12,6 +12,7 @@ P.setup = function() {
     start = createButton('&#xf2f9;'); //change
     start.position(15, 15);
     start.mousePressed(() => {ready = balls.length !== 0;});
+    start.class('button');
     running = false;
     borderH = 50;
     borderV = 50;

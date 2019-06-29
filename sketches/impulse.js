@@ -1,27 +1,20 @@
-let sketch = (P) => { with (P) {
+let sketch = new p5((P) => { with (P) {
 let balls = [];
 let start;
 let running;
 let ready;
-let borderH;
-let borderV;
 
 P.setup = function() {
-    createCanvas(windowWidth, windowHeight);
-    fill(255,0,0);
+    createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
+    colorMode(HSL, 360, 100, 100);
     start = createButton('&#xf2f9;'); //change
-    start.position(15, 15);
+    start.position(50, 0);
     start.mousePressed(() => {ready = balls.length !== 0;});
-    start.class('button');
     running = false;
-    borderH = 50;
-    borderV = 50;
 }
 
 P.draw = function() {
-    background(51);
-    line(0, borderH, borderV, borderH);
-    line(borderV, 0, borderV, borderH);
+    background(20);
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
         if (running) {
@@ -33,7 +26,7 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-    if (mouseX > borderV || mouseY > borderH) {
+    if (mouseY < height && mouseX > 0 && mouseX < width && mouseY < height) {
         if (ready && !running) {
             balls[0].kick(mouseX, mouseY);
             running = true;
@@ -60,9 +53,11 @@ class Ball {
         this.mass = 3;
         this.pos = createVector(x, y);
         this.vel = createVector();
+        this.color = color(random(0, 359), 100, 50);
     }
     show() {
-        ellipse(this.pos.x, this.pos.y, 2*this.radius);
+        fill(this.color);
+        ellipse(this.pos.x, this.pos.y, this.radius*2);
     }
     kick(x, y) {
         this.vel = createVector(x, y);
@@ -135,6 +130,6 @@ class Ball {
           }
     }
 }
-}}
+}}, 'main');
 
-new p5(sketch, 'main');
+document.getElementById('main').style.height = sketch.height+marginTop + 'px'

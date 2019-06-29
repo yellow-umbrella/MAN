@@ -1,20 +1,19 @@
-let sketch = (P) => { with (P) {
+let sketch = new p5((P) => { with (P) {
 let particles = [];
 let gCharge;
 let button;
 
 P.setup = function() {
-    createCanvas(windowWidth, windowHeight)
+    createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
     stroke(255);
 
     gCharge = createSlider(-2, 2, 0, 0.1);
-    gCharge.position(50, height-50);
+    gCharge.position(5, 50);
 
     button = createButton('&#xf2f9;');
-    button.position(50, height-25);
-    button.mousePressed(change);
-    button.class('button');
+    button.position(50, 0);
+    button.mousePressed(reset);
 }
 
 P.draw = function() {
@@ -30,8 +29,7 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-    if (mouseX > 4 && mouseX < width-4 && mouseY > 4 && mouseY < height-4 && particles.length < 100 
-        && (mouseX > 179 || mouseX < 50) && (mouseY > height-50 || mouseY < height-71)) {
+    if (mouseX > 4 && mouseX < width-4 && mouseY > 4 && mouseY < height-4 && particles.length < 100) {
         particles.push(new Particle(gCharge.value(), mouseX, mouseY));
     }
 }
@@ -43,7 +41,7 @@ P.keyPressed = function() {
     }
 }
 
-function change() {
+function reset() {
     particles = [];
 }
 
@@ -124,6 +122,6 @@ class Particle {
         }
     }
 }
-}}
+}}, 'main');
 
-new p5(sketch, 'main');
+document.getElementById('main').style.height = sketch.height+marginTop + 'px'

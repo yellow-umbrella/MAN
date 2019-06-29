@@ -1,4 +1,4 @@
-let sketch = (P) => { with (P) {
+let sketch = new p5((P) => { with (P) {
 let spring;
 let ball;
 let gravity;
@@ -9,7 +9,7 @@ let mass;
 let button;
 
 P.setup = function() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     fill(255, 0, 0);
     stroke(255, 255, 255);
     gravity = createVector(0, 1);
@@ -17,8 +17,8 @@ P.setup = function() {
     spring = new Spring(ball);
     sliderMass = createSlider(1, 10, 1, 1);
     sliderCoeff = createSlider(0.025, 0.5, 0.025, 0.025);
-    sliderMass.position(windowWidth - 200, 50);
-    sliderCoeff.position(windowWidth - 200, 100);
+    sliderMass.position(5, 50);
+    sliderCoeff.position(5, 100);
 }
 
 P.draw = function() {
@@ -36,8 +36,10 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-	ball.pos.set(mouseX, mouseY);
-	ball.vel.set(0, 0);
+    if (mouseY < height && mouseX > 0 && mouseX < width && mouseY < height) {
+        ball.pos.set(mouseX, mouseY);
+        ball.vel.set(0, 0);
+    }
 }
 
 
@@ -93,6 +95,6 @@ class Spring {
 	    this.ball.apply(tension);
     }
 } 
-}}
+}}, 'main');
 
-new p5(sketch, 'main');
+document.getElementById('main').style.height = sketch.height+marginTop + 'px'

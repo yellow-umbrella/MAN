@@ -1,3 +1,4 @@
+// Маятник
 let sketch = new p5((P) => { with (P) {
 let spring;
 let ball;
@@ -7,6 +8,7 @@ let coeff;
 let sliderMass;
 let mass;
 let button;
+let title;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -25,6 +27,9 @@ P.setup = function() {
     button = createButton('&#xf2f9;');
     button.position(50, 0);
     button.mousePressed(reset);
+
+    title = createDiv('Маятник');
+    title.id('title');
 }
 
 P.draw = function() {

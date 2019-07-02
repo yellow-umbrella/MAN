@@ -1,3 +1,4 @@
+// Тіло, кинуте під кутом
 let sketch = new p5((P) => { with (P) {
 let gravity;
 let ball;
@@ -5,6 +6,7 @@ let ground;
 let button;
 let slider;
 let wind;
+let title;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -18,6 +20,8 @@ P.setup = function() {
     button.mousePressed(reset);
     slider = createSlider(-10, 10, 0, 1);
     slider.position(5, 50);
+    title = createDiv('Тіло, кинуте під кутом');
+    title.id('title');
 }
 
 P.draw = function() {

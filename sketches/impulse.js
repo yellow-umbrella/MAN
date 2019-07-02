@@ -1,3 +1,4 @@
+// закон збереження імпульсу
 let sketch = new p5((P) => { with (P) {
 let balls = [];
 let start;
@@ -5,6 +6,7 @@ let running;
 let ready;
 let chosen;
 let mass;
+let title;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -16,6 +18,8 @@ P.setup = function() {
     mass.position(0, 50);
     running = false;
     chosen = -1;
+    title = createDiv('Закон збереження імпульсу');
+    title.id('title');
 }
 
 P.draw = function() {

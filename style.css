@@ -153,3 +153,12 @@ input[type=range]::-webkit-slider-thumb {
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #ffffff;
 }
+
+#title {
+    position: absolute;
+    font-size: 30px;
+    top: 5px;
+    text-align: center;
+    width: 100%;
+    z-index: -1;
+}

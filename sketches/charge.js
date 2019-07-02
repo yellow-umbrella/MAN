@@ -17,7 +17,7 @@ P.setup = function() {
 }
 
 P.draw = function() {
-    background(20);
+    background('#1b4b34');
     for (let i = 0; i < particles.length; i++) {
         particles[i].apply(i);
     }
@@ -36,13 +36,14 @@ P.mousePressed = function() {
 
 P.keyPressed = function() {
     if (keyCode === 32 && particles.length == 0) {
-        for (let i = 0; i <= 100; i++)
+        for (let i = 0; i < 100; i++)
         particles.push(new Particle(random(-2, 2), random(4, width-4), random(4, height-4))); 
     }
 }
 
 function reset() {
     particles = [];
+    gCharge.value('0');
 }
 
 class Particle {

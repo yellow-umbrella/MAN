@@ -21,7 +21,7 @@ P.setup = function() {
 }
 
 P.draw = function() {
-    background(51);
+    background('#1b4b34');
     line(0, ground, width, ground);
     wind = createVector(slider.value()*0.5, 0);
     ball.update();

@@ -15,7 +15,7 @@ P.setup = function() {
 
 
 P.draw = function() {
-    background(51);
+    background('#1b4b34');
     translate(width/2, height/2);
     focus = slider.value();
     if (started || ready) {
@@ -60,8 +60,10 @@ class Ray {
         this.end = createVector(x,y);
     }
     show() {
-        strokeWeight(2);
         stroke('yellow');
+        strokeWeight(4);
+        point(this.start.x, this.start.y);
+        strokeWeight(2);
         line(this.start.x, this.start.y, this.crack.x, this.crack.y);
         line(this.crack.x, this.crack.y, this.end.x, this.end.y);
     }

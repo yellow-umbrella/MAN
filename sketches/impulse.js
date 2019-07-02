@@ -3,18 +3,23 @@ let balls = [];
 let start;
 let running;
 let ready;
+let chosen;
+let mass;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     colorMode(HSL, 360, 100, 100);
-    start = createButton('&#xf2f9;'); //change
+    start = createButton('&#xf00c;');
     start.position(50, 0);
     start.mousePressed(() => {ready = balls.length !== 0;});
+    mass = createSlider(2, 5, 3.5, 0.5);
+    mass.position(0, 50);
     running = false;
+    chosen = -1;
 }
 
 P.draw = function() {
-    background(20);
+    background('#1b4b34');
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
         if (running) {
@@ -28,14 +33,26 @@ P.draw = function() {
 P.mousePressed = function() {
     if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
         if (ready && !running) {
-            balls[0].kick(mouseX, mouseY);
-            running = true;
+            if (chosen > -1) {
+                balls[chosen].kick(mouseX, mouseY);
+                running = true;
+            } else {
+                let pos = createVector(mouseX, mouseY);
+                for (let i = 0; i < balls.length; i++) {
+                    let elem = balls[i];
+                    let dist = p5.Vector.sub(elem.pos, pos).mag();
+                    if (dist <= elem.radius) {
+                        chosen = i;
+                        break;
+                    }
+                }
+            }
         } else if (!running) {
             let check = true;
             let pos = createVector(mouseX, mouseY);
             for (let elem of balls) {
                 let dist = p5.Vector.sub(pos, elem.pos).mag();
-                if (dist < 2*elem.radius) {
+                if (dist < elem.radius + 3*mass.value()) {
                     check = false;
                     break;
                 }
@@ -49,8 +66,8 @@ P.mousePressed = function() {
 
 class Ball {
     constructor(x, y) {
-        this.radius = 10;
-        this.mass = 3;
+        this.radius = 3*mass.value();
+        this.mass = mass.value();
         this.pos = createVector(x, y);
         this.vel = createVector();
         this.color = color(random(0, 359), 100, 50);
@@ -62,14 +79,14 @@ class Ball {
     kick(x, y) {
         this.vel = createVector(x, y);
         this.vel.sub(this.pos);
-        this.vel.mult(0.0035);
+        this.vel.mult(0.004);
     }
     collision(k) {
         for (let i = k+1; i < balls.length; i++) {
             let elem = balls[i];
             let dist = p5.Vector.sub(this.pos, elem.pos);
-            if (dist.mag() < 2*this.radius) {
-                dist.setMag(2*this.radius);
+            if (dist.mag() < this.radius + elem.radius) {
+                dist.setMag(this.radius + elem.radius);
                 this.pos = p5.Vector.add(dist, elem.pos);
                 /*let angle = this.vel.angleBetween(elem.vel);
                 let angle1 = elem.vel.angleBetween(dist);
@@ -85,7 +102,7 @@ class Ball {
                 elem.pos.sub(change2);
                 dist.setMag(2*this.radius);*/
             }
-            if (dist.mag() == 2*this.radius) {
+            if (dist.mag() == this.radius + elem.radius) {
                 let newVel1 = createVector();
                 let newVel2 = createVector();
                 let direct = p5.Vector.sub(this.pos, elem.pos);

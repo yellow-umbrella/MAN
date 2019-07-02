@@ -1,7 +1,7 @@
 let sketch = new p5((P) => { with (P) {
 let particles = [];
 let gCharge;
-let button;
+let resetB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
@@ -11,9 +11,9 @@ P.setup = function() {
     gCharge = createSlider(-2, 2, 0, 0.1);
     gCharge.position(5, 50);
 
-    button = createButton('&#xf2f9;');
-    button.position(50, 0);
-    button.mousePressed(reset);
+    resetB = createButton('&#xf2f9;');
+    resetB.position(50, 0);
+    resetB.mousePressed(reset);
 }
 
 P.draw = function() {

@@ -1,21 +1,28 @@
 let sketch = new p5((P) => { with (P) {
+
 let balls = [];
-let start;
-let running;
-let ready;
-let chosen;
+let readyB, resetB;
+let running, ready, chosen;
 let mass;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     colorMode(HSL, 360, 100, 100);
-    start = createButton('&#xf00c;');
-    start.position(50, 0);
-    start.mousePressed(() => {ready = balls.length !== 0;});
-    mass = createSlider(2, 5, 3.5, 0.5);
+
+    resetB = createButton('&#xf2f9;');
+    resetB.position(50, 0);
+    resetB.mousePressed(reset);
+
+    readyB = createButton('&#xf00c;');
+    readyB.position(100, 0);
+    readyB.mousePressed(() => {ready = balls.length !== 0;});
+
+    mass = createSlider(2, 5, 3.5, 0.25);
     mass.position(0, 50);
+
     running = false;
     chosen = -1;
+    ready = false;
 }
 
 P.draw = function() {
@@ -28,6 +35,14 @@ P.draw = function() {
         }
         elem.show();
     }
+}
+
+function reset() {
+    balls = [];
+    mass.value('3.5');
+    running = false;
+    ready = false;
+    chosen = -1;
 }
 
 P.mousePressed = function() {

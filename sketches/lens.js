@@ -4,11 +4,18 @@ let slider;
 let ready;
 let started;
 let ray;
+let resetB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
-    slider = createSlider(-width/2, width/2, 25, 10);
+
+    slider = createSlider(-39, 39, 5, 2);
     slider.position(5, 50);
+
+    resetB = createButton('&#xf2f9;');
+    resetB.position(50, 0);
+    resetB.mousePressed(reset);
+
     ready = false;
     started = false;
 }
@@ -17,7 +24,7 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     translate(width/2, height/2);
-    focus = slider.value();
+    focus = map(slider.value(), -39, 39, -width/2, width/2);
     if (started || ready) {
         if (started) {
             ray.diffract();
@@ -25,6 +32,12 @@ P.draw = function() {
         ray.show();
     }
     showLens();
+}
+
+function reset() {
+    ready = false;
+    started = false;
+    slider.value('5');
 }
 
 function showLens() {
@@ -42,10 +55,10 @@ P.mousePressed = function() {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
         if (ready) {
-            ray.direct(x, y);
             ready = false;
             started = true;
-        } else {
+            ray.direct(x, y);
+        } else if (x < 0) {
             ray = new Ray(x, y);
             ready = true;
             started = false;
@@ -68,12 +81,13 @@ class Ray {
         line(this.crack.x, this.crack.y, this.end.x, this.end.y);
     }
     direct(x, y) {
-        this.A = this.start.y - y;
-        this.B = x - this.start.x;
-        this.C = x*this.start.y - this.start.x*y;
-        if (this.B == 0) {
-
+        if (x <= this.start.x) {
+            ready = true;
+            started = false;
         } else {
+            this.A = this.start.y - y;
+            this.B = x - this.start.x;
+            this.C = x*this.start.y - this.start.x*y;
             this.crack.x = 0;
             this.crack.y = this.C/this.B;
         }

@@ -101,11 +101,29 @@ class Spring {
         this.len = 150;
         this.lenNow = 150;
         this.coeff = 0.025;
+        this.links = 20;
+        this.width = 8;
+        this.linkLen = Math.hypot(this.len/this.links, 2*this.width);
     }
 
     show() {
-        line(this.pos.x, this.pos.y, 
-            this.ball.pos.x, this.ball.pos.y);
+        let tension = p5.Vector.sub(this.ball.pos, this.pos);
+        push();
+        noFill();
+        translate(this.pos.x, this.pos.y);
+        rotate(tension.heading());
+        this.lenNow = tension.mag();
+        let width = 0.5*sqrt(this.linkLen*this.linkLen - 
+            (this.lenNow/this.links)*(this.lenNow/this.links));
+        beginShape();
+        vertex(0, 0);
+        for (let i = 1; i < this.links; i++) {
+            vertex(i*this.lenNow/this.links, width);
+            width *= -1;
+        }
+        vertex(this.lenNow, 0);
+        endShape();
+        pop();
     }
 
     update() {

@@ -1,7 +1,9 @@
+// закон кулона
 let sketch = new p5((P) => { with (P) {
 let particles = [];
 let gCharge;
 let resetB;
+let title;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
@@ -14,6 +16,9 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(50, 0);
     resetB.mousePressed(reset);
+    
+    title = createDiv('Закон Кулона');
+    title.id('title');
 }
 
 P.draw = function() {

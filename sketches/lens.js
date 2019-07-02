@@ -1,3 +1,4 @@
+// тонка лінза: промені
 let sketch = new p5((P) => { with (P) {
 let focus;
 let slider;
@@ -5,6 +6,7 @@ let ready;
 let started;
 let ray;
 let resetB;
+let title;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -18,6 +20,8 @@ P.setup = function() {
 
     ready = false;
     started = false;
+    title = createDiv('Тонка лінза: Промені');
+    title.id('title');
 }
 
 

@@ -7,7 +7,7 @@ let slider;
 let wind;
 let vel;
 let scl = 100;
-
+let title;
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     fill(255,0,0);
@@ -25,6 +25,8 @@ P.setup = function() {
     
     slider = createSlider(-10, 10, 0, 1);
     slider.position(5, 50);
+    title = createDiv('Тіло, кинуте під кутом');
+    title.id('title');
 }
 
 P.draw = function() {
@@ -44,8 +46,6 @@ P.draw = function() {
     text(nfc(vel.mag(), 2), 5, ground + 10);
     text(nfc(vel.x, 2), 5, ground + 20);
     text(nfc(-vel.y, 2), 5, ground + 30);
-
-    //console.log(frameRate());
 }
 
 function reset() {

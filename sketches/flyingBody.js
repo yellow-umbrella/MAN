@@ -1,48 +1,57 @@
 let sketch = new p5((P) => { with (P) {
-let gravity;
-let ball;
-let ground;
-let resetB;
-let slider;
-let wind;
-let vel;
-let scl = 100;
+
 let title;
+let gravity, wind;
+let ball;
+let ground, vel, scl = 100;
+let running;
+let windS;
+let resetB, runB;
+
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     fill(255,0,0);
     stroke(255,255,255);
     frameRate('50');
+
+    title = createDiv('Тіло, кинуте під кутом');
+    title.id('title');
     
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 100;
     ball = new Ball();
     vel = createVector();
+    running = true;
     
     resetB = createButton('&#xf2f9;');
-    resetB.position(50, 0);
+    resetB.position(100, 0);
     resetB.mousePressed(reset);
+
+    runB = createButton('&#xf04c;');
+    runB.position(50, 0);
+    runB.mousePressed(run);
     
-    slider = createSlider(-10, 10, 0, 1);
-    slider.position(5, 50);
-    title = createDiv('Тіло, кинуте під кутом');
-    title.id('title');
+    windS = createSlider(-10, 10, 0, 1);
+    windS.position(5, 50);
 }
 
 P.draw = function() {
     background('#1b4b34');
     line(0, ground, width, ground);
+
     strokeWeight(4);
     for (let i = 0; i <= width; i += scl) {
         point(i, ground);
     }
     strokeWeight(1);
-    wind = createVector(slider.value()*0.5, 0);
+    wind = createVector(windS.value()*0.5, 0);
     ball.update();
     ball.show();
+
     if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
+    
     text(nfc(vel.mag(), 2), 5, ground + 10);
     text(nfc(vel.x, 2), 5, ground + 20);
     text(nfc(-vel.y, 2), 5, ground + 30);
@@ -50,8 +59,20 @@ P.draw = function() {
 
 function reset() {
     ball = new Ball();
-    slider.value('0');
+    windS.value('0');
     vel.setMag(0);
+}
+
+function run() {
+    if (running) {
+        running = false;
+        runB.html('&#xf04b;');
+        noLoop();
+    } else {
+        loop();
+        runB.html('&#xf04c;');
+        running = true;
+    }
 }
 
 P.mouseReleased = function() {

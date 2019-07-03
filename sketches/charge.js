@@ -1,24 +1,32 @@
 // закон кулона
 let sketch = new p5((P) => { with (P) {
-let particles = [];
-let gCharge;
-let resetB;
+
 let title;
+let particles = [];
+let running;
+let chargeS;
+let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
     stroke(255);
 
-    gCharge = createSlider(-2, 2, 0, 0.1);
-    gCharge.position(5, 50);
-
-    resetB = createButton('&#xf2f9;');
-    resetB.position(50, 0);
-    resetB.mousePressed(reset);
-    
     title = createDiv('Закон Кулона');
     title.id('title');
+
+    running = true;
+
+    chargeS = createSlider(-2, 2, 0, 0.1);
+    chargeS.position(5, 50);
+
+    resetB = createButton('&#xf2f9;');
+    resetB.position(100, 0);
+    resetB.mousePressed(reset);
+
+    runB = createButton('&#xf04c;');
+    runB.position(50, 0);
+    runB.mousePressed(run);
 }
 
 P.draw = function() {
@@ -35,7 +43,7 @@ P.draw = function() {
 
 P.mousePressed = function() {
     if (mouseX > 4 && mouseX < width-4 && mouseY > 4 && mouseY < height-4 && particles.length < 100) {
-        particles.push(new Particle(gCharge.value(), mouseX, mouseY));
+        particles.push(new Particle(chargeS.value(), mouseX, mouseY));
     }
 }
 
@@ -48,7 +56,19 @@ P.keyPressed = function() {
 
 function reset() {
     particles = [];
-    gCharge.value('0');
+    chargeS.value('0');
+}
+
+function run() {
+    if (running) {
+        running = false;
+        runB.html('&#xf04b;');
+        noLoop();
+    } else {
+        loop();
+        runB.html('&#xf04c;');
+        running = true;
+    }
 }
 
 class Particle {

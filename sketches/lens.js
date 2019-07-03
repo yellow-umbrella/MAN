@@ -1,47 +1,69 @@
 // тонка лінза: промені
 let sketch = new p5((P) => { with (P) {
-let focus;
-let slider;
-let ready;
-let started;
-let ray;
-let resetB;
+
 let title;
+let focus;
+let ray;
+let ready, started, running;
+let focusS;
+let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
+    
+    title = createDiv('Тонка лінза: Промені');
+    title.id('title');
 
-    slider = createSlider(-39, 39, 5, 2);
-    slider.position(5, 50);
+    running = true;
+
+    focusS = createSlider(-39, 39, 5, 2);
+    focusS.position(5, 50);
 
     resetB = createButton('&#xf2f9;');
     resetB.position(50, 0);
     resetB.mousePressed(reset);
 
+    runB = createButton('&#xf04c;');
+    runB.position(50, 0);
+    runB.mousePressed(run);
+
     ready = false;
     started = false;
-    title = createDiv('Тонка лінза: Промені');
-    title.id('title');
 }
 
 
 P.draw = function() {
     background('#1b4b34');
     translate(width/2, height/2);
-    focus = map(slider.value(), -39, 39, -width/2, width/2);
+
+    focus = map(focusS.value(), -39, 39, -width/2, width/2);
+
     if (started || ready) {
         if (started) {
             ray.diffract();
         }
         ray.show();
     }
+
     showLens();
 }
 
 function reset() {
     ready = false;
     started = false;
-    slider.value('5');
+    focusS.value('5');
+}
+
+function run() {
+    if (running) {
+        running = false;
+        runB.html('&#xf04b;');
+        noLoop();
+    } else {
+        loop();
+        runB.html('&#xf04c;');
+        running = true;
+    }
 }
 
 function showLens() {
@@ -58,6 +80,7 @@ P.mousePressed = function() {
     if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
+
         if (ready) {
             ready = false;
             started = true;
@@ -76,6 +99,7 @@ class Ray {
         this.crack = createVector(x,y);
         this.end = createVector(x,y);
     }
+
     show() {
         stroke('yellow');
         strokeWeight(4);
@@ -84,6 +108,7 @@ class Ray {
         line(this.start.x, this.start.y, this.crack.x, this.crack.y);
         line(this.crack.x, this.crack.y, this.end.x, this.end.y);
     }
+
     direct(x, y) {
         if (x <= this.start.x) {
             ready = true;
@@ -96,6 +121,7 @@ class Ray {
             this.crack.y = this.C/this.B;
         }
     }
+
     diffract() {
         let x = focus;
         let y = (this.C - this.A*x)/this.B;

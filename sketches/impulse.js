@@ -1,40 +1,45 @@
 // закон збереження імпульсу
 let sketch = new p5((P) => { with (P) {
 
-let balls = [];
-let readyB, resetB;
-let running, ready, chosen;
-let mass;
 let title;
+let balls = [];
+let started, ready, chosen, running;
+let massS;
+let readyB, resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     colorMode(HSL, 360, 100, 100);
-
-    resetB = createButton('&#xf2f9;');
-    resetB.position(50, 0);
-    resetB.mousePressed(reset);
-
-    readyB = createButton('&#xf00c;');
-    readyB.position(100, 0);
-    readyB.mousePressed(() => {ready = balls.length !== 0;});
-
-    mass = createSlider(2, 5, 3.5, 0.25);
-    mass.position(0, 50);
-
-    running = false;
-    chosen = -1;
-    ready = false;
     
     title = createDiv('Закон збереження імпульсу');
     title.id('title');
+    
+    started = false;
+    chosen = -1;
+    ready = false;
+    running = true;
+
+    resetB = createButton('&#xf2f9;');
+    resetB.position(100, 0);
+    resetB.mousePressed(reset);
+
+    readyB = createButton('&#xf00c;');
+    readyB.position(150, 0);
+    readyB.mousePressed(() => {ready = balls.length !== 0;});
+
+    runB = createButton('&#xf04c;');
+    runB.position(50, 0);
+    runB.mousePressed(run);
+
+    massS = createSlider(2, 5, 3.5, 0.25);
+    massS.position(0, 50);
 }
 
 P.draw = function() {
     background('#1b4b34');
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
-        if (running) {
+        if (started) {
             elem.update();
             elem.collision(i);
         }
@@ -44,18 +49,30 @@ P.draw = function() {
 
 function reset() {
     balls = [];
-    mass.value('3.5');
-    running = false;
+    massS.value('3.5');
+    started = false;
     ready = false;
     chosen = -1;
 }
 
+function run() {
+    if (running) {
+        running = false;
+        runB.html('&#xf04b;');
+        noLoop();
+    } else {
+        loop();
+        runB.html('&#xf04c;');
+        running = true;
+    }
+}
+
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
-        if (ready && !running) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && !started) {
+        if (ready) {
             if (chosen > -1) {
                 balls[chosen].kick(mouseX, mouseY);
-                running = true;
+                started = true;
             } else {
                 let pos = createVector(mouseX, mouseY);
                 for (let i = 0; i < balls.length; i++) {
@@ -67,16 +84,18 @@ P.mousePressed = function() {
                     }
                 }
             }
-        } else if (!running) {
+        } else {
             let check = true;
             let pos = createVector(mouseX, mouseY);
+
             for (let elem of balls) {
                 let dist = p5.Vector.sub(pos, elem.pos).mag();
-                if (dist < elem.radius + 3*mass.value()) {
+                if (dist < elem.radius + 3*massS.value()) {
                     check = false;
                     break;
                 }
             }
+
             if (check) {
                 balls.push(new Ball(pos.x, pos.y));
             }
@@ -86,21 +105,24 @@ P.mousePressed = function() {
 
 class Ball {
     constructor(x, y) {
-        this.radius = 3*mass.value();
-        this.mass = mass.value();
+        this.radius = 3*massS.value();
+        this.mass = massS.value();
         this.pos = createVector(x, y);
         this.vel = createVector();
         this.color = color(random(0, 359), 100, 50);
     }
+
     show() {
         fill(this.color);
         ellipse(this.pos.x, this.pos.y, this.radius*2);
     }
+
     kick(x, y) {
         this.vel = createVector(x, y);
         this.vel.sub(this.pos);
         this.vel.mult(0.004);
     }
+
     collision(k) {
         for (let i = k+1; i < balls.length; i++) {
             let elem = balls[i];
@@ -108,19 +130,6 @@ class Ball {
             if (dist.mag() < this.radius + elem.radius) {
                 dist.setMag(this.radius + elem.radius);
                 this.pos = p5.Vector.add(dist, elem.pos);
-                /*let angle = this.vel.angleBetween(elem.vel);
-                let angle1 = elem.vel.angleBetween(dist);
-                dist.mult(-1);
-                let angle2 = this.vel.angleBetween(dist);
-                let a = sin(angle1)*(2*this.radius - dist.mag())/sin(angle2);
-                let b = sin(angle2)*(2*this.radius - dist.mag())/sin(angle2);        TODO
-                let change1 = this.vel.copy();
-                let change2 = elem.vel.copy();
-                change1.setMag(a);
-                change2.setMag(b);
-                this.pos.sub(change1);
-                elem.pos.sub(change2);
-                dist.setMag(2*this.radius);*/
             }
             if (dist.mag() == this.radius + elem.radius) {
                 let newVel1 = createVector();
@@ -140,6 +149,7 @@ class Ball {
             }
         }
     }
+
     update() {
         this.pos.add(this.vel);
         this.check();

@@ -1,42 +1,46 @@
 // Маятник
 let sketch = new p5((P) => { with (P) {
-let spring;
-let ball;
-let gravity;
-let sliderCoeff;
-let coeff;
-let sliderMass;
-let mass;
-let button;
+
 let title;
+let gravity;
+let spring, ball;
+let coeff, mass;
+let running;
+let coeffS, massS;
+let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     fill(255, 0, 0);
     stroke(255, 255, 255);
+    
+    title = createDiv('Маятник');
+    title.id('title');
 
     gravity = createVector(0, 1);
     ball = new Ball();
     spring = new Spring(ball);
+    running = true;
 
-    sliderMass = createSlider(1, 10, 1, 1);
-    sliderCoeff = createSlider(0.025, 0.5, 0.025, 0.025);
-    sliderMass.position(5, 50);
-    sliderCoeff.position(5, 100);
+    massS = createSlider(1, 10, 1, 1);
+    coeffS = createSlider(0.025, 0.5, 0.025, 0.025);
+    massS.position(5, 50);
+    coeffS.position(5, 100);
 
-    button = createButton('&#xf2f9;');
-    button.position(50, 0);
-    button.mousePressed(reset);
+    resetB = createButton('&#xf2f9;');
+    resetB.position(100, 0);
+    resetB.mousePressed(reset);
 
-    title = createDiv('Маятник');
-    title.id('title');
+    runB = createButton('&#xf04c;');
+    runB.position(50, 0);
+    runB.mousePressed(run);
 }
 
 P.draw = function() {
     background('#1b4b34');
 
-    coeff = sliderCoeff.value();
-    mass = sliderMass.value();
+    coeff = coeffS.value();
+    mass = massS.value();
     
     spring.update();
     spring.hook();
@@ -55,10 +59,22 @@ P.mousePressed = function() {
 }
 
 function reset() {
-    sliderMass.value('1');
-    sliderCoeff.value('0.025');
+    massS.value('1');
+    coeffS.value('0.025');
     ball = new Ball();
     spring = new Spring(ball);
+}
+
+function run() {
+    if (running) {
+        running = false;
+        runB.html('&#xf04b;');
+        noLoop();
+    } else {
+        loop();
+        runB.html('&#xf04c;');
+        running = true;
+    }
 }
 
 

@@ -26,10 +26,12 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(100, 0);
     resetB.mousePressed(reset);
+    resetB.elt.title = 'оновити';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
     runB.mousePressed(run);
+    runB.elt.title = 'зупинити';
     
     windS = createSlider(-10, 10, 0, 1);
     windS.position(5, 50);
@@ -60,7 +62,9 @@ P.draw = function() {
 function reset() {
     loop();
     runB.html('&#xf04c;');
+    runB.elt.title = 'зупинити';
     running = true;
+
     ball = new Ball();
     windS.value('0');
     vel.setMag(0);
@@ -70,11 +74,13 @@ function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
+        runB.elt.title = 'продовжити';
         noLoop();
     } else {
         loop();
         runB.html('&#xf04c;');
         running = true;
+        runB.elt.title = 'зупинити';
     }
 }
 

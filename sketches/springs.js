@@ -30,10 +30,12 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(100, 0);
     resetB.mousePressed(reset);
+    resetB.elt.title = 'оновити';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
     runB.mousePressed(run);
+    runB.elt.title = 'зупинити';
 }
 
 P.draw = function() {
@@ -61,7 +63,9 @@ P.mousePressed = function() {
 function reset() {
     loop();
     runB.html('&#xf04c;');
+    runB.elt.title = 'зупинити';
     running = true;
+
     massS.value('1');
     coeffS.value('0.025');
     ball = new Ball();
@@ -72,11 +76,13 @@ function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
+        runB.elt.title = 'продовжити';
         noLoop();
     } else {
         loop();
         runB.html('&#xf04c;');
         running = true;
+        runB.elt.title = 'зупинити';
     }
 }
 

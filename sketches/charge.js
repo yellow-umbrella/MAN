@@ -23,11 +23,12 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(100, 0);
     resetB.mousePressed(reset);
-    resetB.elt.title = 'reset';
+    resetB.elt.title = 'оновити';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
     runB.mousePressed(run);
+    runB.elt.title = 'зупинити';
 }
 
 P.draw = function() {
@@ -62,19 +63,23 @@ P.keyPressed = function() {
 }
 
 function reset() {
+    runB.html('&#xf04c;');
+    runB.elt.title = 'зупинити';
+    running = true;
+    
     particles = [];
     chargeS.value('0');
-    runB.html('&#xf04c;');
-    running = true;
 }
 
 function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
+        runB.elt.title = 'продовжити';
     } else {
         runB.html('&#xf04c;');
         running = true;
+        runB.elt.title = 'зупинити';
     }
 }
 

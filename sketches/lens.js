@@ -74,6 +74,21 @@ function showLens() {
     strokeWeight(5);
     point(-focus, 0);
     point(focus, 0);
+    strokeWeight(2);
+    if (focus > 0) {
+        line(0, 100, -5, 95);
+        line(0, 100, 5, 95);
+        line(0, -100, -5, -95);
+        line(0, -100, 5, -95);
+    } else {
+        line(0, -100, -5, -105);
+        line(0, -100, 5, -105);
+        line(0, 100, -5, 105);
+        line(0, 100, 5, 105);
+    }
+    for (let i = -height/2; i <= height/2; i += 15) {
+        line(0, i, 0, i + 5);
+    }
 }
 
 P.mousePressed = function() {

@@ -1,9 +1,8 @@
 // закон кулона
 module.exports = new p5((P) => { with (P) {
 
-let title;
 let particles = [];
-let running;
+let running = true;
 let chargeS;
 let resetB, runB;
 
@@ -12,24 +11,12 @@ P.setup = function() {
     colorMode(HSL, 360, 100, 100);
     stroke(255);
 
-    title = createDiv('Закон Кулона');
-    title.id('title');
-    title.elt.style.width = width + 'px';
-
-    running = true;
-
     chargeS = createSlider(-2, 2, 0, 0.1);
     chargeS.position(5, 50);
 
-    resetB = createButton('&#xf2f9;');
-    resetB.position(105, 0);
-    resetB.mousePressed(reset);
-    resetB.elt.title = 'оновити';
-
-    runB = createButton('&#xf04c;');
-    runB.position(55, 0);
-    runB.mousePressed(run);
-    runB.elt.title = 'зупинити';
+    createTitle(P, 'Закон Кулона');
+    resetB = createResetB(P, reset);
+    runB = createRunB(P, run);
 }
 
 P.draw = function() {

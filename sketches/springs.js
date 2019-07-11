@@ -1,7 +1,6 @@
 // Маятник
 module.exports = new p5((P) => { with (P) {
 
-let title;
 let gravity;
 let spring, ball;
 let coeff, mass;
@@ -14,9 +13,9 @@ P.setup = function() {
     fill(255, 0, 0);
     stroke(255, 255, 255);
     
-    title = createDiv('Маятник');
-    title.id('title');
-    title.elt.style.width = width + 'px';
+    createTitle(P, 'Маятник');
+    resetB = createResetB(P, reset);
+    runB = createRunB(P, run);
 
     gravity = createVector(0, 1);
     ball = new Ball();
@@ -27,16 +26,6 @@ P.setup = function() {
     coeffS = createSlider(0.025, 0.5, 0.025, 0.025);
     massS.position(5, 50);
     coeffS.position(5, 100);
-
-    resetB = createButton('&#xf2f9;');
-    resetB.position(105, 0);
-    resetB.mousePressed(reset);
-    resetB.elt.title = 'оновити';
-
-    runB = createButton('&#xf04c;');
-    runB.position(55, 0);
-    runB.mousePressed(run);
-    runB.elt.title = 'зупинити';
 }
 
 P.draw = function() {

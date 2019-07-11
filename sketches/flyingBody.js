@@ -1,11 +1,10 @@
 //  кинуте тiло
 module.exports = new p5((P) => { with (P) {
 
-let title;
 let gravity, wind;
 let ball;
 let ground, vel, scl = 100;
-let running;
+let running = true;
 let windS;
 let resetB, runB;
 
@@ -15,25 +14,14 @@ P.setup = function() {
     stroke(255,255,255);
     frameRate('50');
 
-    title = createDiv('Тіло, кинуте під кутом');
-    title.id('title');
-    title.elt.style.width = width + 'px';
-    
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 100;
     ball = new Ball();
     vel = createVector();
-    running = true;
     
-    resetB = createButton('&#xf2f9;');
-    resetB.position(105, 0);
-    resetB.mousePressed(reset);
-    resetB.elt.title = 'оновити';
-
-    runB = createButton('&#xf04c;');
-    runB.position(55, 0);
-    runB.mousePressed(run);
-    runB.elt.title = 'зупинити';
+    createTitle(P, 'Тіло, кинуте під кутом');
+    resetB = createResetB(P, reset);
+    runB = createRunB(P, run);
     
     windS = createSlider(-10, 10, 0, 1);
     windS.position(5, 50);

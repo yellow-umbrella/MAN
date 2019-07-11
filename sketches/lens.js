@@ -1,37 +1,20 @@
 // тонка лінза: промені
 module.exports = new p5((P) => { with (P) {
 
-let title;
 let focus;
 let ray;
-let ready, started, running;
+let ready = false, started = false, running = true;
 let focusS;
 let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
-    
-    title = createDiv('Тонка лінза: Промені');
-    title.id('title');
-    title.elt.style.width = width + 'px';
-
-    running = true;
+    createTitle(P, 'Тонка лінза: Промені');
+    resetB = createResetB(P, reset);
+    runB = createRunB(P, run);
 
     focusS = createSlider(-39, 39, 5, 2);
     focusS.position(5, 50);
-
-    resetB = createButton('&#xf2f9;');
-    resetB.position(105, 0);
-    resetB.mousePressed(reset);
-    resetB.elt.title = 'оновити';
-
-    runB = createButton('&#xf04c;');
-    runB.position(55, 0);
-    runB.mousePressed(run);
-    runB.elt.title = 'зупинити';
-
-    ready = false;
-    started = false;
 }
 
 

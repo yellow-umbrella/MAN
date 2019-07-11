@@ -1,9 +1,8 @@
 // закон збереження імпульсу
 module.exports = new p5((P) => { with (P) {
 
-let title;
 let balls = [];
-let started, ready, chosen, running;
+let started = false, ready = false, chosen = -1, running = true;
 let massS;
 let readyB, resetB, runB;
 
@@ -11,29 +10,14 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     colorMode(HSL, 360, 100, 100);
     
-    title = createDiv('Закон збереження імпульсу');
-    title.id('title');
-    title.elt.style.width = width + 'px';
-    
-    started = false;
-    chosen = -1;
-    ready = false;
-    running = true;
-
-    resetB = createButton('&#xf2f9;');
-    resetB.position(105, 0);
-    resetB.mousePressed(reset);
-    resetB.elt.title = 'оновити';
+    createTitle(P, 'Закон збереження імпульсу');
+    resetB = createResetB(P, reset);
+    runB = createRunB(P, run);
 
     readyB = createButton('&#xf00c;');
     readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
     readyB.elt.title = 'підтвердити';
-
-    runB = createButton('&#xf04c;');
-    runB.position(55, 0);
-    runB.mousePressed(run);
-    runB.elt.title = 'зупинити';
 
     massS = createSlider(2, 5, 3.5, 0.25);
     massS.position(0, 50);

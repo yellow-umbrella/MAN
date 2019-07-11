@@ -77,7 +77,7 @@ function showLens() {
 }
 
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
 

@@ -23,6 +23,7 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(100, 0);
     resetB.mousePressed(reset);
+    resetB.elt.title = 'reset';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
@@ -31,13 +32,19 @@ P.setup = function() {
 
 P.draw = function() {
     background('#1b4b34');
-    for (let i = 0; i < particles.length; i++) {
-        particles[i].apply(i);
+    if (running) {
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].apply(i);
+        }
     }
     for (let elem of particles) {
-        elem.update();
+        if (running) {
+            elem.update();
+        }
         elem.show();
-        elem.collision();
+        if (running) {
+            elem.collision();
+        }
     }
 }
 
@@ -57,15 +64,15 @@ P.keyPressed = function() {
 function reset() {
     particles = [];
     chargeS.value('0');
+    runB.html('&#xf04c;');
+    running = true;
 }
 
 function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
-        noLoop();
     } else {
-        loop();
         runB.html('&#xf04c;');
         running = true;
     }

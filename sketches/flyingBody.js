@@ -51,13 +51,16 @@ P.draw = function() {
     if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
-    
+
     text(nfc(vel.mag(), 2), 5, ground + 10);
     text(nfc(vel.x, 2), 5, ground + 20);
     text(nfc(-vel.y, 2), 5, ground + 30);
 }
 
 function reset() {
+    loop();
+    runB.html('&#xf04c;');
+    running = true;
     ball = new Ball();
     windS.value('0');
     vel.setMag(0);
@@ -76,7 +79,7 @@ function run() {
 }
 
 P.mouseReleased = function() {
-    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0) {
+    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
     }
 }

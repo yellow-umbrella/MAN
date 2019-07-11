@@ -39,7 +39,7 @@ P.draw = function() {
     background('#1b4b34');
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
-        if (started) {
+        if (started && running) {
             elem.update();
             elem.collision(i);
         }
@@ -48,6 +48,8 @@ P.draw = function() {
 }
 
 function reset() {
+    runB.html('&#xf04c;');
+    running = true;
     balls = [];
     massS.value('3.5');
     started = false;
@@ -59,9 +61,7 @@ function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
-        noLoop();
     } else {
-        loop();
         runB.html('&#xf04c;');
         running = true;
     }

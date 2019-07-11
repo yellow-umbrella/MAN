@@ -52,13 +52,16 @@ P.draw = function() {
 }
 
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
         ball.pos.set(mouseX, mouseY);
         ball.vel.set(0, 0);
     }
 }
 
 function reset() {
+    loop();
+    runB.html('&#xf04c;');
+    running = true;
     massS.value('1');
     coeffS.value('0.025');
     ball = new Ball();

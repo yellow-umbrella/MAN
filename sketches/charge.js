@@ -67,7 +67,7 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
-    
+
     particles = [];
     chargeS.value('0');
 }
@@ -99,6 +99,9 @@ class Particle {
         fill(tone, 100, sat);
         strokeWeight(0.5);
         ellipse(this.pos.x, this.pos.y, 8);
+        noStroke();
+        textSize(10);
+        text(nfc(this.charge, 2) + ' Кл', this.pos.x, this.pos.y + 12);
     }
     update() {
         this.vel.add(this.acc);

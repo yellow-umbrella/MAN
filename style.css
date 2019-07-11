@@ -1,5 +1,10 @@
 
 @font-face {
+    font-family: rounded;
+    src: url('fonts/Roundedmplus1c.woff2') format('woff2');
+}
+
+@font-face {
     font-family: font-awesome;
     src: url('fonts/fa-solid-900.woff') format('woff');
 }
@@ -7,6 +12,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: rounded;
 }
 
 .sidebar {
@@ -38,7 +44,6 @@
     transition: 0.3s;
     cursor: pointer;
     margin-right: -7337px;
-    font-family: sans-serif;
 }
 
 .sidebar span:hover {

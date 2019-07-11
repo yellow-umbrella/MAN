@@ -20,12 +20,14 @@ P.setup = function() {
     focusS.position(5, 50);
 
     resetB = createButton('&#xf2f9;');
-    resetB.position(50, 0);
+    resetB.position(100, 0);
     resetB.mousePressed(reset);
+    resetB.elt.title = 'оновити';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
     runB.mousePressed(run);
+    runB.elt.title = 'зупинити';
 
     ready = false;
     started = false;
@@ -49,6 +51,11 @@ P.draw = function() {
 }
 
 function reset() {
+    loop();
+    runB.html('&#xf04c;');
+    runB.elt.title = 'зупинити';
+    running = true;
+
     ready = false;
     started = false;
     focusS.value('5');
@@ -58,11 +65,13 @@ function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
+        runB.elt.title = 'продовжити';
         noLoop();
     } else {
         loop();
         runB.html('&#xf04c;');
         running = true;
+        runB.elt.title = 'зупинити';
     }
 }
 
@@ -74,10 +83,25 @@ function showLens() {
     strokeWeight(5);
     point(-focus, 0);
     point(focus, 0);
+    strokeWeight(2);
+    if (focus > 0) {
+        line(0, 100, -5, 95);
+        line(0, 100, 5, 95);
+        line(0, -100, -5, -95);
+        line(0, -100, 5, -95);
+    } else {
+        line(0, -100, -5, -105);
+        line(0, -100, 5, -105);
+        line(0, 100, -5, 105);
+        line(0, 100, 5, 105);
+    }
+    for (let i = -height/2; i <= height/2; i += 15) {
+        line(0, i, 0, i + 5);
+    }
 }
 
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
 

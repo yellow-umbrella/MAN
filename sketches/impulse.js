@@ -22,14 +22,17 @@ P.setup = function() {
     resetB = createButton('&#xf2f9;');
     resetB.position(100, 0);
     resetB.mousePressed(reset);
+    resetB.elt.title = 'оновити';
 
     readyB = createButton('&#xf00c;');
     readyB.position(150, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
+    readyB.elt.title = 'підтвердити';
 
     runB = createButton('&#xf04c;');
     runB.position(50, 0);
     runB.mousePressed(run);
+    runB.elt.title = 'зупинити';
 
     massS = createSlider(2, 5, 3.5, 0.25);
     massS.position(0, 50);
@@ -39,7 +42,7 @@ P.draw = function() {
     background('#1b4b34');
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
-        if (started) {
+        if (started && running) {
             elem.update();
             elem.collision(i);
         }
@@ -48,6 +51,10 @@ P.draw = function() {
 }
 
 function reset() {
+    runB.html('&#xf04c;');
+    runB.elt.title = 'зупинити';
+    running = true;
+
     balls = [];
     massS.value('3.5');
     started = false;
@@ -59,11 +66,11 @@ function run() {
     if (running) {
         running = false;
         runB.html('&#xf04b;');
-        noLoop();
+        runB.elt.title = 'продовжити';
     } else {
-        loop();
         runB.html('&#xf04c;');
         running = true;
+        runB.elt.title = 'зупинити';
     }
 }
 

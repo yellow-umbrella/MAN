@@ -21,12 +21,12 @@ P.setup = function() {
     focusS.position(5, 50);
 
     resetB = createButton('&#xf2f9;');
-    resetB.position(100, 0);
+    resetB.position(105, 0);
     resetB.mousePressed(reset);
     resetB.elt.title = 'оновити';
 
     runB = createButton('&#xf04c;');
-    runB.position(50, 0);
+    runB.position(55, 0);
     runB.mousePressed(run);
     runB.elt.title = 'зупинити';
 

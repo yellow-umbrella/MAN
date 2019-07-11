@@ -21,17 +21,17 @@ P.setup = function() {
     running = true;
 
     resetB = createButton('&#xf2f9;');
-    resetB.position(100, 0);
+    resetB.position(105, 0);
     resetB.mousePressed(reset);
     resetB.elt.title = 'оновити';
 
     readyB = createButton('&#xf00c;');
-    readyB.position(150, 0);
+    readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
     readyB.elt.title = 'підтвердити';
 
     runB = createButton('&#xf04c;');
-    runB.position(50, 0);
+    runB.position(55, 0);
     runB.mousePressed(run);
     runB.elt.title = 'зупинити';
 

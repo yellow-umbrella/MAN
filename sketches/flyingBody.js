@@ -1,4 +1,5 @@
-let sketch = new p5((P) => { with (P) {
+//  кинуте тiло
+module.exports = new p5((P) => { with (P) {
 
 let title;
 let gravity, wind;
@@ -16,6 +17,7 @@ P.setup = function() {
 
     title = createDiv('Тіло, кинуте під кутом');
     title.id('title');
+    title.elt.style.width = width + 'px';
     
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 100;
@@ -132,7 +134,4 @@ class Ball {
     }
 }
 }}, 'main');
-
-document.getElementById('main').style.height = sketch.height+marginTop + 'px'
-
 

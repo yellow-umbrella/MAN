@@ -9,19 +9,21 @@
         <script language="javascript" type="text/javascript" src="./node_modules/p5/lib/addons/p5.sound.js"></script>
         <script>
             let marginTop = 50, marginLeft = 200;
+            let sketch;
             function toggleMenu(width, id) {
                 document.getElementById(id).style.width = width;
                 if (id == "sidebar-right") {
                     document.getElementById("button-bottom").style.right = (5 + parseInt(width)).toString() + 'px';
                 }
             }
-            function switchTo(sketch) {
+            function switchTo(name) {
                 let main = document.getElementById("main");
                 while (main.firstChild) 
                     main.removeChild(main.firstChild);
-                delete require.cache[require.resolve('./sketches/'+sketch)]
-                require("./sketches/"+sketch);
-                document.getElementById("help").src = "./frames/"+sketch+".html";
+                delete require.cache[require.resolve('./sketches/'+name)]
+                sketch = require("./sketches/"+name);
+                main.style.height = sketch.height+marginTop + 'px'
+                document.getElementById("help").src = "./frames/"+name+".html";
             }
         </script>
     </head>

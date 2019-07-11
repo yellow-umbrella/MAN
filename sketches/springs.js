@@ -1,5 +1,5 @@
 // Маятник
-let sketch = new p5((P) => { with (P) {
+module.exports = new p5((P) => { with (P) {
 
 let title;
 let gravity;
@@ -16,6 +16,7 @@ P.setup = function() {
     
     title = createDiv('Маятник');
     title.id('title');
+    title.elt.style.width = width + 'px';
 
     gravity = createVector(0, 1);
     ball = new Ball();
@@ -166,4 +167,3 @@ class Spring {
 } 
 }}, 'main');
 
-document.getElementById('main').style.height = sketch.height+marginTop + 'px'

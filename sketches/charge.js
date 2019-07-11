@@ -1,5 +1,5 @@
 // закон кулона
-let sketch = new p5((P) => { with (P) {
+module.exports = new p5((P) => { with (P) {
 
 let title;
 let particles = [];
@@ -14,6 +14,7 @@ P.setup = function() {
 
     title = createDiv('Закон Кулона');
     title.id('title');
+    title.elt.style.width = width + 'px';
 
     running = true;
 
@@ -162,4 +163,3 @@ class Particle {
 }
 }}, 'main');
 
-document.getElementById('main').style.height = sketch.height+marginTop + 'px'

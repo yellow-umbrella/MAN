@@ -1,5 +1,5 @@
 // тонка лінза: промені
-let sketch = new p5((P) => { with (P) {
+module.exports = new p5((P) => { with (P) {
 
 let title;
 let focus;
@@ -13,6 +13,7 @@ P.setup = function() {
     
     title = createDiv('Тонка лінза: Промені');
     title.id('title');
+    title.elt.style.width = width + 'px';
 
     running = true;
 
@@ -159,4 +160,3 @@ class Ray {
 }
 }}, 'main');
 
-document.getElementById('main').style.height = sketch.height+marginTop + 'px'

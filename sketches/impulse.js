@@ -1,5 +1,5 @@
 // закон збереження імпульсу
-let sketch = new p5((P) => { with (P) {
+module.exports = new p5((P) => { with (P) {
 
 let title;
 let balls = [];
@@ -13,6 +13,7 @@ P.setup = function() {
     
     title = createDiv('Закон збереження імпульсу');
     title.id('title');
+    title.elt.style.width = width + 'px';
     
     started = false;
     chosen = -1;
@@ -186,4 +187,3 @@ class Ball {
 }
 }}, 'main');
 
-document.getElementById('main').style.height = sketch.height+marginTop + 'px'

@@ -15,6 +15,8 @@ P.setup = function() {
 
     focusS = createSlider(-39, 39, 5, 2);
     focusS.position(5, 50);
+
+    loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
 
 

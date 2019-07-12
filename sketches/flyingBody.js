@@ -10,8 +10,7 @@ let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
-    fill(255,0,0);
-    stroke(255,255,255);
+    stroke(255);
     frameRate('50');
 
     gravity = createVector(0, 9.8*scl/2500);
@@ -25,6 +24,8 @@ P.setup = function() {
     
     windS = createSlider(-10, 10, 0, 1);
     windS.position(5, 50);
+
+    loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
 
 P.draw = function() {
@@ -44,6 +45,7 @@ P.draw = function() {
         ball.simulate(mouseX, mouseY);
     }
 
+    fill(255);
     text(nfc(vel.mag(), 2), 5, ground + 10);
     text(nfc(vel.x, 2), 5, ground + 20);
     text(nfc(-vel.y, 2), 5, ground + 30);
@@ -88,6 +90,7 @@ class Ball {
     }
 
     show() { 
+        fill(255, 0, 0);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
     }
 

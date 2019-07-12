@@ -26,6 +26,8 @@ P.setup = function() {
     coeffS = createSlider(0.025, 0.5, 0.025, 0.025);
     massS.position(5, 50);
     coeffS.position(5, 100);
+
+    loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
 
 P.draw = function() {

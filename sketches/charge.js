@@ -19,6 +19,8 @@ P.setup = function() {
     createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+
+    loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
 
 P.draw = function() {

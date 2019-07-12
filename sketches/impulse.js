@@ -22,6 +22,9 @@ P.setup = function() {
 
     massS = createSlider(2, 4, 3, 0.1);
     massS.position(0, 50);
+
+    loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
+    textAlign(CENTER, CENTER);
 }
 
 P.draw = function() {
@@ -110,10 +113,9 @@ class Ball {
         ellipse(this.pos.x, this.pos.y, this.radius*2);
         if (toggleS.value()) {
             fill(0);
-            textAlign(CENTER, CENTER);
             textSize(5*this.mass - 2);
-            text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y);
-            fill(250);
+            text(nfc(this.mass, 1) + ' г', this.pos.x, this.pos.y);
+            fill(255);
             textSize(10);
             text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
         }

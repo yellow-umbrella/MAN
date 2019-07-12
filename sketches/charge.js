@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let particles = [];
 let running = true;
-let chargeS;
+let chargeS, toggleS;
 let resetB, runB;
 
 P.setup = function() {
@@ -13,6 +13,8 @@ P.setup = function() {
 
     chargeS = createSlider(-2, 2, 0, 0.1);
     chargeS.position(5, 50);
+
+    toggleS = createToggleS(P);
 
     createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);
@@ -78,6 +80,7 @@ class Particle {
         this.vel = createVector();
         this.acc = createVector();
     }
+    
     show() {
         let tone;
         this.charge<0?tone = 240:tone = 0;
@@ -86,16 +89,27 @@ class Particle {
         fill(tone, 100, sat);
         strokeWeight(0.5);
         ellipse(this.pos.x, this.pos.y, 8);
-        noStroke();
-        textSize(10);
-        text(nfc(this.charge, 2) + ' Кл', this.pos.x, this.pos.y + 12);
+        if (toggleS.value()) {
+            noStroke();
+            textSize(10);
+            fill(tone, 100, max(sat, 80));
+            if (this.charge < 0.01 && this.charge > 0) {
+                text('0.01 Кл', this.pos.x, this.pos.y + 12);
+            } else if (this.charge > -0.01 && this.charge < 0) {
+                text('-0.01 Кл', this.pos.x, this.pos.y + 12);
+            } else {
+                text(nfc(this.charge, 2) + ' Кл', this.pos.x, this.pos.y + 12);
+            }
+        }
     }
+
     update() {
         this.vel.add(this.acc);
         this.pos.add(this.vel);
         this.acc.setMag(0);
         this.check()
     } 
+
     apply(n) {
         for (let i = n + 1; i < particles.length; i++) {
             let elem = particles[i];
@@ -117,6 +131,7 @@ class Particle {
             }
         }
     }
+
     check() {
         if (this.pos.x < 4) {
            this.vel.x *= -1;
@@ -138,6 +153,7 @@ class Particle {
             this.pos.y = height - 4;
          }
     }
+
     collision() {
         let dist; 
         for (let elem of particles) {

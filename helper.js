@@ -40,3 +40,11 @@ function createResetB(P, callback) {
     return resetB;
 }
 
+function createToggleS(P) {
+    let toggleS = P.createSlider(0, 1, 1, 1);
+    toggleS.position(5, 70);
+    toggleS.size(30);
+    toggleS.class('toggle');
+    return toggleS;
+}
+

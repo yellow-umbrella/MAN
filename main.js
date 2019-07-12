@@ -5,7 +5,7 @@ let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({
         show: false,
-        icon: './physics-512.ico',
+        icon: './bulb.ico',
         webPreferences: {
             nodeIntegration: true
         }

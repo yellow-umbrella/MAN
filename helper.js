@@ -3,9 +3,6 @@ let sketch;
 
 function toggleMenu(width, id) {
     document.getElementById(id).style.width = width;
-    if (id == "sidebar-right") {
-        document.getElementById("button-bottom").style.right = (5 + parseInt(width)).toString() + 'px';
-    }
 }
 
 function switchTo(name) {

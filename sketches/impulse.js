@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let balls = [];
 let started = false, ready = false, chosen = -1, running = true;
-let massS;
+let massS, toggleS;
 let readyB, resetB, runB;
 
 P.setup = function() {
@@ -13,13 +13,14 @@ P.setup = function() {
     createTitle(P, 'Закон збереження імпульсу');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    toggleS = createToggleS(P);
 
     readyB = createButton('&#xf00c;');
     readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
     readyB.elt.title = 'підтвердити';
 
-    massS = createSlider(2, 5, 3.5, 0.25);
+    massS = createSlider(2, 4, 3, 0.1);
     massS.position(0, 50);
 }
 
@@ -41,7 +42,7 @@ function reset() {
     running = true;
 
     balls = [];
-    massS.value('3.5');
+    massS.value('3');
     started = false;
     ready = false;
     chosen = -1;
@@ -82,7 +83,7 @@ P.mousePressed = function() {
 
             for (let elem of balls) {
                 let dist = p5.Vector.sub(pos, elem.pos).mag();
-                if (dist < elem.radius + 3*massS.value()) {
+                if (dist < elem.radius + 6*massS.value()) {
                     check = false;
                     break;
                 }
@@ -97,7 +98,7 @@ P.mousePressed = function() {
 
 class Ball {
     constructor(x, y) {
-        this.radius = 3*massS.value();
+        this.radius = 6*massS.value();
         this.mass = massS.value();
         this.pos = createVector(x, y);
         this.vel = createVector();
@@ -107,6 +108,15 @@ class Ball {
     show() {
         fill(this.color);
         ellipse(this.pos.x, this.pos.y, this.radius*2);
+        if (toggleS.value()) {
+            fill(0);
+            textAlign(CENTER, CENTER);
+            textSize(5*this.mass - 2);
+            text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y);
+            fill(250);
+            textSize(10);
+            text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+        }
     }
 
     kick(x, y) {

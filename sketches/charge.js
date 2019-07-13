@@ -9,12 +9,17 @@ let resetB, runB;
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
-    stroke(255);
 
     chargeS = createSlider(-2, 2, 0, 0.1);
-    chargeS.position(5, 50);
+    chargeS.position(0, 20);
+    let labelCharge = createElement('label', 'Заряд:');
+    labelCharge.elt.appendChild(chargeS.elt);
+    labelCharge.position(5, 50);
 
     toggleS = createToggleS(P);
+    let labelToggle = createElement('label', 'Сховати/показати підписи:');
+    labelToggle.elt.appendChild(toggleS.elt);
+    labelToggle.position(5, 100);
 
     createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);
@@ -90,6 +95,7 @@ class Particle {
         if (this.charge === 0) sat = 100;
         fill(tone, 100, sat);
         strokeWeight(0.5);
+        stroke(255);
         ellipse(this.pos.x, this.pos.y, 8);
         if (toggleS.value()) {
             noStroke();

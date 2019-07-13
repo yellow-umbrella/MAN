@@ -15,13 +15,21 @@ P.setup = function() {
     runB = createRunB(P, run);
     toggleS = createToggleS(P);
 
+    let labelToggle = createElement('label', 'Сховати/показати підписи:');
+    labelToggle.elt.appendChild(toggleS.elt);
+    labelToggle.position(5, 100);
+
     readyB = createButton('&#xf00c;');
     readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
     readyB.elt.title = 'підтвердити';
 
     massS = createSlider(2, 4, 3, 0.1);
-    massS.position(0, 50);
+    massS.position(0, 20);
+
+    let labelMass = createElement('label', 'Маса тіла:');
+    labelMass.elt.appendChild(massS.elt);
+    labelMass.position(5, 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -80,7 +88,7 @@ P.mousePressed = function() {
                     }
                 }
             }
-        } else {
+        } else if (mouseY > 6*massS.value() && mouseX > 6*massS.value() && mouseX < width - 6*massS.value() && mouseY < height - 6*massS.value()) {
             let check = true;
             let pos = createVector(mouseX, mouseY);
 
@@ -113,8 +121,8 @@ class Ball {
         ellipse(this.pos.x, this.pos.y, this.radius*2);
         if (toggleS.value()) {
             fill(0);
-            textSize(5*this.mass - 2);
-            text(nfc(this.mass, 1) + ' г', this.pos.x, this.pos.y);
+            textSize(4*this.mass);
+            text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y - this.mass);
             fill(255);
             textSize(10);
             text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);

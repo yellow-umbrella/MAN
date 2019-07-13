@@ -23,32 +23,31 @@ P.setup = function() {
     runB = createRunB(P, run);
     
     windS = createSlider(-10, 10, 0, 1);
-    windS.position(5, 50);
+    windS.position(0, 20);
+    let labelWind = createElement('label', 'Вітер:');
+    labelWind.elt.appendChild(windS.elt);
+    labelWind.position(5, 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
 
 P.draw = function() {
     background('#1b4b34');
-    line(0, ground, width, ground);
-
-    strokeWeight(4);
-    for (let i = 0; i <= width; i += scl) {
-        point(i, ground);
-    }
-    strokeWeight(1);
+    showGround();
+    
     wind = createVector(windS.value()*0.5, 0);
     ball.update();
     ball.show();
-
+    
     if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
-
+    
+    noStroke();
     fill(255);
-    text(nfc(vel.mag(), 2), 5, ground + 10);
-    text(nfc(vel.x, 2), 5, ground + 20);
-    text(nfc(-vel.y, 2), 5, ground + 30);
+    text('початкова швидкість: ' + nfc(vel.mag(), 2) + ' м/c', 5, ground + 30);
+    text('  проекція на вісь Ох: ' + nfc(vel.x, 2) + ' м/c', 5, ground + 45);
+    text('  проекція на вісь Оу: ' + nfc(-vel.y, 2) + ' м/c', 5, ground + 60);
 }
 
 function reset() {
@@ -56,7 +55,7 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
-
+    
     ball = new Ball();
     windS.value('0');
     vel.setMag(0);
@@ -76,6 +75,23 @@ function run() {
     }
 }
 
+function showGround() {
+    strokeWeight(1);
+    stroke(255);
+    line(0, ground, width, ground);
+    
+    fill(255);
+    for (let i = 0; i*scl <= width; i++) {
+        strokeWeight(4);
+        stroke(255);
+        point(i*scl, ground);
+        if (i > 0) {
+            noStroke();
+            text((i - 1) + ' м', i*scl, ground + 15);
+        }
+    }
+}
+
 P.mouseReleased = function() {
     if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
@@ -91,6 +107,8 @@ class Ball {
 
     show() { 
         fill(255, 0, 0);
+        stroke(255);
+        strokeWeight(1);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
     }
 
@@ -119,6 +137,8 @@ class Ball {
         let friend = new Ball;
         friend.pos = this.pos.copy();
         friend.kick(x, y);
+        strokeWeight(1);
+        stroke(255);
         do {
             point(friend.pos.x, friend.pos.y);
         } while (!friend.update());

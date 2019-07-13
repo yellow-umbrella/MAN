@@ -24,8 +24,16 @@ P.setup = function() {
 
     massS = createSlider(1, 10, 1, 1);
     coeffS = createSlider(0.025, 0.5, 0.025, 0.025);
-    massS.position(5, 50);
-    coeffS.position(5, 100);
+    massS.position(0, 20);
+    coeffS.position(0, 20);
+
+    let labelMass = createElement('label', 'Маса тіла:');
+    labelMass.elt.appendChild(massS.elt);
+    labelMass.position(5, 50);
+
+    let labelCoeff = createElement('label', 'Жорсткість пружини:');
+    labelCoeff.elt.appendChild(coeffS.elt);
+    labelCoeff.position(5, 100);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }

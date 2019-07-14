@@ -1,11 +1,11 @@
 //  кинуте тiло
 module.exports = new p5((P) => { with (P) {
 
-let gravity, wind;
+let gravity;
 let ball;
 let ground, vel, scl = 100;
-let running = true;
-let windS;
+let running = true, kicked = false;
+let heightS;
 let resetB, runB;
 
 P.setup = function() {
@@ -15,28 +15,34 @@ P.setup = function() {
 
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 100;
-    ball = new Ball();
-    vel = createVector();
+
     
     createTitle(P, 'Тіло, кинуте під кутом');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     
-    windS = createSlider(-10, 10, 0, 1);
-    windS.position(0, 20);
-    let labelWind = createElement('label', 'Вітер:');
-    labelWind.elt.appendChild(windS.elt);
-    labelWind.position(5, 50);
+    heightS = createSlider(0, ground-10, 0, 1);
+    heightS.position(0, 20);
+    let labelHeight = createElement('label', 'Початкова висота:');
+    labelHeight.elt.appendChild(heightS.elt);
+    labelHeight.position(5, 50);
+
+    ball = new Ball();
+    vel = createVector();
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
+    textSize(12);
 }
 
 P.draw = function() {
     background('#1b4b34');
     showGround();
     
-    wind = createVector(windS.value()*0.5, 0);
-    ball.update();
+    if (kicked) {
+        ball.update();
+    } else {
+        ball.pos.y = ground-ball.radius-heightS.value();
+    }
     ball.show();
     
     if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
@@ -55,9 +61,10 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
+    kicked = false;
     
+    heightS.value('0');
     ball = new Ball();
-    windS.value('0');
     vel.setMag(0);
 }
 
@@ -77,6 +84,8 @@ function run() {
 
 function showGround() {
     strokeWeight(1);
+    stroke('#30825b');
+    line(100, 0, 100, ground);
     stroke(255);
     line(0, ground, width, ground);
     
@@ -90,11 +99,21 @@ function showGround() {
             text((i - 1) + ' м', i*scl, ground + 15);
         }
     }
+
+    fill('#30825b');
+    for (let i = 1; ground - i*scl >= 0; i++) {
+        strokeWeight(4);
+        stroke('#30825b');
+        point(100, ground - i*scl);
+        noStroke();
+        text(i + ' м', 75, ground - i*scl);
+    }
 }
 
 P.mouseReleased = function() {
     if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
+        kicked = true;
     }
 }
 
@@ -115,7 +134,6 @@ class Ball {
     update() {
         this.vel.add(gravity);
         this.pos.add(this.vel);
-        this.pos.add(wind);
         if (this.pos.y > ground-this.radius) {
             this.pos.y = ground-this.radius;
             this.vel.y *= -1;

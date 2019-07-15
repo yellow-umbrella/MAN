@@ -37,6 +37,20 @@ P.setup = function() {
 
 P.draw = function() {
     background('#1b4b34');
+
+    push();
+    if (mouseIsPressed && chosen > -1 && mouseButton === LEFT) {
+        translate(balls[chosen].pos.x, balls[chosen].pos.y);
+        let vec = p5.Vector.sub(createVector(mouseX, mouseY), balls[chosen].pos);
+        rotate(vec.heading());
+        for (let i = 0; i < 50; i++) {
+            strokeWeight(2);
+            stroke(255);
+            point(i*vec.mag()/50,0);
+        }
+    }
+    pop();
+
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
         if (started && running) {
@@ -71,13 +85,21 @@ function run() {
     }
 }
 
+P.mouseReleased = function(){
+    if (chosen > -1 && ready && mouseButton === LEFT) {
+        balls[chosen].kick(mouseX, mouseY);
+        chosen = -1;
+        started = true;
+    } else {
+        balls[chosen].vel.set(0, 0);
+        chosen = -1;
+    }
+}
+
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && !started) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
         if (ready) {
-            if (chosen > -1) {
-                balls[chosen].kick(mouseX, mouseY);
-                started = true;
-            } else {
+            if (chosen == -1) {
                 let pos = createVector(mouseX, mouseY);
                 for (let i = 0; i < balls.length; i++) {
                     let elem = balls[i];
@@ -107,6 +129,8 @@ P.mousePressed = function() {
     }
 }
 
+
+
 class Ball {
     constructor(x, y) {
         this.radius = 6*massS.value();
@@ -118,7 +142,10 @@ class Ball {
 
     show() {
         fill(this.color);
+        strokeWeight(1);
+        stroke(0);
         ellipse(this.pos.x, this.pos.y, this.radius*2);
+        noStroke();
         if (toggleS.value()) {
             fill(0);
             textSize(4*this.mass);

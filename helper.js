@@ -12,7 +12,7 @@ function switchTo(name) {
     delete require.cache[require.resolve('./sketches/'+name)]
     sketch = require("./sketches/"+name);
     main.style.height = sketch.height+marginTop + 'px'
-    document.getElementById("help").src = "./frames/"+name+".html";
+    document.getElementById("help").src = "./formulae/"+name+".html";
 }
 
 function createTitle(P, name) {

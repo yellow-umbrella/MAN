@@ -153,7 +153,7 @@ class Ball {
             textSize(4*this.mass);
             text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y - this.mass);
             textSize(10);
-            if (chosen == this.id) {
+            if (chosen == this.id && mouseButton == LEFT) {
                 fill('yellow');
                 let vel = createVector(mouseX, mouseY);
                 vel.sub(this.pos);

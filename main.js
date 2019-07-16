@@ -5,7 +5,7 @@ let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({
         show: false,
-        resizable: false, 
+        // resizable: false, 
         icon: './bulb.ico',
         webPreferences: {
             nodeIntegration: true
@@ -17,6 +17,7 @@ function createWindow () {
     });
 
     mainWindow.maximize();
+    mainWindow.setResizable(false);
     mainWindow.loadFile('index.html');
     // mainWindow.webContents.openDevTools()
 

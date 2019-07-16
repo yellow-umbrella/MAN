@@ -15,10 +15,10 @@ P.setup = function() {
     runB = createRunB(P, run);
     toggleS = createToggleS(P);
 
-    readyB = createButton('&#xf00c;');
+    /*readyB = createButton('&#xf00c;');
     readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});
-    readyB.elt.title = 'підтвердити';
+    readyB.elt.title = 'підтвердити';*/
 
     massS = createSlider(2, 4, 3, 0.1);
     massS.position(0, 20);
@@ -83,11 +83,11 @@ function run() {
 }
 
 P.mouseReleased = function(){
-    if (chosen > -1 && ready && mouseButton === LEFT) {
+    if (chosen > -1 && mouseButton === LEFT) {
         balls[chosen].kick(mouseX, mouseY);
         chosen = -1;
         started = true;
-    } else {
+    } else if (chosen > -1) {
         balls[chosen].vel.set(0, 0);
         chosen = -1;
     }
@@ -95,22 +95,12 @@ P.mouseReleased = function(){
 
 P.mousePressed = function() {
     if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
-        if (ready) {
-            if (chosen == -1) {
-                let pos = createVector(mouseX, mouseY);
-                for (let i = 0; i < balls.length; i++) {
-                    let elem = balls[i];
-                    let dist = p5.Vector.sub(elem.pos, pos).mag();
-                    if (dist <= elem.radius) {
-                        chosen = i;
-                        break;
-                    }
-                }
-            }
-        } else if (mouseY > 6*massS.value() && mouseX > 6*massS.value() && mouseX < width - 6*massS.value() && mouseY < height - 6*massS.value()) {
-            let check = true;
-            let pos = createVector(mouseX, mouseY);
-
+        let check = false;
+        let pos;
+        if (mouseY > 6*massS.value() && mouseX > 6*massS.value() && mouseX < width - 6*massS.value() && mouseY < height - 6*massS.value()) {
+            check = true;
+            pos = createVector(mouseX, mouseY);
+            
             for (let elem of balls) {
                 let dist = p5.Vector.sub(pos, elem.pos).mag();
                 if (dist < elem.radius + 6*massS.value()) {
@@ -118,9 +108,19 @@ P.mousePressed = function() {
                     break;
                 }
             }
-
-            if (check) {
-                balls.push(new Ball(pos.x, pos.y, balls.length));
+        }
+        
+        if (check) {
+            balls.push(new Ball(pos.x, pos.y, balls.length));
+        } else if (chosen == -1) {
+            let pos = createVector(mouseX, mouseY);
+            for (let i = 0; i < balls.length; i++) {
+                let elem = balls[i];
+                let dist = p5.Vector.sub(elem.pos, pos).mag();
+                if (dist <= elem.radius) {
+                    chosen = i;
+                    break;
+                }
             }
         }
     }

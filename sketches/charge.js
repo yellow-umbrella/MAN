@@ -17,10 +17,6 @@ P.setup = function() {
     labelCharge.position(5, 50);
 
     toggleS = createToggleS(P);
-    let labelToggle = createElement('label', 'Сховати/показати підписи:');
-    labelToggle.elt.appendChild(toggleS.elt);
-    labelToggle.position(5, 100);
-
     createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);

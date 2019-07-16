@@ -15,10 +15,6 @@ P.setup = function() {
     runB = createRunB(P, run);
     toggleS = createToggleS(P);
 
-    let labelToggle = createElement('label', 'Сховати/показати підписи:');
-    labelToggle.elt.appendChild(toggleS.elt);
-    labelToggle.position(5, 100);
-
     readyB = createButton('&#xf00c;');
     readyB.position(155, 0);
     readyB.mousePressed(() => {ready = balls.length !== 0;});

@@ -16,7 +16,6 @@ P.setup = function() {
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 100;
 
-    
     createTitle(P, 'Тіло, кинуте під кутом');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);

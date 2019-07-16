@@ -5,6 +5,7 @@ let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({
         show: false,
+        resizable: false, 
         icon: './bulb.ico',
         webPreferences: {
             nodeIntegration: true

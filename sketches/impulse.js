@@ -38,18 +38,19 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
 
-    push();
     if (mouseIsPressed && chosen > -1 && mouseButton === LEFT) {
+        push();
         translate(balls[chosen].pos.x, balls[chosen].pos.y);
         let vec = p5.Vector.sub(createVector(mouseX, mouseY), balls[chosen].pos);
         rotate(vec.heading());
-        for (let i = 0; i < 50; i++) {
-            strokeWeight(2);
-            stroke(255);
-            point(i*vec.mag()/50,0);
+        strokeWeight(2);
+        stroke('yellow');
+        const dots = 30
+        for (let i = 1; i <= dots; i++) {
+            point(i*vec.mag()/dots,0);
         }
+        pop();
     }
-    pop();
 
     for (let i = 0; i < balls.length; i++) {
         let elem = balls[i];
@@ -123,7 +124,7 @@ P.mousePressed = function() {
             }
 
             if (check) {
-                balls.push(new Ball(pos.x, pos.y));
+                balls.push(new Ball(pos.x, pos.y, balls.length));
             }
         }
     }
@@ -132,12 +133,13 @@ P.mousePressed = function() {
 
 
 class Ball {
-    constructor(x, y) {
+    constructor(x, y, id) {
         this.radius = 6*massS.value();
         this.mass = massS.value();
         this.pos = createVector(x, y);
         this.vel = createVector();
         this.color = color(random(0, 359), 100, 50);
+        this.id = id;
     }
 
     show() {
@@ -150,9 +152,17 @@ class Ball {
             fill(0);
             textSize(4*this.mass);
             text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y - this.mass);
-            fill(255);
             textSize(10);
-            text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+            if (chosen == this.id) {
+                fill('yellow');
+                let vel = createVector(mouseX, mouseY);
+                vel.sub(this.pos);
+                vel.mult(0.004);
+                text(nfc(vel.mag(), 2) + ' м/с', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+            } else {
+                fill(255);
+                text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+            }
         }
     }
 

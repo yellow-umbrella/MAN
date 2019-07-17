@@ -100,7 +100,12 @@ class Pendulum {
         }
         fill(255);
         noStroke();
-        text(nfc(abs(this.angle)*180/PI, 1) + '°', this.pivot.x, this.pivot.y - 12);
+        textSize(12);
+        let str = nfc(abs(this.angle)*180/PI, 1) + '';
+        text(str, this.pivot.x, this.pivot.y - 12);
+        let add = textWidth(str)/2 + 4;
+        textSize(8);
+        text('o', this.pivot.x + add, this.pivot.y - 16);
         stroke(255);
     }
 
@@ -109,6 +114,7 @@ class Pendulum {
         let acc = -(gravityS.value()*scl/2500)*sin(this.angle)/this.len;
         this.avel += acc;
         this.angle += this.avel;
+        this.angle = (this.angle + PI)%TWO_PI - PI;
         this.pos.set(this.len*sin(this.angle), this.len*cos(this.angle));
         this.pos.add(this.pivot);
     }

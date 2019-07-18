@@ -31,6 +31,7 @@ P.setup = function() {
     
     pendulum = new Pendulum();
     running = true;
+    lenS.input(() => pendulum.len = lenS.value());
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -39,9 +40,9 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && mouseIsPressed) {
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
         pendulum.change(mouseX, mouseY);
-    } else  {
+    } else if (running) {
         pendulum.update();
     }
     pendulum.show();
@@ -63,9 +64,7 @@ function run() {
         running = false;
         runB.html('&#xf04b;');
         runB.elt.title = 'продовжити';
-        noLoop();
     } else {
-        loop();
         runB.html('&#xf04c;');
         running = true;
         runB.elt.title = 'зупинити';
@@ -86,8 +85,11 @@ class Pendulum {
     }
 
     show() {
-        line(this.pivot.x, this.pivot.y, this.pos.x, this.pos.y);
+        this.pos.set(this.len*sin(this.angle), this.len*cos(this.angle));
+        this.pos.add(this.pivot);
+        stroke(255);
         fill('red');
+        line(this.pivot.x, this.pivot.y, this.pos.x, this.pos.y);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
         let start = 0.5*PI, finish = 0.5*PI - this.angle;
         if (abs(start - finish) > 1e-6) {
@@ -98,29 +100,23 @@ class Pendulum {
             line(this.pivot.x, this.pivot.y, this.pivot.x, this.pivot.y + 50);
             arc(this.pivot.x, this.pivot.y, r, r, start, finish); 
         }
+        let str = nfc(abs(this.angle)*180/PI, 1);
+        let add = textWidth(str)/2 + 4;
+        noFill();
+        ellipse(this.pivot.x + add, this.pivot.y - 14, 4, 4);
         fill(255);
         noStroke();
-        textSize(12);
-        let str = nfc(abs(this.angle)*180/PI, 1) + '';
         text(str, this.pivot.x, this.pivot.y - 12);
-        let add = textWidth(str)/2 + 4;
-        textSize(8);
-        text('o', this.pivot.x + add, this.pivot.y - 16);
-        stroke(255);
     }
 
     update() {
-        this.len = lenS.value();
         let acc = -(gravityS.value()*scl/2500)*sin(this.angle)/this.len;
         this.avel += acc;
         this.angle += this.avel;
         this.angle = (this.angle + PI)%TWO_PI - PI;
-        this.pos.set(this.len*sin(this.angle), this.len*cos(this.angle));
-        this.pos.add(this.pivot);
     }
 
     change(x, y) {
-        this.len = lenS.value();
         this.avel = 0;
         let vec = p5.Vector.sub(createVector(x, y), this.pivot);
         vec.setMag(this.len);

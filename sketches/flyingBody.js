@@ -14,7 +14,7 @@ P.setup = function() {
     frameRate('50');
 
     gravity = createVector(0, 9.8*scl/2500);
-    ground = height - 100;
+    ground = height - 50;
 
     createTitle(P, 'Тіло, кинуте під кутом');
     resetB = createResetB(P, reset);
@@ -48,11 +48,11 @@ P.draw = function() {
         ball.simulate(mouseX, mouseY);
     }
     
-    noStroke();
-    fill(255);
-    text('початкова швидкість: ' + nfc(vel.mag(), 2) + ' м/c', 5, ground + 30);
-    text('  проекція на вісь Ох: ' + nfc(vel.x, 2) + ' м/c', 5, ground + 45);
-    text('  проекція на вісь Оу: ' + nfc(-vel.y, 2) + ' м/c', 5, ground + 60);
+    // noStroke();
+    // fill(255);
+    // text('початкова швидкість: ' + nfc(vel.mag(), 2) + ' м/c', 5, ground + 30);
+    // text('  проекція на вісь Ох: ' + nfc(vel.x, 2) + ' м/c', 5, ground + 45);
+    // text('  проекція на вісь Оу: ' + nfc(-vel.y, 2) + ' м/c', 5, ground + 60);
 }
 
 function reset() {
@@ -135,8 +135,9 @@ class Ball {
         this.pos.add(this.vel);
         if (this.pos.y > ground-this.radius) {
             this.pos.y = ground-this.radius;
-            this.vel.y *= -1;
-            this.vel.mult(0.95);
+            // this.vel.y *= -1;
+            // this.vel.mult(0.95);
+            this.vel.set(0, 0);
             return true;
         } else return false;
     }

@@ -113,7 +113,7 @@ class Pendulum {
         let acc = -(gravityS.value()*scl/2500)*sin(this.angle)/this.len;
         this.avel += acc;
         this.angle += this.avel;
-        this.angle = (this.angle + PI)%TWO_PI - PI;
+        this.angle = ((this.angle + PI)%TWO_PI + TWO_PI)%TWO_PI - PI;
     }
 
     change(x, y) {

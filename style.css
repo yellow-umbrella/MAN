@@ -12,6 +12,10 @@
 * {
     padding: 0;
     margin: 0;
+}
+
+body {
+    overflow: hidden;
     font-family: rounded;
     user-select: none;
 }
@@ -179,3 +183,24 @@ label {
     color: #c6ecd9;
     font-size: 14px;
 }
+
+#init {
+    margin-top: 10%;
+    margin-bottom: 25%; 
+    color: #0d261a;
+    font-size: 1.4em;
+}
+
+#description {
+    width: 60%;
+    margin: auto;
+    text-align: justify;
+}
+
+#author {
+    text-align: right;
+    position: absolute;
+    bottom: 0.3em;
+    right: 0.3em;
+}
+

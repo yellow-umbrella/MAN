@@ -1,8 +1,7 @@
 // Маятник
 module.exports = new p5((P) => { with (P) {
 
-let gravity;
-let spring, ball;
+let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15;
 let running, steps = 10;
 let coeffS, massS;
 let resetB, runB;
@@ -11,12 +10,13 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     fill(255, 0, 0);
     stroke(255, 255, 255);
+    strokeJoin(ROUND);
     
     createTitle(P, 'Маятник');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 
-    gravity = createVector(0, 1);
+    //gravity = createVector(0, 1);
     running = true;
     
     massS = createSlider(0.5, 2, 1.25, 0.25);
@@ -43,28 +43,45 @@ P.draw = function() {
 
     if (mouseIsPressed) {
         if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height) {
-            if (mouseY < spring.pos.y + max(spring.links, spring.len/3)) {
-                ball.pos.y = spring.pos.y + max(spring.links, spring.len/3);
-            } else if (mouseY - spring.pos.y > min(spring.links*spring.linkLen, 2*spring.len)) {
-                ball.pos.y = spring.pos.y + min(spring.links*spring.linkLen, 2*spring.len);
+            if (mouseX < spring.pos.x + (2 - lim)*spring.len) {
+                ball.pos.x = spring.pos.x + (2 - lim)*spring.len;
+            } else if (mouseX - spring.pos.x > min(spring.links*spring.linkLen, lim*spring.len)) {
+                ball.pos.x = spring.pos.x + min(spring.links*spring.linkLen, lim*spring.len);
             } else {
-                ball.pos.y = mouseY;
+                ball.pos.x = mouseX;
             }
             ball.vel.set(0, 0);
+           /* ball.mass = massS.value();
+            spring.coeff = coeffS.value();*/
         }
     }
+
+    massS.input(updateM);
+    coeffS.input(updateC);
     
     if (running) {
        //for (let i = 0; i < steps; i++) {
-            spring.update();
+            //spring.update();
             spring.hook();
-            ball.apply(gravity);
-            ball.air();
+            //ball.apply(gravity);
+            //ball.air();
             ball.update();
         //}
     }
     spring.show();
     ball.show();
+}
+
+function updateM() {
+    ball.mass = massS.value();
+    ball.vel.set(0, 0);
+    ball.radius = radius2mass*sqrt(ball.mass);
+}
+
+function updateC() {
+    spring.coeff = coeffS.value();
+    ball.vel.set(0, 0);
+    spring.stroke = spring.coeff*coeff2stroke;
 }
 
 function reset() {
@@ -93,11 +110,11 @@ function run() {
 
 class Ball {
     constructor() {
-        this.radius = 10;
-        this.pos = createVector(width*0.5, height*0.3 + 150);
+        this.pos = createVector(width*0.5, height*0.5);
         this.vel = createVector();
         this.mass = massS.value();
         this.acc = createVector();
+        this.radius = radius2mass*sqrt(this.mass);
     }
 
     show() {
@@ -105,11 +122,11 @@ class Ball {
     }
 
     update() {
-        this.mass = massS.value();
+        //this.mass = massS.value();
         this.acc.mult(1/steps);
         this.vel.add(this.acc);
         this.pos.add(this.vel);
-        this.pos.x = width*0.5;
+        this.pos.y = height*0.5;
         /*if (this.pos.y < spring.pos.y) {
             this.pos.y += (spring.pos.y - this.pos.y);
             this.vel.y = 0;
@@ -131,20 +148,24 @@ class Ball {
 
 class Spring {
     constructor(ball) {
-        this.pos = createVector(width*0.5, height*0.1);
+        this.pos = createVector(width*0.1, height*0.5);
         this.ball = ball;
-        this.len = 150;
-        this.lenNow = 150;
+        this.len = 0.4*width;
+        this.lenNow = this.len;
         this.coeff = coeffS.value();
-        this.links = 30;
-        this.width = 8;
+        this.width = round(0.01*width);
+        this.links = round(this.len/this.width);
         this.linkLen = Math.hypot(this.len/this.links, 2*this.width);
+        this.ball.pos.x = this.pos.x + this.len;
+        this.ball.radius = 1.5*this.width;
+        this.stroke = this.coeff*coeff2stroke;
     }
 
     show() {
         let tension = p5.Vector.sub(this.ball.pos, this.pos);
         push();
         noFill();
+        strokeWeight(this.stroke);
         translate(this.pos.x, this.pos.y);
         rotate(tension.heading());
         this.lenNow = tension.mag();

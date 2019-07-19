@@ -7,11 +7,12 @@ let ground, vel, scl = 100;
 let running = true, kicked = false;
 let heightS;
 let resetB, runB;
+let arrows;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     stroke(255);
-    frameRate('50');
+    frameRate(50);
 
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 50;
@@ -31,6 +32,9 @@ P.setup = function() {
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textSize(12);
+
+    arrows = createVector();
+    new p5((P2) => drawArrows(P2, arrows), 'main');
 }
 
 P.draw = function() {
@@ -39,20 +43,17 @@ P.draw = function() {
     
     if (kicked) {
         ball.update();
+        arrows.set(ball.vel.x, ball.vel.y);
     } else {
         ball.pos.y = ground-ball.radius-heightS.value();
+        arrows.set(vel.x, vel.y);
     }
+
     ball.show();
     
     if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
-    
-    // noStroke();
-    // fill(255);
-    // text('початкова швидкість: ' + nfc(vel.mag(), 2) + ' м/c', 5, ground + 30);
-    // text('  проекція на вісь Ох: ' + nfc(vel.x, 2) + ' м/c', 5, ground + 45);
-    // text('  проекція на вісь Оу: ' + nfc(-vel.y, 2) + ' м/c', 5, ground + 60);
 }
 
 function reset() {
@@ -61,7 +62,6 @@ function reset() {
     runB.elt.title = 'зупинити';
     running = true;
     kicked = false;
-    
     heightS.value('0');
     ball = new Ball();
     vel.setMag(0);
@@ -109,6 +109,10 @@ function showGround() {
     }
 }
 
+P.mousePressed = function() {
+    kicked = false;
+}
+
 P.mouseReleased = function() {
     if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
@@ -135,6 +139,7 @@ class Ball {
         this.pos.add(this.vel);
         if (this.pos.y > ground-this.radius) {
             this.pos.y = ground-this.radius;
+            // this.pos.x -= this.vel.x;
             // this.vel.y *= -1;
             // this.vel.mult(0.95);
             this.vel.set(0, 0);
@@ -148,7 +153,7 @@ class Ball {
         mouse.div(20);
         this.vel = mouse;
         vel = this.vel.copy();
-        vel.mult(50/scl);
+        vel.mult(frameRate()/scl);
     }
 
     simulate(x, y) {

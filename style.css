@@ -125,7 +125,7 @@ iframe {
     margin-right: -7337px;
 }
 
-canvas {
+canvas:not([class='arrows']) {
     margin-left: 200px;
     margin-top: 50px;
 }

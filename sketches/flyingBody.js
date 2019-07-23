@@ -110,7 +110,8 @@ function showGround() {
 }
 
 P.mousePressed = function() {
-    kicked = false;
+    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running)
+        kicked = false;
 }
 
 P.mouseReleased = function() {

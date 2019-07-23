@@ -8,11 +8,12 @@ let running = true, kicked = false;
 let heightS;
 let resetB, runB;
 let arrows;
+let rate = 50;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     stroke(255);
-    frameRate(50);
+    frameRate(rate);
 
     gravity = createVector(0, 9.8*scl/2500);
     ground = height - 50;
@@ -40,6 +41,7 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     showGround();
+    // console.log(nfc(frameRate(), 1));
     
     if (kicked) {
         if (ball.update()) {
@@ -50,12 +52,12 @@ P.draw = function() {
         arrows.set(ball.vel.x, ball.vel.y);
     } else {
         ball.pos.y = ground-ball.radius-heightS.value();
-        arrows.set(vel.x, vel.y);
+        arrows.set(vel.x*scl/rate, vel.y*scl/rate);
     }
 
     ball.show();
     
-    if (mouseIsPressed && mouseY < ground && mouseX > 0 && mouseY > 0) {
+    if (mouseIsPressed && mouseY < ground-ball.radius && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
 }
@@ -114,7 +116,7 @@ function showGround() {
 }
 
 P.mouseReleased = function() {
-    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
+    if (mouseY < ground-ball.radius && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
         kicked = true;
     }
@@ -152,7 +154,7 @@ class Ball {
         mouse.div(20);
         this.vel = mouse;
         vel = this.vel.copy();
-        vel.mult(frameRate()/scl);
+        vel.mult(rate/scl);
     }
 
     simulate(x, y) {

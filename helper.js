@@ -53,7 +53,6 @@ function createToggleS(P) {
 function drawArrows(P, vel) { with (P) {
 
     function arrow(x1, y1, x2, y2) {
-        push();
         let segment = createVector(x2-x1, y2-y1);
         line(x1, y1, x2, y2);
         segment.setMag(8);
@@ -64,16 +63,19 @@ function drawArrows(P, vel) { with (P) {
     }
 
     P.setup = function() {
-        let canvas = createCanvas(200, 200);
-        canvas.position(0, 150);
+        let canvas = createCanvas(200, 440);
+        canvas.position(0, 110);
         canvas.class('arrows');
         stroke(255);
+        noFill();
     }
 
     P.draw = function() {
         background('#26734d');
-        translate(100, 100);
         if (vel.mag() < 1e-6) return;
+
+        push();
+        translate(100, 120);
         let sign = createVector(Math.sign(vel.x), Math.sign(vel.y));
         let mag = createVector(abs(vel.x), abs(vel.y));
         let x, y;
@@ -87,6 +89,44 @@ function drawArrows(P, vel) { with (P) {
         line(0, 0, x, 0);
         line(0, 0, 0, y);
         arrow(0, 0, x, y);
+        noStroke();
+        fill(255);
+        let horAlign = (x < 0 ? LEFT : RIGHT);
+        let verAlign = (y < 0 ? TOP : BOTTOM);
+        textAlign(horAlign, verAlign);
+        text(nfc(vel.x, 1) + ' м/с', x, -4*sign.y);
+        text(nfc(-vel.y, 1) + ' м/с', -4*sign.x, y);
+        textAlign(horAlign, (y >= 0 ? TOP : BOTTOM));
+        text(nfc(vel.mag(), 2) + ' м/с', x, y+4*sign.y);
+        pop();
+
+        push();
+        translate(100, 340);
+        let start = HALF_PI*(1-sign.x);
+        let direction = createVector(x, y);
+        direction.setMag(100);
+        if (sign.x == 0)
+            sign.x = 1;
+        line(0, 0, sign.x*100, 0);
+        line(0, 0, direction.x, direction.y);
+        let angle = 0;
+        if (vel.y != 0) {
+            let start = HALF_PI*(1-sign.x);
+            let finish = (direction.heading() + TWO_PI) % TWO_PI;
+            if (start > finish)
+                [start, finish] = [finish, start];
+            angle = degrees(abs(start - finish)) % 90;
+            if (vel.y < 0 && vel.x >= 0) {
+                angle = 90 - angle;
+                [start, finish] = [finish, start];
+            }
+            arc(0, 0, 60, 60, start, finish);
+        }
+        noStroke();
+        fill(255);
+        textAlign(horAlign, verAlign);
+        text(nfc(angle, 1)+' °', -4*sign.x, -4*sign.y);
+        pop();
     }
 
 }}

@@ -42,6 +42,8 @@ function createToggleS(P) {
     toggleS.position(0, 20);
     toggleS.size(30);
     toggleS.class('toggle');
+    toggleS.attribute('value', '1');
+    toggleS.input(() => toggleS.attribute('value', toggleS.value()));
     let labelToggle = P.createElement('label', 'Сховати/показати підписи:');
     labelToggle.child(toggleS);
     labelToggle.position(5, 100);

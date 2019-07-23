@@ -42,7 +42,11 @@ P.draw = function() {
     showGround();
     
     if (kicked) {
-        ball.update();
+        if (ball.update()) {
+            heightS.value(0);
+            kicked = false;
+            vel.set(0, 0);
+        }
         arrows.set(ball.vel.x, ball.vel.y);
     } else {
         ball.pos.y = ground-ball.radius-heightS.value();
@@ -109,11 +113,6 @@ function showGround() {
     }
 }
 
-P.mousePressed = function() {
-    if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running)
-        kicked = false;
-}
-
 P.mouseReleased = function() {
     if (mouseY < ground && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
         ball.kick(mouseX, mouseY);
@@ -140,7 +139,6 @@ class Ball {
         this.pos.add(this.vel);
         if (this.pos.y > ground-this.radius) {
             this.pos.y = ground-this.radius;
-            // this.pos.x -= this.vel.x;
             // this.vel.y *= -1;
             // this.vel.mult(0.95);
             this.vel.set(0, 0);
@@ -158,7 +156,7 @@ class Ball {
     }
 
     simulate(x, y) {
-        let friend = new Ball;
+        let friend = new Ball();
         friend.pos = this.pos.copy();
         friend.kick(x, y);
         strokeWeight(1);

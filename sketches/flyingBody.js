@@ -15,7 +15,7 @@ P.setup = function() {
     stroke(255);
     frameRate(rate);
 
-    gravity = createVector(0, 9.8*scl/2500);
+    gravity = createVector(0, 9.8*scl/(rate*rate));
     ground = height - 50;
 
     createTitle(P, 'Тіло, кинуте під кутом');
@@ -41,7 +41,7 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     showGround();
-    // console.log(nfc(frameRate(), 1));
+   // console.log(nfc(frameRate(), 1));
     
     if (kicked) {
         if (ball.update()) {

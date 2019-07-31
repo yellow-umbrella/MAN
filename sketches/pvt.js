@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
     let gas;
-    let running, scl = 150;
+    let running, scl = 150, minHeight = 20;
     let temprS;
     let resetB, runB;
     let constR;
@@ -22,16 +22,17 @@ module.exports = new p5((P) => { with (P) {
         constR.position(5, 50);
         constR.style('width', '60px');
     
-        temprS = createSlider(10, 373, 300, 1);
+        gas = new Gas();
+
+        temprS = createSlider(gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1);
         temprS.position(0, 20);
         
         let labelTempr = createElement('label', 'Температура:');
         labelTempr.elt.appendChild(temprS.elt);
         labelTempr.position(5, 200);
         
-        gas = new Gas();
         running = true;
-        temprS.input(() => {gas.update(constR.value());});
+        temprS.input(() => {if (constR.value()) gas.update(constR.value());});
     
         loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
         textAlign(CENTER, CENTER);
@@ -41,8 +42,8 @@ module.exports = new p5((P) => { with (P) {
         background('#1b4b34');
 
         if (mouseIsPressed) {
-            if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && constR.value() != 'V') {
-                gas.height = gas.pos.y - min(mouseY, gas.pos.y - 20);
+            if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && constR.value() != 'V' && constR.value()) {
+                gas.height = gas.pos.y - min(mouseY, gas.pos.y - minHeight);
                 gas.update(constR.value());
             }
         }
@@ -91,7 +92,7 @@ module.exports = new p5((P) => { with (P) {
             strokeWeight(4);
             line(this.pos.x, this.pos.y - this.height, this.pos.x + this.width, this.pos.y - this.height);
             for (let particle of this.particles) {
-                particle.update(this.pos.x, this.pos.x + this.width, this.pos.y - this.height, this.pos.y, sqrt(this.T));
+                particle.update(this.pos.y - this.height, sqrt(this.T));
                 particle.show();
             }
         }
@@ -126,6 +127,10 @@ module.exports = new p5((P) => { with (P) {
         constructor(minX, maxX, minY, maxY) {
             this.pos = createVector(random(minX, maxX), random(minY, maxY));
             this.vel = createVector(random(-0.2, 0.2), random(-0.2, 0.2));
+            this.minX = minX;
+            this.maxX = maxX;
+            this.minY = minY;
+            this.maxY = maxY;
         }
 
         show() {
@@ -133,32 +138,34 @@ module.exports = new p5((P) => { with (P) {
             point(this.pos.x, this.pos.y);
         }
 
-        update(minX, maxX, minY, maxY, coeff) {
+        update(minY, coeff) {
             this.pos.add(p5.Vector.mult(this.vel, coeff));
-            if (this.pos.x <= minX) {
+            this.minY = minY;
+            if (this.pos.x <= this.minX) {
                 //this.pos.y -= this.vel.y*(minX-this.pos.x)/this.vel.x;
-                this.pos.x = minX;
+                this.pos.x = this.minX;
                 this.vel.x *= -1;
             }
     
-            if (this.pos.x >= maxX) {
+            if (this.pos.x >= this.maxX) {
                 //this.pos.y -= this.vel.y*(this.pos.x - maxX)/this.vel.x;
-                this.pos.x = maxX;
+                this.pos.x = this.maxX;
                 this.vel.x *= -1;
             }
     
-            if (this.pos.y <= minY) {
+            if (this.pos.y <= this.minY) {
                 //this.pos.x -= this.vel.x*(minY-this.pos.y)/this.vel.y;
-                this.pos.y = minY;
+                this.pos.y = this.minY;
                 this.vel.y *= -1;
             }
     
-            if (this.pos.y >= maxY) {
+            if (this.pos.y >= this.maxY) {
                 //this.pos.x -= this.vel.x*(this.pos.y - maxY)/this.vel.y;
-                this.pos.y = maxY;
+                this.pos.y = this.maxY;
                 this.vel.y *= -1;
             }
         }
+        
     }
     
     

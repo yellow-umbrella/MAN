@@ -174,13 +174,12 @@ class Particle {
         }
     }
 
-    stretch(curY, prevY) {
-        let ratio = (this.pos.y - prevY)/(this.maxY - prevY);
-        this.pos.y = ratio*(this.maxY - curY) + curY;
+    stretch(prevH, curH) {
+        let ratio = (this.maxY - this.pos.y)/prevH;
+        this.pos.y = this.maxY - ratio*curH;
     }
     
 }
-
 
 }}, 'main');
         

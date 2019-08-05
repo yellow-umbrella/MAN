@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
 let focus;
-let ray;
+let rays = [];
 let ready = false, started = false, running = true;
 let focusS;
 let resetB, runB;
@@ -30,12 +30,22 @@ P.draw = function() {
 
     focus = map(focusS.value(), -39, 39, -width/2, width/2);
 
-    if (started || ready) {
-        if (started) {
-            ray.diffract();
+    if (mouseIsPressed && mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && rays.length <= 10 && rays.length > 0) {
+        let x = mouseX - width/2;
+        let y = mouseY - height/2;
+        if (ready) {
+            rays[rays.length - 1].direct(x, y);
         }
-        ray.show();
     }
+
+    //if (started || ready) {
+        for (let ray of rays) {
+            if (started) {
+                ray.diffract();
+            }
+            ray.show();
+        }
+    //}
 
     showLens();
 }
@@ -49,6 +59,7 @@ function reset() {
     ready = false;
     started = false;
     focusS.value('5');
+    rays = [];
 }
 
 function run() {
@@ -96,15 +107,20 @@ P.mousePressed = function() {
         let y = mouseY - height/2;
 
         if (ready) {
-            ready = false;
-            started = true;
-            ray.direct(x, y);
-        } else if (x < 0) {
-            ray = new Ray(x, y);
-            ready = true;
-            started = false;
+            //ready = false;
+            //started = true;
+            //rays[rays.length - 1].direct(x, y);
+        } else if (x < 0 && rays.length <= 10) {
+            rays.push(new Ray(x, y));
+            //ready = true;
+            //started = false;
         }
     }
+}
+
+P.mouseReleased = function() {
+    ready = !ready;
+    started = !started;
 }
 
 class Ray {
@@ -115,7 +131,7 @@ class Ray {
     }
 
     show() {
-        stroke('yellow');
+        stroke(255, 255, 0, 100);
         strokeWeight(4);
         point(this.start.x, this.start.y);
         strokeWeight(2);

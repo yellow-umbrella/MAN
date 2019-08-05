@@ -35,6 +35,7 @@ P.setup = function() {
     
     running = true;
     temprS.input(() => {if (constR.value()) gas.update(constR.value());});
+    constR.input(() => {gas = new Gas(); temprS.value(gas.T)});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -60,7 +61,8 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
-
+    gas = new Gas();
+    temprS.value(gas.T)
 }
 
 function run() {
@@ -97,7 +99,9 @@ class Gas {
         strokeWeight(4);
         line(this.pos.x, this.pos.y - this.height, this.pos.x + this.width, this.pos.y - this.height);
         for (let particle of this.particles) {
-            particle.update(this.pos.y - this.height, sqrt(this.T));
+            if (running) {
+                particle.update(this.pos.y - this.height, sqrt(this.T));
+            }
             particle.show();
         }
     }

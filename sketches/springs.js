@@ -12,7 +12,7 @@ P.setup = function() {
     stroke(255, 255, 255);
     strokeJoin(ROUND);
     
-    createTitle(P, 'Маятник');
+    createTitle(P, 'Пружинний маятник');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

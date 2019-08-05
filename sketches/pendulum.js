@@ -12,7 +12,7 @@ P.setup = function() {
     frameRate('50');
     stroke(255, 255, 255);
     
-    createTitle(P, 'Маятник');
+    createTitle(P, 'Математичний маятник');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

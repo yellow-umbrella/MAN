@@ -40,7 +40,7 @@ P.draw = function() {
 
     //if (started || ready) {
         for (let ray of rays) {
-            if (started) {
+            if (ray.started) {
                 ray.diffract();
             }
             ray.show();
@@ -110,17 +110,19 @@ P.mousePressed = function() {
             //ready = false;
             //started = true;
             //rays[rays.length - 1].direct(x, y);
-        } else if (x < 0 && rays.length <= 10) {
+        } else if (x < 0 && rays.length < 10) {
             rays.push(new Ray(x, y));
-            //ready = true;
+            ready = true;
             //started = false;
         }
     }
 }
 
 P.mouseReleased = function() {
-    ready = !ready;
-    started = !started;
+    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
+        ready = !ready;
+        //started = !started;
+    }
 }
 
 class Ray {
@@ -128,6 +130,7 @@ class Ray {
         this.start = createVector(x,y);
         this.crack = createVector(x,y);
         this.end = createVector(x,y);
+        this.started = false;
     }
 
     show() {
@@ -142,13 +145,14 @@ class Ray {
     direct(x, y) {
         if (x <= this.start.x) {
             ready = true;
-            started = false;
+            this.started = false;
         } else {
             this.A = this.start.y - y;
             this.B = x - this.start.x;
             this.C = x*this.start.y - this.start.x*y;
             this.crack.x = 0;
             this.crack.y = this.C/this.B;
+            this.started = true;
         }
     }
 

@@ -15,17 +15,7 @@ P.setup = function() {
     runB = createRunB(P, run);
     toggleS = createToggleS(P);
 
-    /*readyB = createButton('&#xf00c;');
-    readyB.position(155, 0);
-    readyB.mousePressed(() => {ready = balls.length !== 0;});
-    readyB.elt.title = 'підтвердити';*/
-
-    massS = createSlider(2, 4, 3, 0.1);
-    massS.position(0, 20);
-
-    let labelMass = createElement('label', 'Маса тіла:');
-    labelMass.elt.appendChild(massS.elt);
-    labelMass.position(5, 50);
+    massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса Тiла: ', 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);

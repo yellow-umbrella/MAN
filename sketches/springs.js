@@ -19,18 +19,8 @@ P.setup = function() {
     //gravity = createVector(0, 1);
     running = true;
     
-    massS = createSlider(0.5, 2, 1.25, 0.25);
-    coeffS = createSlider(0.025, 0.25, 0.125, 0.025);
-    massS.position(0, 20);
-    coeffS.position(0, 20);
-    
-    let labelMass = createElement('label', 'Маса тіла:');
-    labelMass.elt.appendChild(massS.elt);
-    labelMass.position(5, 50);
-    
-    let labelCoeff = createElement('label', 'Жорсткість пружини:');
-    labelCoeff.elt.appendChild(coeffS.elt);
-    labelCoeff.position(5, 100);
+    massS = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', 50);
+    coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: ', 100);
 
     ball = new Ball();
     spring = new Spring(ball);

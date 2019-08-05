@@ -10,12 +10,7 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
 
-    chargeS = createSlider(-2, 2, 0, 0.1);
-    chargeS.position(0, 20);
-    let labelCharge = createElement('label', 'Заряд:');
-    labelCharge.elt.appendChild(chargeS.elt);
-    labelCharge.position(5, 50);
-
+    chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', 50);
     toggleS = createToggleS(P);
     createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);

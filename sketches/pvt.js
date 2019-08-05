@@ -23,22 +23,31 @@ P.setup = function() {
     constR.option(' Ізохорний', 'V');
     constR.elt.innerHTML += '<br/>';
     constR.position(5, 50);
+    constR.value('T');
 
     gas = new Gas();
 
+    // temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.hegiht, 300, 1], 'Температура: ', 120);
     temprS = createSlider(gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1);
     temprS.position(0, 20);
     
+    let b = P.createElement('b', '');
+    let output = P.createElement('output', 300);
     let labelTempr = createElement('label', 'Температура:');
-    labelTempr.elt.appendChild(temprS.elt);
+    b.child(output);
+    labelTempr.child(b);
+    labelTempr.child(temprS);
     labelTempr.position(5, 120);
+    temprS.output = output;
     
     running = true;
-    temprS.input(() => {if (constR.value()) gas.update(constR.value());});
+    temprS.input(() => {gas.update(constR.value()); output.elt.value = temprS.value()});
     constR.input(() => {gas = new Gas(); temprS.value(gas.T)});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
+
+    strokeCap(SQUARE);
 }
 
 P.draw = function() {

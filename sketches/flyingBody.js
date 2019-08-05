@@ -22,11 +22,7 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     
-    heightS = createSlider(0, ground-10, 0, 1);
-    heightS.position(0, 20);
-    let labelHeight = createElement('label', 'Початкова висота:');
-    labelHeight.elt.appendChild(heightS.elt);
-    labelHeight.position(5, 50);
+    heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', 50);
 
     ball = new Ball();
     vel = createVector();

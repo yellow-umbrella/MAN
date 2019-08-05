@@ -16,22 +16,12 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 
-    gravityS = createSlider(1.6, 10, 9.8, 0.1);
-    lenS = createSlider(round(height*0.1), round(height*0.7), round(0.4*height), 1);
-    gravityS.position(0, 40);
-    lenS.position(0, 20);
-    
-    let labelGravity = createElement('label', 'Прискорення вільного <br> падіння:');
-    labelGravity.elt.appendChild(gravityS.elt);
-    labelGravity.position(5, 50);
-    
-    let labelLen = createElement('label', 'Довжина нитки:');
-    labelLen.elt.appendChild(lenS.elt);
-    labelLen.position(5, 120);
+    gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', 50, 40);
+    lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', 120);
     
     pendulum = new Pendulum();
     running = true;
-    lenS.input(() => pendulum.len = lenS.value());
+    lenS.input(() => lenS.output.elt.value = pendulum.len = lenS.value());
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);

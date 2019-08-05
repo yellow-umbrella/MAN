@@ -15,6 +15,21 @@ function switchTo(name) {
     document.getElementById("help").src = "./formulae/"+name+".html";
 }
 
+function createLabeledSlider(P, sld, name, y, sy = 20) {
+    let slider = P.createSlider(...sld);
+    let b = P.createElement('b', '');
+    let output = P.createElement('output', sld[2]);
+    let label = P.createElement('label', name);
+    b.child(output);
+    label.child(b);
+    label.child(slider);
+    label.position(5, y);
+    slider.position(0, sy);
+    slider.output = output;
+    slider.input(() => output.elt.value = slider.value());
+    return slider;
+}
+
 function createTitle(P, name) {
     let title = P.createDiv(name);
     title.id('title');
@@ -37,7 +52,7 @@ function createResetB(P, callback) {
     return resetB;
 }
 
-function createToggleS(P) {
+function createToggleS(P, y = 100) {
     let toggleS = P.createSlider(0, 1, 1, 1);
     toggleS.position(0, 20);
     toggleS.size(30);
@@ -46,7 +61,7 @@ function createToggleS(P) {
     toggleS.input(() => toggleS.attribute('value', toggleS.value()));
     let labelToggle = P.createElement('label', 'Сховати/показати підписи:');
     labelToggle.child(toggleS);
-    labelToggle.position(5, 100);
+    labelToggle.position(5, y);
     return toggleS;
 }
 

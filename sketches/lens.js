@@ -13,12 +13,7 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 
-    focusS = createSlider(-39, 39, 5, 2);
-    focusS.position(0, 20);
-
-    let labelFocus = createElement('label', 'Фокусна відстань:');
-    labelFocus.elt.appendChild(focusS.elt);
-    labelFocus.position(5, 50);
+    focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }

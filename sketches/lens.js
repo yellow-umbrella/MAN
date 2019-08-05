@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let focus;
 let rays = [];
-let ready = false, started = false, running = true;
+let ready = false, maxN = 100, running = true;
 let focusS;
 let resetB, runB;
 
@@ -25,7 +25,7 @@ P.draw = function() {
 
     focus = map(focusS.value(), -39, 39, -width/2, width/2);
 
-    if (mouseIsPressed && mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && rays.length <= 10 && rays.length > 0) {
+    if (mouseIsPressed && mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && /*rays.length <= 10 &&*/ rays.length > 0) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
         if (ready) {
@@ -105,7 +105,7 @@ P.mousePressed = function() {
             //ready = false;
             //started = true;
             //rays[rays.length - 1].direct(x, y);
-        } else if (x < 0 && rays.length < 10) {
+        } else if (x < 0 && rays.length < maxN) {
             rays.push(new Ray(x, y));
             ready = true;
             //started = false;
@@ -117,6 +117,9 @@ P.mouseReleased = function() {
     if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
         ready = !ready;
         //started = !started;
+    }
+    if (rays.length == maxN) {
+        ready = false;
     }
 }
 

@@ -21,6 +21,8 @@ P.setup = function() {
     
     massS = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', 50);
     coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: ', 100);
+    massS.input(() => {massS.output.elt.value = massS.value(); updateM()});
+    coeffS.input(() => {coeffS.output.elt.value = coeffS.value(); updateC()});
 
     ball = new Ball();
     spring = new Spring(ball);
@@ -46,9 +48,6 @@ P.draw = function() {
         }
     }
 
-    massS.input(updateM);
-    coeffS.input(updateC);
-    
     if (running) {
        //for (let i = 0; i < steps; i++) {
             //spring.update();

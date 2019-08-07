@@ -57,7 +57,7 @@ function reset() {
 
     particles = [];
     chargeS.value('0');
-    chargeS.update();
+    // chargeS.update();
 }
 
 function run() {

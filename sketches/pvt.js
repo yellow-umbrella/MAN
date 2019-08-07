@@ -30,8 +30,8 @@ P.setup = function() {
     temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1], 'Температура: ', 120);
     
     running = true;
-    temprS.input(() => {gas.update(constR.value()); temprS.output.elt.value = temprS.value()});
-    constR.input(() => {gas = new Gas(); temprS.value(gas.T)});
+    temprS.input(() => {gas.update(constR.value()); temprS.update()});
+    constR.input(() => {gas = new Gas(); temprS.value(gas.T); temprS.update()});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);

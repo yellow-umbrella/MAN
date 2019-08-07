@@ -22,7 +22,7 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     
-    heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', 50);
+    heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
 
     ball = new Ball();
     vel = createVector();

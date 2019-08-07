@@ -15,18 +15,20 @@ function switchTo(name) {
     document.getElementById("help").src = "./formulae/"+name+".html";
 }
 
-function createLabeledSlider(P, sld, name, y, sy = 20) {
+function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
     let slider = P.createSlider(...sld);
     let b = P.createElement('b', '');
-    let output = P.createElement('output', sld[2]);
+    let output = P.createElement('output', P.nfc(sld[2]/scl, 2));
     let label = P.createElement('label', name);
+    let unit = P.createElement('span', units);
     b.child(output);
+    b.child(unit);
     label.child(b);
     label.child(slider);
     label.position(5, y);
     slider.position(0, sy);
     slider.output = output;
-    slider.input(() => output.elt.value = slider.value());
+    slider.input(() => output.elt.value = P.nfc(slider.value()/scl, 2));
     return slider;
 }
 

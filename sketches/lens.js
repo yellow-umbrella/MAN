@@ -54,6 +54,7 @@ function reset() {
     ready = false;
     started = false;
     focusS.value('5');
+    focusS.update();
     rays = [];
 }
 

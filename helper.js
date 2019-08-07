@@ -28,7 +28,8 @@ function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
     label.position(5, y);
     slider.position(0, sy);
     slider.output = output;
-    slider.input(() => output.elt.value = P.nfc(slider.value()/scl, 2));
+    slider.update = () => {slider.output.elt.value = P.nfc(slider.value()/scl, 2)};
+    slider.input(() => slider.update());
     return slider;
 }
 

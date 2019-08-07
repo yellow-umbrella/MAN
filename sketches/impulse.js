@@ -55,6 +55,7 @@ function reset() {
 
     balls = [];
     massS.value('3');
+    massS.update();
     started = false;
     ready = false;
     chosen = -1;

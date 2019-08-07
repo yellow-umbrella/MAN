@@ -27,21 +27,10 @@ P.setup = function() {
 
     gas = new Gas();
 
-    // temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.hegiht, 300, 1], 'Температура: ', 120);
-    temprS = createSlider(gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1);
-    temprS.position(0, 20);
-    
-    let b = P.createElement('b', '');
-    let output = P.createElement('output', 300);
-    let labelTempr = createElement('label', 'Температура:');
-    b.child(output);
-    labelTempr.child(b);
-    labelTempr.child(temprS);
-    labelTempr.position(5, 120);
-    temprS.output = output;
+    temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1], 'Температура: ', ' К', 120);
     
     running = true;
-    temprS.input(() => {gas.update(constR.value()); output.elt.value = temprS.value()});
+    temprS.input(() => {gas.update(constR.value()); temprS.output.elt.value = temprS.value()});
     constR.input(() => {gas = new Gas(); temprS.value(gas.T)});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
@@ -72,6 +61,7 @@ function reset() {
     running = true;
     gas = new Gas();
     temprS.value(gas.T)
+    temprS.output.elt.value = temprS.value();
 }
 
 function run() {
@@ -138,6 +128,7 @@ class Gas {
                     this.T = this.T*(this.height*this.width)/this.V;
                     this.V = this.height*this.width;
                     temprS.value(this.T);
+                    temprS.output.elt.value = temprS.value();
                 }
             }
         }

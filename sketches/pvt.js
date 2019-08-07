@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
 let gas;
-let running, scl = 150, minHeight = 20;
+let running, scl = 150, minHeight = 20, description;
 let temprS;
 let resetB, runB;
 let constR;
@@ -12,6 +12,10 @@ P.setup = function() {
     stroke(255, 255, 255);
     
     createTitle(P, 'Ізопроцеси');
+    description = createDiv("Ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

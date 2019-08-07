@@ -1,7 +1,7 @@
 // Маятник
 module.exports = new p5((P) => { with (P) {
 
-let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15;
+let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15, description;
 let running, steps = 10;
 let coeffS, massS;
 let resetB, runB;
@@ -13,6 +13,10 @@ P.setup = function() {
     strokeJoin(ROUND);
     
     createTitle(P, 'Пружинний маятник');
+    description = createDiv("За допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 
@@ -20,7 +24,7 @@ P.setup = function() {
     running = true;
     
     massS = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 50);
-    coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 100);
+    coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 100, 1, 40);
 
     massS.input(() => {massS.update(); updateM()});
     coeffS.input(() => {coeffS.update(); updateC()});

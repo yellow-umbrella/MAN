@@ -3,13 +3,17 @@ module.exports = new p5((P) => { with (P) {
 
 let focus;
 let rays = [];
-let ready = false, maxN = 100, running = true;
+let ready = false, maxN = 100, running = true, description;
 let focusS;
 let resetB, runB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     createTitle(P, 'Тонка лінза: Промені');
+    description = createDiv("За допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

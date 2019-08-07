@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let gravity;
 let pendulum;
-let running, scl = 150;
+let running, scl = 150, description;
 let lenS, gravityS;
 let resetB, runB;
 
@@ -13,6 +13,10 @@ P.setup = function() {
     stroke(255, 255, 255);
     
     createTitle(P, 'Математичний маятник');
+    description = createDiv("За допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

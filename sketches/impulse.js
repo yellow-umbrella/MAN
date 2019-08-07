@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
 let balls = [];
-let started = false, ready = false, chosen = -1, running = true;
+let started = false, ready = false, chosen = -1, running = true, description;
 let massS, toggleS;
 let readyB, resetB, runB;
 
@@ -11,6 +11,10 @@ P.setup = function() {
     colorMode(HSL, 360, 100, 100);
     
     createTitle(P, 'Закон збереження імпульсу');
+    description = createDiv("За допомогою повзунка можна змінити масу тіла. Щоб створити новий м'ячик натисніть в будь-якому вільному місці робочого простору. Затиснувши ліву клавішу миші на м'ячику та потягнувши, а потім відпустивши, ви штовхнете його.");
+    description.position(0, 550);
+    description.style('width', '200px');
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     toggleS = createToggleS(P);

@@ -1,7 +1,7 @@
 //  кинуте тiло
 module.exports = new p5((P) => { with (P) {
 
-let gravity;
+let gravity, description;
 let ball;
 let ground, vel, scl = 100;
 let running = true, kicked = false;
@@ -19,6 +19,10 @@ P.setup = function() {
     ground = height - 50;
 
     createTitle(P, 'Тіло, кинуте під кутом');
+    description = createDiv("За допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     

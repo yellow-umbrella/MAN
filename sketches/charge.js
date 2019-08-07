@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
 let particles = [];
-let running = true;
+let running = true, description;
 let chargeS, toggleS;
 let resetB, runB;
 
@@ -10,9 +10,13 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
 
+    createTitle(P, 'Закон Кулона');
+    description = createDiv("Оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
+    description.position(0, 550);
+    description.style('width', '200px');
+
     chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' Кл', 50);
     toggleS = createToggleS(P);
-    createTitle(P, 'Закон Кулона');
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
 

@@ -27,7 +27,7 @@ P.setup = function() {
 
     gas = new Gas();
 
-    temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1], 'Температура: ', 120);
+    temprS = createLabeledSlider(P, [gas.T*minHeight/gas.height, gas.T*gas.pos.y/gas.height, 300, 1], 'Температура: ', ' К', 120);
     
     running = true;
     temprS.input(() => {gas.update(constR.value()); temprS.update()});

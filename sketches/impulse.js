@@ -15,7 +15,7 @@ P.setup = function() {
     runB = createRunB(P, run);
     toggleS = createToggleS(P);
 
-    massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса Тiла: ', 50);
+    massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса тiла: ', ' кг', 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);

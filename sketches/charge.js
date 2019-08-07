@@ -98,7 +98,7 @@ class Particle {
             } else if (this.charge > -0.01 && this.charge < 0) {
                 text('-0.01 Кл', this.pos.x, this.pos.y + 12);
             } else {
-                text(nfc(this.charge, 2) + ' Кл', this.pos.x, this.pos.y + 12);
+                text(nf(this.charge, 1, 2) + ' Кл', this.pos.x, this.pos.y + 12);
             }
         }
     }

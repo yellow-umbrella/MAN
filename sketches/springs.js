@@ -20,7 +20,7 @@ P.setup = function() {
     running = true;
     
     massS = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 50);
-    coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: ', ' Н/м', 100);
+    coeffS = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 100);
 
     massS.input(() => {massS.update(); updateM()});
     coeffS.input(() => {coeffS.update(); updateC()});

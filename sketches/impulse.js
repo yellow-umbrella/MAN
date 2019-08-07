@@ -138,17 +138,17 @@ class Ball {
         if (toggleS.value()) {
             fill(0);
             textSize(4*this.mass);
-            text(nfc(this.mass, 1) + ' кг', this.pos.x, this.pos.y - this.mass);
+            text(nf(this.mass, 1, 1) + ' кг', this.pos.x, this.pos.y - this.mass);
             textSize(10);
             if (chosen == this.id && mouseButton == LEFT) {
                 fill('yellow');
                 let vel = createVector(mouseX, mouseY);
                 vel.sub(this.pos);
                 vel.mult(0.004);
-                text(nfc(vel.mag(), 2) + ' м/с', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+                text(nf(vel.mag(), 1, 2) + ' м/с', this.pos.x + this.radius, this.pos.y + this.radius + 6);
             } else {
                 fill(255);
-                text(nfc(this.vel.mag(), 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
+                text(nf(this.vel.mag(), 1, 2) + ' м/c', this.pos.x + this.radius, this.pos.y + this.radius + 6);
             }
         }
     }

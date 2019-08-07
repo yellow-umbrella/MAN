@@ -21,7 +21,7 @@ P.setup = function() {
     
     pendulum = new Pendulum();
     running = true;
-    lenS.input(() => lenS.output.elt.value = pendulum.len = lenS.value());
+    lenS.input(() => {lenS.update(); pendulum.len = lenS.value()});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -92,7 +92,7 @@ class Pendulum {
             line(this.pivot.x, this.pivot.y, this.pivot.x, this.pivot.y + 50);
             arc(this.pivot.x, this.pivot.y, r, r, start, finish); 
         }
-        let str = nfc(abs(this.angle)*180/PI, 1);
+        let str = nf(abs(this.angle)*180/PI, 1, 1);
         let add = textWidth(str)/2 + 4;
         noFill();
         ellipse(this.pivot.x + add, this.pivot.y - 14, 4, 4);

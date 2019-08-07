@@ -18,7 +18,7 @@ function switchTo(name) {
 function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
     let slider = P.createSlider(...sld);
     let b = P.createElement('b', '');
-    let output = P.createElement('output', P.nfc(sld[2]/scl, 2));
+    let output = P.createElement('output', P.nf(sld[2]/scl, 1, 2));
     let label = P.createElement('label', name);
     let unit = P.createElement('span', units);
     b.child(output);
@@ -28,7 +28,7 @@ function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
     label.position(5, y);
     slider.position(0, sy);
     slider.output = output;
-    slider.update = () => {slider.output.elt.value = P.nf(slider.elt.value/scl, 2)};
+    slider.update = () => {slider.output.elt.value = P.nf(slider.elt.value/scl, 1, 2)};
     slider.input(() => slider.update());
     return slider;
 }
@@ -112,10 +112,10 @@ function drawArrows(P, vel) { with (P) {
         let horAlign = (x < 0 ? LEFT : RIGHT);
         let verAlign = (y < 0 ? TOP : BOTTOM);
         textAlign(horAlign, verAlign);
-        text(nfc(vel.x, 1) + ' м/с', x, -4*sign.y);
-        text(nfc(-vel.y, 1) + ' м/с', -4*sign.x, y);
+        text(nf(vel.x, 1, 1) + ' м/с', x, -4*sign.y);
+        text(nf(-vel.y, 1, 1) + ' м/с', -4*sign.x, y);
         textAlign(horAlign, (y >= 0 ? TOP : BOTTOM));
-        text(nfc(vel.mag(), 2) + ' м/с', x, y+4*sign.y);
+        text(nf(vel.mag(), 1, 1) + ' м/с', x, y+4*sign.y);
         pop();
 
         push();
@@ -143,7 +143,7 @@ function drawArrows(P, vel) { with (P) {
         noStroke();
         fill(255);
         textAlign(horAlign, verAlign);
-        text(nfc(angle, 1)+' °', -4*sign.x, -4*sign.y);
+        text(nf(angle, 1, 1)+' °', -4*sign.x, -4*sign.y);
         pop();
     }
 

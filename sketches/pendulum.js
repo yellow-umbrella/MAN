@@ -45,7 +45,9 @@ function reset() {
     running = true;
 
     gravityS.value('9.8');
+    gravityS.update();
     lenS.value(round(0.4*height)+'');
+    lenS.update();
     pendulum = new Pendulum();
 }
 

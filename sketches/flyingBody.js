@@ -42,6 +42,7 @@ P.draw = function() {
     if (kicked) {
         if (ball.update()) {
             heightS.value(0);
+            heightS.update();
             kicked = false;
             vel.set(0, 0);
         }
@@ -65,6 +66,7 @@ function reset() {
     running = true;
     kicked = false;
     heightS.value('0');
+    heightS.update();
     ball = new Ball();
     vel.setMag(0);
 }

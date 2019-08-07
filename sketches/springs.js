@@ -79,7 +79,9 @@ function reset() {
     running = true;
 
     massS.value('1.25');
+    massS.update();
     coeffS.value('0.125');
+    coeffS.update();
     ball = new Ball();
     spring = new Spring(ball);
 }

@@ -26,7 +26,8 @@ function createLabeledSlider(P, sld, name, y, sy = 20) {
     label.position(5, y);
     slider.position(0, sy);
     slider.output = output;
-    slider.input(() => output.elt.value = slider.value());
+    slider.update = () => {slider.output.elt.value = slider.value()};
+    slider.input(() => slider.update());
     return slider;
 }
 

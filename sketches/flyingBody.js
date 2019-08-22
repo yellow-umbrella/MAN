@@ -19,9 +19,11 @@ P.setup = function() {
     ground = height - 50;
 
     createTitle(P, 'Тіло, кинуте під кутом');
-    description = createDiv("За допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
+    /*description = createDiv("За допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
     description.position(0, 550);
-    description.style('width', '200px');
+    description.style('width', '200px');*/
+
+    description = createDescription(P, "за допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -61,6 +63,8 @@ P.draw = function() {
     if (mouseIsPressed && mouseY < ground-ball.radius && mouseX > 0 && mouseY > 0) {
         ball.simulate(mouseX, mouseY);
     }
+
+    createShadow(P);
 }
 
 function reset() {

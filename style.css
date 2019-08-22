@@ -105,7 +105,8 @@ button.left {
 }
 
 button.right {
-    right: 5px;
+    /*right: 5px;*/
+    left: 55px;
 }
 
 /* button.bottom { */
@@ -184,7 +185,7 @@ input.toggle[type=range]::-webkit-slider-thumb {
 #title {
     position: absolute;
     font-size: 30px;
-    color: #0d261a; 
+    color: #c6ecd9; 
     top: 5px;
     text-align: center;
     z-index: -1;
@@ -207,6 +208,12 @@ label {
     width: 60%;
     margin: auto;
     text-align: justify;
+}
+
+#descriptionS {
+    color: #c6ecd9;
+    font-size: 12px;
+    background-color: #215e41;
 }
 
 #author {

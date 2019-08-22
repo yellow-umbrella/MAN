@@ -10,9 +10,10 @@ let resetB, runB;
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     createTitle(P, 'Тонка лінза: Промені');
-    description = createDiv("За допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
+    /*description = createDiv("За допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
     description.position(0, 550);
-    description.style('width', '200px');
+    description.style('width', '200px');*/
+    description = createDescription(P, "за допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -26,9 +27,9 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     translate(width/2, height/2);
-
+    
     focus = map(focusS.value(), -39, 39, -width/2, width/2);
-
+    
     if (mouseIsPressed && mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && /*rays.length <= 10 &&*/ rays.length > 0) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
@@ -36,17 +37,19 @@ P.draw = function() {
             rays[rays.length - 1].direct(x, y);
         }
     }
-
+    
     //if (started || ready) {
-        for (let ray of rays) {
-            if (ray.started) {
-                ray.diffract();
-            }
-            ray.show();
+    for (let ray of rays) {
+        if (ray.started) {
+            ray.diffract();
         }
-    //}
-
+        ray.show();
+    }
+        //}
+        
     showLens();
+    
+    createShadow(P, -width/2, -height/2);
 }
 
 function reset() {

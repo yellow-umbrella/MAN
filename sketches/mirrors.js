@@ -10,9 +10,11 @@ module.exports = new p5((P) => { with (P) {
         stroke(255);
 
         createTitle(P, 'Плоскі дзеркала');
-        description = createDiv("description");
+        /*description = createDiv("Затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.");
         description.position(0, 550);
-        description.style('width', '200px');
+        description.style('width', '200px');*/
+
+        description = createDescription(P, "затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.")
     
         resetB = createResetB(P, reset);
         runB = createRunB(P, run);
@@ -40,6 +42,8 @@ module.exports = new p5((P) => { with (P) {
         for (let mirror of mirrors) {
             mirror.show();
         }
+
+        createShadow(P);
     }
     
     function reset() {

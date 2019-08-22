@@ -13,9 +13,10 @@ P.setup = function() {
     stroke(255, 255, 255);
     
     createTitle(P, 'Математичний маятник');
-    description = createDiv("За допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
+    /*description = createDiv("За допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
     description.position(0, 550);
-    description.style('width', '200px');
+    description.style('width', '200px');*/
+    description = createDescription(P, "за допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -40,6 +41,8 @@ P.draw = function() {
         pendulum.update();
     }
     pendulum.show();
+
+    createShadow(P);
 }
 
 function reset() {

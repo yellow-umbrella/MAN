@@ -13,9 +13,10 @@ P.setup = function() {
     strokeJoin(ROUND);
     
     createTitle(P, 'Пружинний маятник');
-    description = createDiv("За допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
+    /*description = createDiv("За допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
     description.position(0, 550);
-    description.style('width', '200px');
+    description.style('width', '200px');*/
+    description = createDescription(P, "за допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -52,19 +53,22 @@ P.draw = function() {
            /* ball.mass = massS.value();
             spring.coeff = coeffS.value();*/
         }
-    }
 
+    }
+    
     if (running) {
-       //for (let i = 0; i < steps; i++) {
+        //for (let i = 0; i < steps; i++) {
             //spring.update();
             spring.hook();
             //ball.apply(gravity);
             //ball.air();
             ball.update();
-        //}
+            //}
     }
     spring.show();
     ball.show();
+
+    createShadow(P);
 }
 
 function updateM() {

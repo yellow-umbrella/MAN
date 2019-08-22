@@ -39,9 +39,16 @@ function createTitle(P, name) {
     title.elt.style.width = P.width + 'px';
 }
 
+function createDescription(P, text) {
+    let description = P.createDiv("<b>Пояснення до досліду:</b> <br/>" + "<i>" + text + "</i>");
+    description.id('descriptionS');
+    description.elt.style.width = '200px';
+    description.position(0, 505);
+}
+
 function createRunB(P, callback) {
     let runB = P.createButton('&#xf04c;');
-    runB.position(55, 0);
+    runB.position(105, 0);
     runB.mousePressed(callback);
     runB.elt.title = 'зупинити';
     return runB;
@@ -49,7 +56,7 @@ function createRunB(P, callback) {
 
 function createResetB(P, callback) {
     let resetB = P.createButton('&#xf2f9;');
-    resetB.position(105, 0);
+    resetB.position(155, 0);
     resetB.mousePressed(callback);
     resetB.elt.title = 'оновити';
     return resetB;
@@ -66,6 +73,18 @@ function createToggleS(P, y = 100) {
     labelToggle.child(toggleS);
     labelToggle.position(5, y);
     return toggleS;
+}
+
+function createShadow(P, x = 0, y = 0) {
+    P.push();
+    P.translate(x, y);
+    P.colorMode(P.RGB);
+    P.stroke(0, 0, 0, 50);
+    P.strokeWeight(10);
+    P.strokeCap(P.PROJECT);
+    P.line(10, 0, P.width, 0);
+    P.line(0, 0, 0, P.height);
+    P.pop();
 }
 
 function drawArrows(P, vel) { with (P) {

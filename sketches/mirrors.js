@@ -118,45 +118,73 @@ module.exports = new p5((P) => { with (P) {
         }
 
         change(x, y) {
+            //start - точка начало луча
             let start = this.dots[0].copy();
             this.dots = [];
             this.dots.push(start.copy());
+            //вторая точка которая задает
             let tdot = createVector(x, y);
             while (this.dots.length < 10) {
-                let A = tdot.y - start.y, B = start.x - tdot.x, C = tdot.x*start.y - start.x*tdot.y;
+                //находим уравнение прямой для луча
+                let A = tdot.y - start.y;
+                let B = start.x - tdot.x;
+                let C = tdot.x*start.y - start.x*tdot.y;
+
                 let check = false, ind = -1, dist = max(height, width), dot = createVector();
+
                 for (let mirror of mirrors) {
+                    //находим уравнение прямой для зеркала
                     let A1 = mirror.pos1.y - mirror.pos2.y;
                     let B1 = mirror.pos2.x - mirror.pos1.x;
                     let C1 = mirror.pos1.x*mirror.pos2.y - mirror.pos2.x*mirror.pos1.y;
+                    //если прямые паралельны или совпадают переходим к следующему зеркалу
                     if (abs(A*B1 - A1*B) < EPS) {
                         continue;
                     }
+                    //находим x и y точки пересечения
                     let tx = (B*C1 - B1*C)/(A*B1 - A1*B), ty = (A1*C - A*C1)/(A*B1 - A1*B);
+                    // t - точка пересечения прямой которая содупжит луч и прямой которая содержит зеркало
                     let t = createVector(tx, ty);
+                    //коэффициэнт параметрического уравнения для луча
                     let t1 = p5.Vector.sub(t, start).x/p5.Vector.sub(tdot, start).x;
+                    //коэффициэнт параметрического уравнения для зеркала
                     let t2 = p5.Vector.sub(t, mirror.pos1).x/p5.Vector.sub(mirror.pos2, mirror.pos1).x;
+                    //проверяем пренадлежит ли точка пересечения прямых отрезку и лучу
                     if (t1 >= 0 && t2 >= 0 && t2 <= 1) {
                         check = true;
+                        //проверяем ближе ли это зеркало чем ближайшее из уже просмотреных
                         if (dist > p5.Vector.sub(start, t).mag()) {
-                            ind = mirror.ind, dist = p5.Vector.sub(start, t).mag(), dot = t.copy();
+                            //запоминаем его индекс в масиве зеркал, новое расстояние и точку пересечения
+                            ind = mirror.ind;
+                            dist = p5.Vector.sub(start, t).mag();
+                            dot = t.copy();
                         }
                     }
                 }
                 
                 if (check) {
+                    //добавляем точку пересечения в масив
                     this.dots.push(dot);
-                    let angleBeg = (p5.Vector.sub(start,dot).dot(mirrors[ind].pos1, dot) > 0 ? mirrors[ind].pos1 : mirrors[ind].pos2);
-                    let vec = p5.Vector.sub(start, dot), vec1 = p5.Vector.sub(angleBeg, dot); 
+                    //проверяем какой конец отрезка образует угол с лучом
+                    let angleBeg = (p5.Vector.sub(start,dot).dot(p5.Vector.sub(mirrors[ind].pos1, dot)) > 0 ? 
+                                    mirrors[ind].pos1 : mirrors[ind].pos2);
+                    //vec - вектор от точки пересечения к началу луча, vec1 - вектор от точки персечения до конца отрезка
+                    let vec = p5.Vector.sub(start, dot), vec1 = p5.Vector.sub(angleBeg, dot);
+                    //angle - угол между зеркалом и лучом 
                     let angle = vec.angleBetween(vec1);
-                    angle = -2*angle + PI;
+                    //находи угол на который нужно повернуть
+                    angle = PI - 2*angle;
+                    //если нужно меняем направление поворота
                     if (vec.x*vec1.y - vec.y*vec1.x > 0) {
                         angle *= -1;
                     }
+                    //обновляем точку начала луча
+                    start = dot.copy();
+                    //поворачиваем вектор и обновляем вторую точку задающую луч
                     vec.rotate(angle);
                     tdot = p5.Vector.add(dot, vec);
-                    start = dot.copy();
                 } else {
+                    //если не было пересечения с зеркалом добавляем новую точку за пределами скетча
                     let vec = p5.Vector.sub(tdot, start);
                     vec.setMag(2*sqrt(width*width + height*height));
                     this.dots.push(p5.Vector.add(start, vec));

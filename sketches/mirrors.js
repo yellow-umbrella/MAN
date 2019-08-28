@@ -151,7 +151,6 @@ class Ray {
             let check = false, ind = -1, dist = max(height, width), dot = createVector();
 
             for (let mirror of mirrors) {
-                console.log("for");
                 let t = intersection(start, tdot, mirror.pos1, mirror.pos2);
                 if (t == null) continue;
                 let t1 = parameter(start, tdot, t);
@@ -172,7 +171,6 @@ class Ray {
                 let angleBeg = (V.sub(start,dot).dot(V.sub(mirrors[ind].pos1, dot)) > 0 ? 
                                 mirrors[ind].pos1 : mirrors[ind].pos2);
                 let vec = V.sub(start, dot), vec1 = V.sub(angleBeg, dot);
-                console.log(start, dot, vec);
                 let angle = vec.angleBetween(vec1);
                 angle = PI - 2*angle;
                 if (vec.x*vec1.y - vec.y*vec1.x > 0) {

@@ -6,6 +6,8 @@ let running, scl = 150, minHeight = 20, description;
 let temprS;
 let resetB, runB;
 let constR;
+let graphs = [];
+let mins, maxs;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -42,6 +44,18 @@ P.setup = function() {
     textAlign(CENTER, CENTER);
 
     strokeCap(SQUARE);
+    mins = {
+        T: gas.T*minHeight/gas.height,
+        V: minHeight*gas.width,
+    };
+    maxs = {
+        T: gas.T*gas.pos.y/gas.height, 
+        V: gas.pos.y*gas.width,
+    };
+    mins.P = 15*min(mins.T/gas.V, gas.T/maxs.V);
+    maxs.P = 15*max(gas.T/mins.V, maxs.T/gas.V);
+    console.log(mins, maxs);
+
 }
 
 P.draw = function() {
@@ -55,6 +69,10 @@ P.draw = function() {
             gas.height = gas.pos.y - min(mouseY, gas.pos.y - minHeight);
             gas.update(constR.value());
         }
+    }
+
+    for (let graph of graphs) {
+        graph.show(gas);
     }
 
     gas.show();
@@ -87,7 +105,7 @@ class Gas {
     constructor() {
         this.width = 200;
         this.height = 200;
-        this.pos = createVector((width - this.width)/2, 0.9*height);
+        this.pos = createVector((width/2 - this.width)/2, 0.9*height);
         this.V = this.width*this.height;
         this.T = 300;
         this.P = 15*this.T/this.V;
@@ -95,6 +113,18 @@ class Gas {
         for (let i = 0; i < this.particles.length; i++) {
             this.particles[i] = new Particle(this.pos.x, this.pos.x + this.width, this.pos.y - this.height, this.pos.y);
         }
+        graphs = [];
+        let types = [];
+        if (constR.value() == 'T') {
+            types = ['hyp', 'vert', 'vert'];
+        } else if (constR.value() == 'P') {
+            types = ['hor', 'hor', 'diag'];
+        } else {
+            types = ['vert', 'diag', 'hor'];
+        }
+        graphs.push(new Graph(createVector(width/2, height/3-3), 'P', 'V', types[0]));
+        graphs.push(new Graph(createVector(width/2, 2*height/3-6), 'P', 'T', types[1]));
+        graphs.push(new Graph(createVector(width/2, height-10), 'V', 'T', types[2]));
     }
 
     show() {
@@ -190,6 +220,72 @@ class Particle {
         this.pos.y = this.maxY - ratio*curH;
     }
     
+}
+
+function arrow(x1, y1, x2, y2) {
+    let segment = createVector(x2-x1, y2-y1);
+    line(x1, y1, x2, y2);
+    segment.setMag(8);
+    segment.rotate(PI/6);
+    line(x2, y2, x2-segment.x, y2-segment.y);
+    segment.rotate(-PI/3);
+    line(x2, y2, x2-segment.x, y2-segment.y);
+}
+
+class Graph {
+    constructor(pos, y, x, type) {
+        this.x = x; // x label
+        this.y = y; // y label
+        this.pos = pos; // position of (0,0)
+        this.height = height / 3.3;
+        this.width = width / 3;
+        this.type = type; // vert, hor, diag, hyp
+    }
+
+    show(gas) {
+        push();
+        noFill();
+        stroke(255);
+        strokeWeight(1.5);
+        translate(this.pos.x, this.pos.y);
+        arrow(0, 0, this.width, 0);
+        arrow(0, 0, 0, -this.height);
+        text(this.x, this.width + 10, 0);
+        text(this.y, -10, -this.height);
+        let x = map(gas[this.x], mins[this.x], maxs[this.x], 0, this.width);
+        let y = map(gas[this.y], mins[this.y], maxs[this.y], 0, this.height);
+        if (this.type == 'vert') {
+            line(this.width/2, 0, this.width/2, -this.height);
+            x = this.width/2; 
+        } else if (this.type == 'hor') {
+            line(0, -this.height/2, this.width, -this.height/2);
+            y = this.height/2;
+        } else if (this.type == 'diag') {
+            line (0, 0, this.width, -this.height);
+            y = map(x, 0, this.width, 0, this.height);
+        } else if (this.type == 'hyp') {
+            let coeff = 5000.0;
+            beginShape();
+            let firstX = 0;
+            for (let x = 1; x < this.width; x++) {
+                let y = coeff/x;
+                if (y < this.height) {
+                    vertex(x, -y);
+                    if (firstX == 0)
+                        firstX = x;
+                }
+            }
+            endShape();
+            y = coeff/x;
+            if (y > this.height) {
+                y = this.height;
+                x = firstX; 
+            }
+        }
+        strokeWeight(6)
+        point(x, -y);
+        pop();
+    }
 }
 
 }}, 'main');

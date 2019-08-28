@@ -5,7 +5,7 @@ let gravity;
 let pendulum;
 let running, scl = 150, description;
 let lenS, gravityS;
-let resetB, runB;
+let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -16,10 +16,11 @@ P.setup = function() {
     /*description = createDiv("За допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
     description.position(0, 550);
     description.style('width', '200px');*/
-    description = createDescription(P, "за допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
+    //description = createDescription(P, "за допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'pendulum');
 
     gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 50, 1, 40);
     lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 120, scl);

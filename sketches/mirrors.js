@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let mirrors = [], rays = [], description;
 let running = true, confirmed = false, EPS = 1E-8;
-let resetB, runB;
+let resetB, runB, infoB;
 let V;
 
 P.setup = function() {
@@ -15,10 +15,11 @@ P.setup = function() {
     description.position(0, 550);
     description.style('width', '200px');*/
 
-    description = createDescription(P, "затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.")
+    //description = createDescription(P, "затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.")
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'mirrors');
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     V = p5.Vector;
@@ -117,9 +118,12 @@ class Mirror {
     }
 
     show() {
+        push()
         stroke(255);
         strokeWeight(3);
+        strokeCap(SQUARE);
         line(this.pos1.x, this.pos1.y, this.pos2.x, this.pos2.y);
+        pop()
     }
 }
 
@@ -138,7 +142,7 @@ class Ray {
             stroke(255, 255, 0, alfa);
             line(prevDot.x, prevDot.y, dot.x, dot.y);
             prevDot = dot.copy();
-            alfa *= 0.9;
+            alfa *= 0.8;
         }
     }
 

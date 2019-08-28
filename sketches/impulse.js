@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let balls = [];
 let started = false, ready = false, chosen = -1, running = true, description;
 let massS, toggleS;
-let readyB, resetB, runB;
+let readyB, resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -15,10 +15,11 @@ P.setup = function() {
     description.position(0, 550);
     description.style('width', '200px');*/
 
-    description = createDescription(P, "за допомогою повзунка можна змінити масу тіла. Щоб створити новий м'ячик натисніть в будь-якому вільному місці робочого простору. Затиснувши ліву клавішу миші на м'ячику та потягнувши, а потім відпустивши, ви штовхнете його.");
+    //description = createDescription(P, "за допомогою повзунка можна змінити масу тіла. Щоб створити новий м'ячик натисніть в будь-якому вільному місці робочого простору. Затиснувши ліву клавішу миші на м'ячику та потягнувши, а потім відпустивши, ви штовхнете його.");
     
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'impulse');
     toggleS = createToggleS(P);
 
     massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса тiла: ', ' кг', 50);

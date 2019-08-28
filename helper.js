@@ -39,11 +39,28 @@ function createTitle(P, name) {
     title.elt.style.width = P.width + 'px';
 }
 
-function createDescription(P, text) {
-    let description = P.createDiv("<b>Пояснення до досліду:</b> <br/>" + "<i>" + text + "</i>");
+function createDescription(name) {
+    /*let description = P.createDiv("<b>Пояснення до досліду:</b> <br/>" + "<i>" + text + "</i>");
     description.id('descriptionS');
     description.elt.style.width = '200px';
-    description.position(0, 505);
+    description.position(0, 505);*/
+    const { remote } = require("electron");
+    let parent = remote.getCurrentWindow();
+    let child = new remote.BrowserWindow({height : 200, width: 300, parent: parent, 
+                                        modal: true, autoHideMenuBar: true, resizable: false,
+                                        minimizable: false, icon: './bulb.ico', show: false});
+    child.loadFile('descriptions/' + name + '.html');
+    child.once('ready-to-show', () => {
+        child.show()
+    });
+}
+
+function createInfoB(P, name) {
+    let infoB = P.createButton('&#xf129;');
+    infoB.position(P.windowWidth - 45, 0);
+    infoB.mousePressed(() => {createDescription(name)});
+    infoB.elt.title = 'пояснення';
+    return infoB;
 }
 
 function createRunB(P, callback) {

@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let particles = [];
 let running = true, description;
 let chargeS, toggleS;
-let resetB, runB;
+let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
@@ -14,12 +14,13 @@ P.setup = function() {
     /*description = createDiv("Оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
     description.position(0, 550);
     description.style('width', '200px');*/
-    description = createDescription(P, "оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
+    //description = createDescription(P, "оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
 
     chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' Кл', 50);
     toggleS = createToggleS(P);
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'charge');
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }

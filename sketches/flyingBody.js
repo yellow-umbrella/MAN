@@ -1,12 +1,12 @@
 //  кинуте тiло
 module.exports = new p5((P) => { with (P) {
 
-let gravity, description;
+let gravity;
 let ball;
 let ground, vel, scl = 100;
 let running = true, kicked = false;
 let heightS;
-let resetB, runB;
+let resetB, runB, infoB;
 let arrows;
 let rate = 50;
 
@@ -14,6 +14,16 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     stroke(255);
     frameRate(rate);
+
+    /*const { remote } = require("electron");
+    let parent = remote.getCurrentWindow();
+    let child = new remote.BrowserWindow({height : 200, width: 300, parent: parent, 
+                                        modal: true, autoHideMenuBar: true, resizable: false,
+                                        minimizable: false, icon: './bulb.ico', show: false});
+    child.loadFile('descriptions/flyingBody.html');
+    child.once('ready-to-show', () => {
+        child.show()
+    });*/
 
     gravity = createVector(0, 9.8*scl/(rate*rate));
     ground = height - 50;
@@ -23,10 +33,11 @@ P.setup = function() {
     description.position(0, 550);
     description.style('width', '200px');*/
 
-    description = createDescription(P, "за допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
+    //description = createDescription(P, "за допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
 

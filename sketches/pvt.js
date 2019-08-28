@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let gas;
 let running, scl = 150, minHeight = 20, description;
 let temprS;
-let resetB, runB;
+let resetB, runB, infoB;
 let constR;
 
 P.setup = function() {
@@ -15,10 +15,11 @@ P.setup = function() {
     /*description = createDiv("Ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
     description.position(0, 550);
     description.style('width', '200px');*/
-    description = createDescription(P, "ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
+    //description = createDescription(P, "ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'pvt');
 
     constR = createRadio();
     constR.option(' Ізотермічний', 'T');

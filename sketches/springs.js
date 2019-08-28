@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15, description;
 let running, steps = 10;
 let coeffS, massS;
-let resetB, runB;
+let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -16,10 +16,11 @@ P.setup = function() {
     /*description = createDiv("За допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
     description.position(0, 550);
     description.style('width', '200px');*/
-    description = createDescription(P, "за допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
+    //description = createDescription(P, "за допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'springs');
 
     //gravity = createVector(0, 1);
     running = true;

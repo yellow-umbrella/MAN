@@ -5,7 +5,7 @@ let focus;
 let rays = [];
 let ready = false, maxN = 100, running = true, description;
 let focusS;
-let resetB, runB;
+let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -13,10 +13,11 @@ P.setup = function() {
     /*description = createDiv("За допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
     description.position(0, 550);
     description.style('width', '200px');*/
-    description = createDescription(P, "за допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
+    //description = createDescription(P, "за допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
+    infoB = createInfoB(P, 'lens');
 
     focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', ' м', 50);
 

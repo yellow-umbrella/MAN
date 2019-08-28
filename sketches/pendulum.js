@@ -27,7 +27,8 @@ P.setup = function() {
     
     pendulum = new Pendulum();
     running = true;
-    lenS.input(() => {lenS.update(); pendulum.len = lenS.value()});
+    lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); pendulum.history = [];});
+    gravityS.input(() => {gravityS.update(); pendulum.history = [];});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -38,12 +39,9 @@ P.draw = function() {
     
     if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
         pendulum.change(mouseX, mouseY);
+        pendulum.history = [];
     } else if (running) {
         pendulum.update();
-    }
-
-    if (mouseIsPressed) {
-        pendulum.history = [];
     }
 
     pendulum.show();
@@ -96,9 +94,11 @@ class Pendulum {
         fill('red');
         line(this.pivot.x, this.pivot.y, this.pos.x, this.pos.y);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
-        this.history.push(this.pos.x - this.pivot.x);
-        if (this.history.length > 500) {
-            this.history.shift();
+        if (running) {
+            this.history.push(this.pos.x - this.pivot.x);
+            if (this.history.length > 500) {
+                this.history.shift();
+            }
         }
         let start = 0.5*PI, finish = 0.5*PI - this.angle;
         if (abs(start - finish) > 1e-6) {
@@ -145,7 +145,7 @@ class Pendulum {
         arrow(P, width/2-250, height, width/2-250, height-100);
         beginShape();
         for (let i = 0; i < this.history.length; i++) {
-            vertex(i+width/2-250, height-50+30*this.history[i]/this.len);
+            vertex(i+width/2-250, height-50-30*this.history[i]/this.len);
         }
         endShape();
         pop();

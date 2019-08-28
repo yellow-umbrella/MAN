@@ -51,6 +51,8 @@ P.draw = function() {
                 ball.pos.x = mouseX;
             }
             ball.vel.set(0, 0);
+            ball.amp = abs(ball.pos.x - width/2);
+            ball.history = [];
            /* ball.mass = massS.value();
             spring.coeff = coeffS.value();*/
         }
@@ -76,12 +78,16 @@ function updateM() {
     ball.mass = massS.value();
     ball.vel.set(0, 0);
     ball.radius = radius2mass*sqrt(ball.mass);
+    ball.amp = abs(ball.pos.x - width/2);
+    ball.history = []; 
 }
 
 function updateC() {
     spring.coeff = coeffS.value();
     ball.vel.set(0, 0);
     spring.stroke = spring.coeff*coeff2stroke;
+    ball.amp = abs(ball.pos.x - width/2);
+    ball.history = [];
 }
 
 function reset() {
@@ -117,10 +123,19 @@ class Ball {
         this.mass = massS.value();
         this.acc = createVector();
         this.radius = radius2mass*sqrt(this.mass);
+        this.history = [];
+        this.amp = 1;
     }
 
     show() {
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
+        if (running) {
+            this.history.push(this.pos.x - width/2);
+            if (this.history.length > 500) {
+                this.history.shift();
+            }
+        }
+        this.graph();
     }
 
     update() {
@@ -145,6 +160,20 @@ class Ball {
 	    force.mult(-0.009);
 	    let acc = p5.Vector.div(force, this.mass);
 	    this.apply(acc);
+    }
+
+    graph() {
+        push();
+        noFill();
+        stroke(255);
+        arrow(P, width/2-250, height-50, width/2+260, height-50);
+        arrow(P, width/2-250, height, width/2-250, height-100);
+        beginShape();
+        for (let i = 0; i < this.history.length; i++) {
+            vertex(i+width/2-250, height-50-30*this.history[i]/this.amp);
+        }
+        endShape();
+        pop();
     }
 }
 

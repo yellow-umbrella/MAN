@@ -223,16 +223,6 @@ class Particle {
     
 }
 
-function arrow(x1, y1, x2, y2) {
-    let segment = createVector(x2-x1, y2-y1);
-    line(x1, y1, x2, y2);
-    segment.setMag(8);
-    segment.rotate(PI/6);
-    line(x2, y2, x2-segment.x, y2-segment.y);
-    segment.rotate(-PI/3);
-    line(x2, y2, x2-segment.x, y2-segment.y);
-}
-
 class Graph {
     constructor(pos, y, x, type) {
         this.x = x; // x label
@@ -249,12 +239,12 @@ class Graph {
         stroke(255);
         strokeWeight(1.5);
         translate(this.pos.x, this.pos.y);
-        arrow(0, 0, this.width, 0);
-        arrow(0, 0, 0, -this.height);
+        arrow(P, 0, 0, this.width, 0);
+        arrow(P, 0, 0, 0, -this.height);
         text(this.x, this.width + 10, 0);
         text(this.y, -10, -this.height);
-        let x = map(gas[this.x], mins[this.x], maxs[this.x], 0, this.width);
-        let y = map(gas[this.y], mins[this.y], maxs[this.y], 0, this.height);
+        let x = map(gas[this.x], 0, maxs[this.x], 0, this.width);
+        let y = map(gas[this.y], 0, maxs[this.y], 0, this.height);
         if (this.type == 'vert') {
             line(this.width/2, 0, this.width/2, -this.height);
             x = this.width/2; 

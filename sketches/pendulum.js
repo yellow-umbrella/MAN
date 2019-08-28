@@ -41,6 +41,11 @@ P.draw = function() {
     } else if (running) {
         pendulum.update();
     }
+
+    if (mouseIsPressed) {
+        pendulum.history = [];
+    }
+
     pendulum.show();
 
     createShadow(P);
@@ -71,17 +76,17 @@ function run() {
     }
 }
 
-
 class Pendulum {
     constructor() {
         this.radius = 10;
-        this.pivot = createVector(width/2, height/4);
+        this.pivot = createVector(width/2, 100);
         this.pos = this.pivot.copy();
         this.len = lenS.value();
         this.pos.y += this.len;
         this.angle = 0;
         this.avel = 0;
         this.mass = 1;
+        this.history = [];
     }
 
     show() {
@@ -91,6 +96,10 @@ class Pendulum {
         fill('red');
         line(this.pivot.x, this.pivot.y, this.pos.x, this.pos.y);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
+        this.history.push(this.pos.x - this.pivot.x);
+        if (this.history.length > 500) {
+            this.history.shift();
+        }
         let start = 0.5*PI, finish = 0.5*PI - this.angle;
         if (abs(start - finish) > 1e-6) {
             if (start > finish)
@@ -107,6 +116,7 @@ class Pendulum {
         fill(255);
         noStroke();
         text(str, this.pivot.x, this.pivot.y - 12);
+        this.graph();
     }
 
     update() {
@@ -125,6 +135,20 @@ class Pendulum {
         if (x < width/2) {
             this.angle *= -1;
         }
+    }
+
+    graph() {
+        push();
+        noFill();
+        stroke(255);
+        arrow(P, width/2-250, height-50, width/2+260, height-50);
+        arrow(P, width/2-250, height, width/2-250, height-100);
+        beginShape();
+        for (let i = 0; i < this.history.length; i++) {
+            vertex(i+width/2-250, height-50+30*this.history[i]/this.len);
+        }
+        endShape();
+        pop();
     }
 }
 

@@ -104,17 +104,18 @@ function createShadow(P, x = 0, y = 0) {
     P.pop();
 }
 
-function drawArrows(P, vel) { with (P) {
 
-    function arrow(x1, y1, x2, y2) {
-        let segment = createVector(x2-x1, y2-y1);
-        line(x1, y1, x2, y2);
-        segment.setMag(8);
-        segment.rotate(PI/6);
-        line(x2, y2, x2-segment.x, y2-segment.y);
-        segment.rotate(-PI/3);
-        line(x2, y2, x2-segment.x, y2-segment.y);
-    }
+function arrow(P, x1, y1, x2, y2) {
+    let segment = P.createVector(x2-x1, y2-y1);
+    P.line(x1, y1, x2, y2);
+    segment.setMag(8);
+    segment.rotate(P.PI/6);
+    P.line(x2, y2, x2-segment.x, y2-segment.y);
+    segment.rotate(-P.PI/3);
+    P.line(x2, y2, x2-segment.x, y2-segment.y);
+}
+
+function drawArrows(P, vel) { with (P) {
 
     P.setup = function() {
         let canvas = createCanvas(200, 440);
@@ -142,7 +143,7 @@ function drawArrows(P, vel) { with (P) {
         }
         line(0, 0, x, 0);
         line(0, 0, 0, y);
-        arrow(0, 0, x, y);
+        arrow(P, 0, 0, x, y);
         noStroke();
         fill(255);
         let horAlign = (x < 0 ? LEFT : RIGHT);

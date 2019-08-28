@@ -29,7 +29,7 @@ function createWindow () {
     
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
-        console.log(mainWindow.getBounds());
+        //console.log(mainWindow.getBounds());
     });
     mainWindow.maximize();
     let size = mainWindow.getSize();
@@ -58,7 +58,7 @@ function createWindow () {
         mainWindow.maximize();
         mainWindow.setSize(size[0], size[1]);
         //mainWindow.setBounds({x: 0, y: 0, width: width, height: height});
-        console.log(mainWindow.getBounds());
+        //console.log(mainWindow.getBounds());
     });
 
     mainWindow.on('closed', function () {

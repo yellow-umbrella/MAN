@@ -20,7 +20,7 @@ P.setup = function() {
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
-    infoB = createInfoB(P, 'prndulum');
+    infoB = createInfoB(P, 'pendulum');
 
     gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 50, 1, 40);
     lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 120, scl);

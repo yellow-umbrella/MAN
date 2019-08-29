@@ -2,6 +2,11 @@
     font-family: rounded;
     src: url('../fonts/Roundedmplus1c.woff2') format('woff2');
 }
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
 p {
     color: #c6ecd9;
     line-height: 1.2em;

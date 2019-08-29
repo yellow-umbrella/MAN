@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . phys-helper --overwrite --platform=win32 --arch=x64 --icon=bulb.ico"
   },
   "repository": "https://github.com/yellow-umbrella/MAN",
   "keywords": [],

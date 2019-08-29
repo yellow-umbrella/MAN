@@ -64,6 +64,10 @@ function createWindow () {
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
+
+    app.on('window-all-closed', function() {
+        app.quit();
+    })
 }
 
 app.on('ready', createWindow);

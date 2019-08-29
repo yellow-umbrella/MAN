@@ -12,4 +12,9 @@ p {
     line-height: 1.2em;
     text-align: left;
     font-family: rounded;
+    cursor: default;
+}
+
+span {
+    cursor: default;
 }

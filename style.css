@@ -107,6 +107,7 @@ button.left {
 button.right {
     /*right: 5px;*/
     left: 55px;
+    visibility: hidden;
 }
 
 /* button.bottom { */

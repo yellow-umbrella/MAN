@@ -6,6 +6,7 @@ function toggleMenu(width, id) {
 }
 
 function switchTo(name) {
+    console.log(name);
     let main = document.getElementById("main");
     while (main.firstChild) 
         main.removeChild(main.firstChild);
@@ -13,6 +14,11 @@ function switchTo(name) {
     sketch = require("./sketches/"+name);
     main.style.height = sketch.height+marginTop + 'px'
     document.getElementById("help").src = "./formulae/"+name+".html";
+    if (name != "start") {
+        document.querySelector("button.right").style.visibility = "visible";
+    } else {
+        document.querySelector("button.right").style.visibility = "hidden";
+    }
 }
 
 function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {

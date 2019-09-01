@@ -1,0 +1,25 @@
+@font-face {
+    font-family: rounded;
+    src: url('../fonts/Roundedmplus1c.woff2') format('woff2');
+}
+
+#description {
+    font-family: rounded;
+    color: #0d261a;
+    font-size: 1.4em;
+    width: 90%;
+    overflow: hidden;
+    /*margin: auto;*/
+    text-align: justify;
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+}
+
+body {
+    background-color: #40bf80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}

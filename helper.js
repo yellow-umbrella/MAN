@@ -52,7 +52,7 @@ function createDescription(name) {
     description.position(0, 505);*/
     const { remote } = require("electron");
     let parent = remote.getCurrentWindow();
-    let child = new remote.BrowserWindow({height : 200, width: 300, parent: parent, 
+    let child = new remote.BrowserWindow({height : 350, width: 500, parent: parent, 
                                         modal: true, autoHideMenuBar: true, resizable: false,
                                         minimizable: false, icon: './bulb.ico', show: false});
     child.loadFile('descriptions/' + name + '.html');

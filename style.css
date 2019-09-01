@@ -131,6 +131,7 @@ iframe {
 canvas:not([class='arrows']) {
     margin-left: 200px;
     margin-top: 50px;
+    z-index: -1;
 }
 
 input[type=range] {
@@ -203,6 +204,7 @@ label {
     margin-bottom: 25%; 
     color: #0d261a;
     font-size: 1.4em;
+    z-index: 3;
 }
 
 #description {
@@ -211,7 +213,9 @@ label {
     text-align: justify;
 }
 
-#author {
+#author { 
+    color: #0d261a;
+    font-size: 1.4em;
     text-align: right;
     position: absolute;
     bottom: 0.3em;

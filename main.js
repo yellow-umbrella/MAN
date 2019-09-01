@@ -53,7 +53,7 @@ function createWindow () {
     });*/
 
     mainWindow.on('restore', function () {
-        console.log('restored');
+        //console.log('restored');
         //mainWindow.setSize(width, height);
         mainWindow.maximize();
         mainWindow.setSize(size[0], size[1]);

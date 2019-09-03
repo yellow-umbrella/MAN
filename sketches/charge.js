@@ -10,13 +10,13 @@ P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop)
     colorMode(HSL, 360, 100, 100);
 
-    createTitle(P, 'Закон Кулона');
+    createTitle(P, 'Взаємодія точкових зарядів');
     /*description = createDiv("Оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
     description.position(0, 550);
     description.style('width', '200px');*/
     //description = createDescription(P, "оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
 
-    chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' Кл', 50);
+    chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' нКл', 50);
     toggleS = createToggleS(P);
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -102,11 +102,11 @@ class Particle {
             textSize(10);
             fill(tone, 100, max(sat, 80));
             if (this.charge < 0.01 && this.charge > 0) {
-                text('0.01 Кл', this.pos.x, this.pos.y + 12);
+                text('0.01 нКл', this.pos.x, this.pos.y + 12);
             } else if (this.charge > -0.01 && this.charge < 0) {
-                text('-0.01 Кл', this.pos.x, this.pos.y + 12);
+                text('-0.01 нКл', this.pos.x, this.pos.y + 12);
             } else {
-                text(nf(this.charge, 1, 2) + ' Кл', this.pos.x, this.pos.y + 12);
+                text(nf(this.charge, 1, 2) + ' нКл', this.pos.x, this.pos.y + 12);
             }
         }
     }

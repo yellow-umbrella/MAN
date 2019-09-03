@@ -34,7 +34,7 @@ function createWindow () {
     mainWindow.maximize();
     let size = mainWindow.getSize();
     size[1] += 40;
-    mainWindow.setSize(size[0], size[1]);
+    //mainWindow.setSize(size[0], size[1]);
     mainWindow.loadFile('index.html');
     
     //mainWindow.setResizable(false);
@@ -56,7 +56,7 @@ function createWindow () {
         //console.log('restored');
         //mainWindow.setSize(width, height);
         mainWindow.maximize();
-        mainWindow.setSize(size[0], size[1]);
+        //mainWindow.setSize(size[0], size[1]);
         //mainWindow.setBounds({x: 0, y: 0, width: width, height: height});
         //console.log(mainWindow.getBounds());
     });

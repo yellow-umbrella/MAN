@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let mirrors = [], rays = [], description;
 let running = true, confirmed = false, EPS = 1E-8;
-let resetB, runB, infoB;
+let resetB, runB, infoB, confB;
 let V;
 
 P.setup = function() {
@@ -20,6 +20,10 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'mirrors');
+    confB = createButton('&#xf00c;');
+    confB.position(205, 0);
+    confB.mousePressed(() => {confirmed = true;});
+    confB.elt.title = 'підтвердити';
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     V = p5.Vector;
@@ -81,10 +85,6 @@ P.mousePressed = function() {
             rays.push(new Ray(mouseX, mouseY))
         }
     }
-}
-
-P.keyPressed = function() {
-    confirmed = true;
 }
 
 function cross(A, B) {

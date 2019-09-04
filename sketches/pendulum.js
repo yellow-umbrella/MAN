@@ -148,6 +148,11 @@ class Pendulum {
             vertex(i+width/2-250, height-50-30*this.history[i]/this.len);
         }
         endShape();
+        noStroke();
+        fill(255);
+        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', width/2-250-25, height-50-30*this.history[this.history.length-1]/this.len);
+        text('x', width/2-250-10, height-100);
+        text('t', width/2+260, height-50+10);
         pop();
     }
 }

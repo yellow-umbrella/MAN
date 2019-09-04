@@ -1,7 +1,7 @@
 // Маятник
 module.exports = new p5((P) => { with (P) {
 
-let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15, description;
+let spring, ball, lim = 1.9, radius2mass = 20, coeff2stroke = 15, description, scl = 100;
 let running, steps = 10;
 let coeffS, massS;
 let resetB, runB, infoB;
@@ -173,6 +173,11 @@ class Ball {
             vertex(i+width/2-250, height-50-30*this.history[i]/this.amp);
         }
         endShape();
+        noStroke();
+        fill(255);
+        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', width/2-250-25, height-50-30*this.history[this.history.length-1]/this.amp);
+        text('x', width/2-250-10, height-100);
+        text('t', width/2+260, height-50+10);
         pop();
     }
 }

@@ -36,6 +36,7 @@ P.setup = function() {
     spring = new Spring(ball);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
+    textAlign(CENTER, CENTER);
 }
 
 P.draw = function() {
@@ -168,14 +169,20 @@ class Ball {
         stroke(255);
         arrow(P, width/2-250, height-50, width/2+260, height-50);
         arrow(P, width/2-250, height, width/2-250, height-100);
-        beginShape();
-        for (let i = 0; i < this.history.length; i++) {
-            vertex(i+width/2-250, height-50-30*this.history[i]/this.amp);
+        if (this.amp > 0.01) {
+            beginShape();
+            for (let i = 0; i < this.history.length; i++) {
+                vertex(i+width/2-250, height-50-/*30*this.history[i]/this.amp*/ this.history[i]/10);
+            }
+            endShape();
         }
-        endShape();
         noStroke();
         fill(255);
-        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', width/2-250-25, height-50-30*this.history[this.history.length-1]/this.amp);
+        let last = this.history[this.history.length-1];
+        if (abs(last) < 0.01)
+            last = 0;
+        // console.log(last);
+        text(nf(last/scl, 1, 2) + ' м', width/2-250-25, height-50-/*30*last/this.amp*/last/10);
         text('x', width/2-250-10, height-100);
         text('t', width/2+260, height-50+10);
         pop();

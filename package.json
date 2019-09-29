@@ -9,13 +9,12 @@
   },
   "repository": "https://github.com/yellow-umbrella/MAN",
   "keywords": [],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Daria Niemkevych",
   "devDependencies": {
-    "electron": "^4.2.9"
+    "electron": "^4.2.9",
+    "electron-packager": "^14.0.4"
   },
   "dependencies": {
-    "electron-packager": "^14.0.4",
     "katex": "^0.10.2",
     "p5": "^0.8.0"
   }

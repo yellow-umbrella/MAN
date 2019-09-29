@@ -3,8 +3,8 @@ module.exports = new p5((P) => { with (P) {
 
 let gravity;
 let pendulum;
-let running, scl = 150, description;
-let lenS, gravityS;
+let running, scl = 150, description, twoPend = false;
+let lenS, gravityS, lenS1, gravityS1;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -13,10 +13,6 @@ P.setup = function() {
     stroke(255, 255, 255);
     
     createTitle(P, 'Математичний маятник');
-    /*description = createDiv("За допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-    //description = createDescription(P, "за допомогою повзунків можна змінювати довжину нитки маятника та прискорення вільного падіння, а на самому робочому просторі задавати кут відхилу від положення рівноваги.");
 
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
@@ -24,11 +20,20 @@ P.setup = function() {
 
     gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 50, 1, 40);
     lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 120, scl);
+    gravityS1 = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 190, 1, 40);
+    lenS1 = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 280, scl);
+    lenS1.style("visibility", "hidden");
+    gravityS1.style("visibility", "hidden");
+    lenS1.elt.parentElement.style.visibility = "hidden";
+    gravityS1.elt.parentElement.style.visibility = "hidden";
     
-    pendulum = new Pendulum();
+    
+    pendulum = new Pendulum(width/2);
     running = true;
     lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); pendulum.history = [];});
     gravityS.input(() => {gravityS.update(); pendulum.history = [];});
+    lenS1.input(() => {lenS1.update(); pendulum1.len = lenS1.value(); pendulum1.history = [];});
+    gravityS1.input(() => {gravityS1.update(); pendulum1.history = [];});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -37,16 +42,73 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
-        pendulum.change(mouseX, mouseY);
-        pendulum.history = [];
-    } else if (running) {
-        pendulum.update();
+    if (!twoPend) {
+        if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
+            pendulum.change(mouseX, mouseY);
+            pendulum.history = [];
+        } else if (running) {
+            pendulum.update();
+        }
+    } else {
+        if (mouseY > 0 && mouseX > 0 && mouseX < width/2 && mouseY < height && mouseIsPressed) {
+            pendulum.change(mouseX, mouseY);
+            pendulum.history = [];
+        } else if (running) {
+            pendulum.update();
+        }
+        if (mouseY > 0 && mouseX > width/2 && mouseX < width && mouseY < height && mouseIsPressed) {
+            pendulum1.change(mouseX, mouseY);
+            pendulum1.history = [];
+        } else if (running) {
+            pendulum1.update();
+        }
     }
 
     pendulum.show();
 
+    if (twoPend) {
+        pendulum1.show();
+    }
+
     createShadow(P);
+}
+
+P.keyPressed = function() {
+    twoPend = !twoPend;
+    if (twoPend) {
+        gravityS.value('9.8');
+        gravityS.update();
+        lenS.value(round(0.4*height)+'');
+        lenS.update();
+
+        gravityS1.value('9.8');
+        gravityS1.update();
+        lenS1.value(round(0.4*height)+'');
+        lenS1.update();
+
+        pendulum = new Pendulum(width/4);
+        pendulum1 = new Pendulum(3*width/4);
+        lenS1.style("visibility", "visible");
+        gravityS1.style("visibility", "visible");
+        lenS1.elt.parentElement.style.visibility = "visible";
+        gravityS1.elt.parentElement.style.visibility = "visible";
+    } else {
+        gravityS.value('9.8');
+        gravityS.update();
+        lenS.value(round(0.4*height)+'');
+        lenS.update();
+
+        gravityS1.value('9.8');
+        gravityS1.update();
+        lenS1.value(round(0.4*height)+'');
+        lenS1.update();
+        
+        pendulum = new Pendulum(width/2);
+        lenS1.style("visibility", "hidden");
+        gravityS1.style("visibility", "hidden");
+        lenS1.elt.parentElement.style.visibility = "hidden";
+        gravityS1.elt.parentElement.style.visibility = "hidden";
+    }
 }
 
 function reset() {
@@ -59,7 +121,18 @@ function reset() {
     gravityS.update();
     lenS.value(round(0.4*height)+'');
     lenS.update();
-    pendulum = new Pendulum();
+
+    gravityS1.value('9.8');
+    gravityS1.update();
+    lenS1.value(round(0.4*height)+'');
+    lenS1.update();
+
+    pendulum = new Pendulum(width/2);
+    twoPend = false;
+    lenS1.style("visibility", "hidden");
+    gravityS1.style("visibility", "hidden");
+    lenS1.elt.parentElement.style.visibility = "hidden";
+    gravityS1.elt.parentElement.style.visibility = "hidden";
 }
 
 function run() {
@@ -75,9 +148,9 @@ function run() {
 }
 
 class Pendulum {
-    constructor() {
+    constructor(x) {
         this.radius = 10;
-        this.pivot = createVector(width/2, 100);
+        this.pivot = createVector(x, 100);
         this.pos = this.pivot.copy();
         this.len = lenS.value();
         this.pos.y += this.len;
@@ -85,6 +158,7 @@ class Pendulum {
         this.avel = 0;
         this.mass = 1;
         this.history = [];
+        this.delta = 200;
     }
 
     show() {
@@ -96,7 +170,7 @@ class Pendulum {
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
         if (running) {
             this.history.push(this.pos.x - this.pivot.x);
-            if (this.history.length > 500) {
+            if (this.history.length > 2*this.delta) {
                 this.history.shift();
             }
         }
@@ -132,7 +206,7 @@ class Pendulum {
         vec.setMag(this.len);
         this.pos = p5.Vector.add(vec, this.pivot);
         this.angle = vec.angleBetween(createVector(0, 1));
-        if (x < width/2) {
+        if (x < this.pivot.x) {
             this.angle *= -1;
         }
     }
@@ -141,18 +215,18 @@ class Pendulum {
         push();
         noFill();
         stroke(255);
-        arrow(P, width/2-250, height-50, width/2+260, height-50);
-        arrow(P, width/2-250, height, width/2-250, height-100);
+        arrow(P, this.pivot.x-this.delta, height-50, this.pivot.x+this.delta+10, height-50);
+        arrow(P, this.pivot.x-this.delta, height, this.pivot.x-this.delta, height-100);
         beginShape();
         for (let i = 0; i < this.history.length; i++) {
-            vertex(i+width/2-250, height-50-30*this.history[i]/this.len);
+            vertex(i+this.pivot.x-this.delta, height-50-30*this.history[i]/this.len);
         }
         endShape();
         noStroke();
         fill(255);
-        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', width/2-250-25, height-50-30*this.history[this.history.length-1]/this.len);
-        text('x', width/2-250-10, height-100);
-        text('t', width/2+260, height-50+10);
+        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', this.pivot.x-this.delta-25, height-50-30*this.history[this.history.length-1]/this.len);
+        text('x', this.pivot.x-this.delta-10, height-100);
+        text('t', this.pivot.x+this.delta+10, height-50+10);
         pop();
     }
 }

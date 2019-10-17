@@ -30,10 +30,10 @@ P.setup = function() {
     
     pendulum = new Pendulum(width/2, 'orange');
     running = true;
-    lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); if (!twoPend) pendulum.history = [];});
-    gravityS.input(() => {gravityS.update(); if (!twoPend) pendulum.history = [];});
-    lenS1.input(() => {lenS1.update(); pendulum1.len = lenS1.value(); if (!twoPend) pendulum1.history = [];});
-    gravityS1.input(() => {gravityS1.update(); if (!twoPend) pendulum1.history = [];});
+    lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); pendulum.history = []; if (twoPend) pendulum1.history = [];});
+    gravityS.input(() => {gravityS.update(); pendulum.history = []; if (twoPend) pendulum1.history = [];});
+    lenS1.input(() => {lenS1.update(); pendulum1.len = lenS1.value(); pendulum1.history = []; if (twoPend) pendulum.history = [];});
+    gravityS1.input(() => {gravityS1.update(); pendulum1.history = []; if (twoPend) pendulum.history = [];});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -52,17 +52,15 @@ P.draw = function() {
     } else {
         if (mouseY > 0 && mouseX > 0 && mouseX < width/2 && mouseY < height && mouseIsPressed) {
             pendulum.change(mouseX, mouseY);
-            /*if (!united) {
-                pendulum.history = [];
-            }*/
+            pendulum.history = [];
+            pendulum1.history = [];
         } else if (running) {
             pendulum.update();
         }
         if (mouseY > 0 && mouseX > width/2 && mouseX < width && mouseY < height && mouseIsPressed) {
             pendulum1.change(mouseX, mouseY);
-            /*if (!united) {
-                pendulum1.history = [];
-            }*/
+            pendulum1.history = [];
+            pendulum.history = [];
         } else if (running) {
             pendulum1.update();
         }

@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let gravity;
 let pendulum;
-let running, scl = 150, description, twoPend = false;
+let running, scl = 150, description, twoPend = false, united = false;
 let lenS, gravityS, lenS1, gravityS1;
 let resetB, runB, infoB;
 
@@ -28,12 +28,12 @@ P.setup = function() {
     gravityS1.elt.parentElement.style.visibility = "hidden";
     
     
-    pendulum = new Pendulum(width/2);
+    pendulum = new Pendulum(width/2, 'orange');
     running = true;
-    lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); pendulum.history = [];});
-    gravityS.input(() => {gravityS.update(); pendulum.history = [];});
-    lenS1.input(() => {lenS1.update(); pendulum1.len = lenS1.value(); pendulum1.history = [];});
-    gravityS1.input(() => {gravityS1.update(); pendulum1.history = [];});
+    lenS.input(() => {lenS.update(); pendulum.len = lenS.value(); if (!twoPend) pendulum.history = [];});
+    gravityS.input(() => {gravityS.update(); if (!twoPend) pendulum.history = [];});
+    lenS1.input(() => {lenS1.update(); pendulum1.len = lenS1.value(); if (!twoPend) pendulum1.history = [];});
+    gravityS1.input(() => {gravityS1.update(); if (!twoPend) pendulum1.history = [];});
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textAlign(CENTER, CENTER);
@@ -52,62 +52,73 @@ P.draw = function() {
     } else {
         if (mouseY > 0 && mouseX > 0 && mouseX < width/2 && mouseY < height && mouseIsPressed) {
             pendulum.change(mouseX, mouseY);
-            pendulum.history = [];
+            /*if (!united) {
+                pendulum.history = [];
+            }*/
         } else if (running) {
             pendulum.update();
         }
         if (mouseY > 0 && mouseX > width/2 && mouseX < width && mouseY < height && mouseIsPressed) {
             pendulum1.change(mouseX, mouseY);
-            pendulum1.history = [];
+            /*if (!united) {
+                pendulum1.history = [];
+            }*/
         } else if (running) {
             pendulum1.update();
         }
     }
 
-    pendulum.show();
-
+    
     if (twoPend) {
-        pendulum1.show();
+        pendulum.show(300);
+        pendulum1.show(300);
+    } else {
+        pendulum.show(pendulum.len);
     }
 
     createShadow(P);
 }
 
 P.keyPressed = function() {
-    twoPend = !twoPend;
-    if (twoPend) {
-        gravityS.value('9.8');
-        gravityS.update();
-        lenS.value(round(0.4*height)+'');
-        lenS.update();
+    if (key == " ") {
+        twoPend = !twoPend;
+        if (twoPend) {
+            gravityS.value('9.8');
+            gravityS.update();
+            lenS.value(round(0.4*height)+'');
+            lenS.update();
 
-        gravityS1.value('9.8');
-        gravityS1.update();
-        lenS1.value(round(0.4*height)+'');
-        lenS1.update();
+            gravityS1.value('9.8');
+            gravityS1.update();
+            lenS1.value(round(0.4*height)+'');
+            lenS1.update();
 
-        pendulum = new Pendulum(width/4);
-        pendulum1 = new Pendulum(3*width/4);
-        lenS1.style("visibility", "visible");
-        gravityS1.style("visibility", "visible");
-        lenS1.elt.parentElement.style.visibility = "visible";
-        gravityS1.elt.parentElement.style.visibility = "visible";
+            united = false;
+            pendulum = new Pendulum(width/4, 'orange');
+            pendulum1 = new Pendulum(3*width/4, 'yellow');
+            lenS1.style("visibility", "visible");
+            gravityS1.style("visibility", "visible");
+            lenS1.elt.parentElement.style.visibility = "visible";
+            gravityS1.elt.parentElement.style.visibility = "visible";
+        } else {
+            gravityS.value('9.8');
+            gravityS.update();
+            lenS.value(round(0.4*height)+'');
+            lenS.update();
+
+            gravityS1.value('9.8');
+            gravityS1.update();
+            lenS1.value(round(0.4*height)+'');
+            lenS1.update();
+            
+            pendulum = new Pendulum(width/2, 'orange');
+            lenS1.style("visibility", "hidden");
+            gravityS1.style("visibility", "hidden");
+            lenS1.elt.parentElement.style.visibility = "hidden";
+            gravityS1.elt.parentElement.style.visibility = "hidden";
+        }
     } else {
-        gravityS.value('9.8');
-        gravityS.update();
-        lenS.value(round(0.4*height)+'');
-        lenS.update();
-
-        gravityS1.value('9.8');
-        gravityS1.update();
-        lenS1.value(round(0.4*height)+'');
-        lenS1.update();
-        
-        pendulum = new Pendulum(width/2);
-        lenS1.style("visibility", "hidden");
-        gravityS1.style("visibility", "hidden");
-        lenS1.elt.parentElement.style.visibility = "hidden";
-        gravityS1.elt.parentElement.style.visibility = "hidden";
+        united = !united;
     }
 }
 
@@ -127,8 +138,9 @@ function reset() {
     lenS1.value(round(0.4*height)+'');
     lenS1.update();
 
-    pendulum = new Pendulum(width/2);
+    pendulum = new Pendulum(width/2, 'orange');
     twoPend = false;
+    united = false;
     lenS1.style("visibility", "hidden");
     gravityS1.style("visibility", "hidden");
     lenS1.elt.parentElement.style.visibility = "hidden";
@@ -148,8 +160,9 @@ function run() {
 }
 
 class Pendulum {
-    constructor(x) {
+    constructor(x, clr) {
         this.radius = 10;
+        this.clr = clr;
         this.pivot = createVector(x, 100);
         this.pos = this.pivot.copy();
         this.len = lenS.value();
@@ -161,11 +174,11 @@ class Pendulum {
         this.delta = 200;
     }
 
-    show() {
+    show(coeff) {
         this.pos.set(this.len*sin(this.angle), this.len*cos(this.angle));
         this.pos.add(this.pivot);
         stroke(255);
-        fill('red');
+        fill(this.clr);
         line(this.pivot.x, this.pivot.y, this.pos.x, this.pos.y);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
         if (running) {
@@ -190,7 +203,7 @@ class Pendulum {
         fill(255);
         noStroke();
         text(str, this.pivot.x, this.pivot.y - 12);
-        this.graph();
+        this.graph(coeff);
     }
 
     update() {
@@ -211,26 +224,30 @@ class Pendulum {
         }
     }
 
-    graph() {
+    graph(coeff) {
         push();
         noFill();
         stroke(255);
-        arrow(P, this.pivot.x-this.delta, height-50, this.pivot.x+this.delta+10, height-50);
-        arrow(P, this.pivot.x-this.delta, height, this.pivot.x-this.delta, height-100);
+        let pivot = this.pivot.x;
+        if (united) {
+            pivot = width/2;
+        }
+        arrow(P, pivot-this.delta, height-50, pivot+this.delta+10, height-50);
+        arrow(P, pivot-this.delta, height, pivot-this.delta, height-100);
+        stroke(this.clr);
         beginShape();
         for (let i = 0; i < this.history.length; i++) {
-            vertex(i+this.pivot.x-this.delta, height-50-30*this.history[i]/this.len);
+            vertex(i+pivot-this.delta, height-50-30*this.history[i]/coeff);
         }
         endShape();
         noStroke();
+        fill(this.clr);
+        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', pivot-this.delta-25, height-50-30*this.history[this.history.length-1]/coeff);
         fill(255);
-        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', this.pivot.x-this.delta-25, height-50-30*this.history[this.history.length-1]/this.len);
-        text('x', this.pivot.x-this.delta-10, height-100);
-        text('t', this.pivot.x+this.delta+10, height-50+10);
+        text('x', pivot-this.delta-10, height-100);
+        text('t', pivot+this.delta+10, height-50+10);
         pop();
     }
 }
 
 }}, 'main');
-    
-    

@@ -21,7 +21,7 @@ function switchTo(name) {
     }
 }
 
-function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
+function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20, clr='') {
     let slider = P.createSlider(...sld);
     let b = P.createElement('b', '');
     let output = P.createElement('output', P.nf(sld[2]/scl, 1, 2));
@@ -32,6 +32,9 @@ function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20) {
     label.child(b);
     label.child(slider);
     label.position(5, y);
+    if (clr != '') {
+        label.style('color', clr);
+    }
     slider.position(0, sy);
     slider.output = output;
     slider.update = () => {slider.output.elt.value = P.nf(slider.elt.value/scl, 1, 2)};

@@ -87,7 +87,7 @@ P.draw = function() {
                     ball2.pos.x = mouseX;
                 }
                 ball2.vel.set(0, 0);
-                ball2.amp = abs(ball1.pos.x - width/2);
+                ball2.amp = abs(ball2.pos.x - width/2);
                 ball2.history = [];
                 ball1.history = [];
             }

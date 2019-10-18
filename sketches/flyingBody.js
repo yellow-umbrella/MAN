@@ -69,9 +69,9 @@ P.draw = function() {
                 kicked1 = false;
                 vel1.set(0, 0);
             }
-            if (first) {
-                arrows.set(ball1.vel.x, ball1.vel.y);
-            }
+        }
+        if (first) {
+            arrows.set(ball1.vel.x, ball1.vel.y);
         }
     } else {
         if (first) {
@@ -92,9 +92,9 @@ P.draw = function() {
                 kicked2 = false;
                 vel2.set(0, 0);
             }
-            if (!first) {
-                arrows.set(ball2.vel.x, ball2.vel.y);
-            }
+        }
+        if (!first) {
+            arrows.set(ball2.vel.x, ball2.vel.y);
         }
     } else {
         if (!first) {

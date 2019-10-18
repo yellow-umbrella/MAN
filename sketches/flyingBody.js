@@ -2,9 +2,9 @@
 module.exports = new p5((P) => { with (P) {
 
 let gravity;
-let ball;
-let ground, vel, scl = 100;
-let running = true, kicked = false;
+let ball1, ball2;
+let ground, vel1, vel2, scl = 100;
+let running = true, kicked1 = false, kicked2 = false, first = true;
 let heightS;
 let resetB, runB, infoB;
 let arrows;
@@ -41,8 +41,10 @@ P.setup = function() {
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
 
-    ball = new Ball();
-    vel = createVector();
+    ball1 = new Ball('yellow');
+    ball2 = new Ball('orange');
+    vel1 = createVector();
+    vel2 = createVector();
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     textSize(12);
@@ -56,23 +58,66 @@ P.draw = function() {
     showGround();
    // console.log(nfc(frameRate(), 1));
     
-    if (kicked) {
-        if (ball.update()) {
-            heightS.value(0);
-            heightS.update();
-            kicked = false;
-            vel.set(0, 0);
+   if (kicked1) {
+       if (running) {
+            if (ball1.update()) {
+                ball1.height = 0;
+                if (first) {
+                    heightS.value('0');
+                    heightS.update();
+                }
+                kicked1 = false;
+                vel1.set(0, 0);
+            }
+            if (first) {
+                arrows.set(ball1.vel.x, ball1.vel.y);
+            }
         }
-        arrows.set(ball.vel.x, ball.vel.y);
     } else {
-        ball.pos.y = ground-ball.radius-heightS.value();
-        arrows.set(vel.x*scl/rate, vel.y*scl/rate);
+        if (first) {
+            ball1.height = heightS.value();
+            ball1.pos.y = ground-ball1.radius-ball1.height;
+            arrows.set(vel1.x*scl/rate, vel1.y*scl/rate);
+        }
     }
 
-    ball.show();
+    if (kicked2) {
+        if (running) {
+            if (ball2.update()) {
+                ball2.height = 0;
+                if (!first) {
+                    heightS.value('0');
+                    heightS.update();
+                }
+                kicked2 = false;
+                vel2.set(0, 0);
+            }
+            if (!first) {
+                arrows.set(ball2.vel.x, ball2.vel.y);
+            }
+        }
+    } else {
+        if (!first) {
+            ball2.height = heightS.value();
+            ball2.pos.y = ground-ball2.radius-ball2.height;
+            arrows.set(vel2.x*scl/rate, vel2.y*scl/rate);
+        }
+    }
+
+    if (first) {
+        ball2.show();
+        ball1.show();
+    } else {
+        ball1.show();
+        ball2.show();
+    }
     
-    if (mouseIsPressed && mouseY < ground-ball.radius && mouseX > 0 && mouseY > 0) {
-        ball.simulate(mouseX, mouseY);
+    if (mouseIsPressed && mouseY < ground-ball1.radius && mouseX > 0 && mouseY > 0) {
+        if (first) {
+            ball1.simulate(mouseX, mouseY);
+        } else {
+            ball2.simulate(mouseX, mouseY);
+        }
     }
 
     createShadow(P);
@@ -83,11 +128,14 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
-    kicked = false;
+    kicked1 = false;
+    kicked2 = false;
     heightS.value('0');
     heightS.update();
-    ball = new Ball();
-    vel.setMag(0);
+    ball1 = new Ball('yellow');
+    ball2 = new Ball('orange');
+    vel1.setMag(0);
+    vel2.setMag(0);
 }
 
 function run() {
@@ -95,9 +143,9 @@ function run() {
         running = false;
         runB.html('&#xf04b;');
         runB.elt.title = 'продовжити';
-        noLoop();
+        //noLoop();
     } else {
-        loop();
+        //loop();
         runB.html('&#xf04c;');
         running = true;
         runB.elt.title = 'зупинити';
@@ -133,21 +181,41 @@ function showGround() {
 }
 
 P.mouseReleased = function() {
-    if (mouseY < ground-ball.radius && mouseX > 0 && mouseX < width && mouseY > 0 && running) {
-        ball.kick(mouseX, mouseY);
-        kicked = true;
+    if (mouseY < ground-ball1.radius && mouseX > 0 && mouseX < width && mouseY > 0) {
+        if (first) {
+            ball1.kick(mouseX, mouseY);
+            kicked1 = true;
+        } else {
+            ball2.kick(mouseX, mouseY);
+            kicked2 = true;
+        }
+    }
+}
+
+P.keyPressed = function() {
+    if (key == " ") {
+        first = !first;
+        if (first) {
+            heightS.value(ball1.height);
+            heightS.update();
+        } else {
+            heightS.value(ball2.height);
+            heightS.update();
+        }
     }
 }
 
 class Ball {
-    constructor() {
+    constructor(clr) {
         this.radius = 5;
         this.pos = createVector(100, ground-this.radius);
         this.vel = createVector();
+        this.height = 0;
+        this.clr = clr;
     }
 
     show() { 
-        fill(255, 0, 0);
+        fill(this.clr);
         stroke(255);
         strokeWeight(1);
         ellipse(this.pos.x, this.pos.y, 2*this.radius);
@@ -170,8 +238,13 @@ class Ball {
         mouse.sub(this.pos);
         mouse.div(20);
         this.vel = mouse;
-        vel = this.vel.copy();
-        vel.mult(rate/scl);
+        if (first) {
+            vel1 = this.vel.copy(); 
+            vel1.mult(rate/scl);
+        } else {
+            vel2 = this.vel.copy(); 
+            vel2.mult(rate/scl);
+        }
     }
 
     simulate(x, y) {

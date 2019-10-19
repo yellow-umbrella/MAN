@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let spring1, ball1, spring2, ball2, twoSpr = false, united = false, lim = 1.9, radius2mass = 20, coeff2stroke = 15, description, scl = 100;
 let running, steps = 10;
-let coeffS1, massS1, coeffS2, massS2;
+let coeffS1, massS1, coeffS2, massS2, checkbox1, checkbox2;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -13,16 +13,11 @@ P.setup = function() {
     strokeJoin(ROUND);
     
     createTitle(P, 'Пружинний маятник');
-    /*description = createDiv("За допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-    //description = createDescription(P, "за допомогою повзунків можна змінювати масу м'ячика та коефіцієнт жорсткості, а на самому робочому просторі задавати видовження пружини.");
-
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'springs');
 
-    //gravity = createVector(0, 1);
     running = true;
     
     massS1 = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 50, 1, 20, 'orange');
@@ -34,6 +29,14 @@ P.setup = function() {
     coeffS2.style("visibility", "hidden");
     massS2.elt.parentElement.style.visibility = "hidden";
     coeffS2.elt.parentElement.style.visibility = "hidden";
+
+    checkbox1 = createCheckbox('2 маятники', false);
+    checkbox1.position(5, 160);
+    checkbox2 = createCheckbox('Накласти графіки', false);
+    checkbox2.position(5, 320);
+    checkbox1.changed(change);
+    checkbox2.changed(() => {united = !united});
+    checkbox2.style("visibility", "hidden");
 
     massS1.input(() => {massS1.update(); updateM1()});
     coeffS1.input(() => {coeffS1.update(); updateC1()});
@@ -111,48 +114,48 @@ P.draw = function() {
         spring2.show();
         ball2.show();
     }
+
     createShadow(P);
 }
 
-P.keyPressed = function() {
-    if (key == " ") {
-        twoSpr = !twoSpr;
-        if (twoSpr) {
-            united = false;
+function change() {
+    twoSpr = !twoSpr;
+    if (twoSpr) {
+        united = false;
 
-            massS1.value('1.25');
-            massS1.update();
-            coeffS1.value('0.125');
-            coeffS1.update();
-            ball1 = new Ball(0.125*height, 'orange', massS1.value());
-            spring1 = new Spring(ball1, coeffS1.value());
+        massS1.value('1.25');
+        massS1.update();
+        coeffS1.value('0.125');
+        coeffS1.update();
+        ball1 = new Ball(0.125*height, 'orange', massS1.value());
+        spring1 = new Spring(ball1, coeffS1.value());
 
-            massS2.value('1.25');
-            massS2.update();
-            coeffS2.value('0.125');
-            coeffS2.update();
-            ball2 = new Ball(0.375*height, 'yellow', massS2.value());
-            spring2 = new Spring(ball2, coeffS2.value());
-            
-            massS2.style("visibility", "visible");
-            coeffS2.style("visibility", "visible");
-            massS2.elt.parentElement.style.visibility = "visible";
-            coeffS2.elt.parentElement.style.visibility = "visible";
-        } else {
-            massS1.value('1.25');
-            massS1.update();
-            coeffS1.value('0.125');
-            coeffS1.update();
-            ball1 = new Ball(0.25*height, 'orange', massS1.value());
-            spring1 = new Spring(ball1, coeffS1.value());
-            
-            massS2.style("visibility", "hidden");
-            coeffS2.style("visibility", "hidden");
-            massS2.elt.parentElement.style.visibility = "hidden";
-            coeffS2.elt.parentElement.style.visibility = "hidden";
-        }
+        massS2.value('1.25');
+        massS2.update();
+        coeffS2.value('0.125');
+        coeffS2.update();
+        ball2 = new Ball(0.375*height, 'yellow', massS2.value());
+        spring2 = new Spring(ball2, coeffS2.value());
+        
+        massS2.style("visibility", "visible");
+        coeffS2.style("visibility", "visible");
+        massS2.elt.parentElement.style.visibility = "visible";
+        coeffS2.elt.parentElement.style.visibility = "visible";
+        checkbox2.style("visibility", "visible");
+        checkbox2.checked(false);
     } else {
-        united = !united;
+        massS1.value('1.25');
+        massS1.update();
+        coeffS1.value('0.125');
+        coeffS1.update();
+        ball1 = new Ball(0.25*height, 'orange', massS1.value());
+        spring1 = new Spring(ball1, coeffS1.value());
+        
+        massS2.style("visibility", "hidden");
+        coeffS2.style("visibility", "hidden");
+        massS2.elt.parentElement.style.visibility = "hidden";
+        coeffS2.elt.parentElement.style.visibility = "hidden";
+        checkbox2.style("visibility", "hidden");
     }
 }
 
@@ -216,6 +219,8 @@ function reset() {
     coeffS2.style("visibility", "hidden");
     massS2.elt.parentElement.style.visibility = "hidden";
     coeffS2.elt.parentElement.style.visibility = "hidden";
+    checkbox2.style("visibility", "hidden");
+    checkbox1.checked(false);
 }
 
 function run() {
@@ -258,15 +263,10 @@ class Ball {
     }
 
     update() {
-        //this.mass = massS.value();
         this.acc.mult(1/steps);
         this.vel.add(this.acc);
         this.pos.add(this.vel);
         this.pos.y = this.savedHeight;
-        /*if (this.pos.y < spring.pos.y) {
-            this.pos.y += (spring.pos.y - this.pos.y);
-            this.vel.y = 0;
-        }*/
         this.acc.mult(0);
     }
 
@@ -295,7 +295,7 @@ class Ball {
         if (this.amp > 0.01) {
             beginShape();
             for (let i = 0; i < this.history.length; i++) {
-                vertex(i+width/2-this.delta, pivot-/*30*this.history[i]/this.amp*/ this.history[i]/10);
+                vertex(i+width/2-this.delta, pivot-this.history[i]/10);
             }
             endShape();
         }
@@ -304,8 +304,8 @@ class Ball {
         let last = this.history[this.history.length-1];
         if (abs(last) < 0.01)
         last = 0;
-        // console.log(last);
-        text(nf(last/scl, 1, 2) + ' м', width/2-250-25, pivot-/*30*last/this.amp*/last/10);
+
+        text(nf(last/scl, 1, 2) + ' м', width/2-250-25, pivot-last/10);
         fill(255);
         text('x', width/2-this.delta-10, pivot-50);
         text('t', width/2+this.delta+10, pivot+10);
@@ -347,9 +347,6 @@ class Spring {
         vertex(this.lenNow, 0);
         endShape();
         pop();
-        /*if (this.lenNow > this.linkLen*this.links) {
-            console.log('(');
-        }*/
     }
 
     update() {

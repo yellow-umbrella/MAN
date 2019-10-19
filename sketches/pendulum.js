@@ -35,10 +35,6 @@ P.setup = function() {
     checkbox1.changed(change);
     checkbox2.changed(() => {united = !united});
     checkbox2.style("visibility", "hidden");
-    /*checkbox2.elt.parentElement.style.visibility = "hidden";
-    checkbox1.value('0');
-    checkbox2.value('0');*/
-    
     
     pendulum = new Pendulum(width/2, 'orange');
     running = true;
@@ -54,14 +50,6 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
 
-    /*if (checkbox1.value() != twoPend) {
-        change();
-    }
-
-    if (checkbox2.value() != united) {
-        united = !united;
-    }*/
-    
     if (!twoPend) {
         if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
             pendulum.change(mouseX, mouseY);
@@ -118,7 +106,6 @@ function change() {
         lenS1.elt.parentElement.style.visibility = "visible";
         gravityS1.elt.parentElement.style.visibility = "visible";
         checkbox2.style("visibility", "visible");
-        //checkbox2.elt.parentElement.style.visibility = "visible";
         checkbox2.checked(false);
     } else {
         gravityS.value('9.8');
@@ -137,7 +124,6 @@ function change() {
         lenS1.elt.parentElement.style.visibility = "hidden";
         gravityS1.elt.parentElement.style.visibility = "hidden";
         checkbox2.style("visibility", "hidden");
-        //checkbox2.elt.parentElement.style.visibility = "hidden";
     }
 }
 
@@ -164,7 +150,6 @@ function reset() {
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
     checkbox2.style("visibility", "hidden");
-    //checkbox2.elt.parentElement.style.visibility = "hidden";
     checkbox1.checked(false);
 }
 

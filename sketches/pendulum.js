@@ -54,6 +54,7 @@ P.draw = function() {
         if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
             pendulum.change(mouseX, mouseY);
             pendulum.history = [];
+            pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
         } else if (running) {
             pendulum.update(gravityS.value());
         }
@@ -62,6 +63,8 @@ P.draw = function() {
             pendulum.change(mouseX, mouseY);
             pendulum.history = [];
             pendulum1.history = [];
+            pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
+            pendulum1.history.push(pendulum1.pos.x - pendulum1.pivot.x);
         } else if (running) {
             pendulum.update(gravityS.value());
         }
@@ -69,6 +72,8 @@ P.draw = function() {
             pendulum1.change(mouseX, mouseY);
             pendulum1.history = [];
             pendulum.history = [];
+            pendulum1.history.push(pendulum1.pos.x - pendulum1.pivot.x);
+            pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
         } else if (running) {
             pendulum1.update(gravityS1.value());
         }
@@ -101,6 +106,8 @@ function change() {
         united = false;
         pendulum = new Pendulum(width/4, 'orange');
         pendulum1 = new Pendulum(3*width/4, 'yellow');
+        pendulum1.history.push(pendulum1.pos.x - pendulum1.pivot.x);
+        pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
         lenS1.style("visibility", "visible");
         gravityS1.style("visibility", "visible");
         lenS1.elt.parentElement.style.visibility = "visible";
@@ -119,6 +126,7 @@ function change() {
         lenS1.update();
         
         pendulum = new Pendulum(width/2, 'orange');
+        pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
         lenS1.style("visibility", "hidden");
         gravityS1.style("visibility", "hidden");
         lenS1.elt.parentElement.style.visibility = "hidden";

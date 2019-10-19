@@ -66,6 +66,7 @@ P.draw = function() {
                 ball1.vel.set(0, 0);
                 ball1.amp = abs(ball1.pos.x - width/2);
                 ball1.history = [];
+                ball1.history.push(ball1.pos.x - width/2);
             }    
         } else {
             if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height*0.25) {
@@ -80,6 +81,8 @@ P.draw = function() {
                 ball1.amp = abs(ball1.pos.x - width/2);
                 ball1.history = [];
                 ball2.history = [];
+                ball1.history.push(ball1.pos.x - width/2);
+                ball2.history.push(ball2.pos.x - width/2);
             }
             if (mouseY > height*0.25 && mouseX > 0 && mouseX < width && mouseY < height*0.5) {
                 if (mouseX < spring2.pos.x + (2 - lim)*spring2.len) {
@@ -93,6 +96,8 @@ P.draw = function() {
                 ball2.amp = abs(ball2.pos.x - width/2);
                 ball2.history = [];
                 ball1.history = [];
+                ball1.history.push(ball1.pos.x - width/2);
+                ball2.history.push(ball2.pos.x - width/2);
             }
         }
 
@@ -129,6 +134,7 @@ function change() {
         coeffS1.update();
         ball1 = new Ball(0.125*height, 'orange', massS1.value());
         spring1 = new Spring(ball1, coeffS1.value());
+        ball1.history.push(ball1.pos.x - width/2);
 
         massS2.value('1.25');
         massS2.update();
@@ -136,6 +142,7 @@ function change() {
         coeffS2.update();
         ball2 = new Ball(0.375*height, 'yellow', massS2.value());
         spring2 = new Spring(ball2, coeffS2.value());
+        ball2.history.push(ball2.pos.x - width/2);
         
         massS2.style("visibility", "visible");
         coeffS2.style("visibility", "visible");
@@ -150,6 +157,7 @@ function change() {
         coeffS1.update();
         ball1 = new Ball(0.25*height, 'orange', massS1.value());
         spring1 = new Spring(ball1, coeffS1.value());
+        ball1.history.push(ball1.pos.x - width/2);
         
         massS2.style("visibility", "hidden");
         coeffS2.style("visibility", "hidden");

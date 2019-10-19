@@ -30,9 +30,9 @@ P.setup = function() {
     massS2.elt.parentElement.style.visibility = "hidden";
     coeffS2.elt.parentElement.style.visibility = "hidden";
 
-    checkbox1 = createCheckbox('2 маятники', false);
+    checkbox1 = createCheckbox(' 2 маятники', false);
     checkbox1.position(5, 160);
-    checkbox2 = createCheckbox('Накласти графіки', false);
+    checkbox2 = createCheckbox(' Накласти графіки', false);
     checkbox2.position(5, 320);
     checkbox1.changed(change);
     checkbox2.changed(() => {united = !united});

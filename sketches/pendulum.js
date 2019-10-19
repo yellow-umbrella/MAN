@@ -55,7 +55,7 @@ P.draw = function() {
             pendulum.change(mouseX, mouseY);
             pendulum.history = [];
         } else if (running) {
-            pendulum.update();
+            pendulum.update(gravityS.value());
         }
     } else {
         if (mouseY > 0 && mouseX > 0 && mouseX < width/2 && mouseY < height && mouseIsPressed) {
@@ -63,14 +63,14 @@ P.draw = function() {
             pendulum.history = [];
             pendulum1.history = [];
         } else if (running) {
-            pendulum.update();
+            pendulum.update(gravityS.value());
         }
         if (mouseY > 0 && mouseX > width/2 && mouseX < width && mouseY < height && mouseIsPressed) {
             pendulum1.change(mouseX, mouseY);
             pendulum1.history = [];
             pendulum.history = [];
         } else if (running) {
-            pendulum1.update();
+            pendulum1.update(gravityS1.value());
         }
     }
 
@@ -212,8 +212,8 @@ class Pendulum {
         this.graph(coeff);
     }
 
-    update() {
-        let acc = -(gravityS.value()*scl/2500)*sin(this.angle)/this.len;
+    update(gravity) {
+        let acc = -(gravity*scl/2500)*sin(this.angle)/this.len;
         this.avel += acc;
         this.angle += this.avel;
         this.angle = ((this.angle + PI)%TWO_PI + TWO_PI)%TWO_PI - PI;

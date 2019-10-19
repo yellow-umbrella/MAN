@@ -88,14 +88,14 @@ function createResetB(P, callback) {
     return resetB;
 }
 
-function createToggleS(P, y = 100) {
+function createToggleS(P, y = 100, label = 'Сховати/показати підписи:') {
     let toggleS = P.createSlider(0, 1, 1, 1);
     toggleS.position(0, 20);
     toggleS.size(30);
     toggleS.class('toggle');
     toggleS.attribute('value', '1');
     toggleS.input(() => toggleS.attribute('value', toggleS.value()));
-    let labelToggle = P.createElement('label', 'Сховати/показати підписи:');
+    let labelToggle = P.createElement('label', label);
     labelToggle.child(toggleS);
     labelToggle.position(5, y);
     return toggleS;

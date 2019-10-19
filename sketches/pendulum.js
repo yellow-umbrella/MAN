@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let gravity;
 let pendulum;
 let running, scl = 150, description, twoPend = false, united = false;
-let lenS, gravityS, lenS1, gravityS1;
+let lenS, gravityS, lenS1, gravityS1, toggleS1, toggleS2;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -20,12 +20,20 @@ P.setup = function() {
 
     gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 50, 1, 40, 'orange');
     lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 120, scl, 20, 'orange');
-    gravityS1 = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 190, 1, 40, 'yellow');
+    gravityS1 = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 210, 1, 40, 'yellow');
     lenS1 = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 280, scl, 20, 'yellow');
+
     lenS1.style("visibility", "hidden");
     gravityS1.style("visibility", "hidden");
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
+
+    toggleS1 = createToggleS(P, 165, '1 / 2 маятники:');
+    toggleS2 = createToggleS(P, 320, 'Накласти графіки:');
+    toggleS2.style("visibility", "hidden");
+    toggleS2.elt.parentElement.style.visibility = "hidden";
+    toggleS1.value('0');
+    toggleS2.value('0');
     
     
     pendulum = new Pendulum(width/2, 'orange');
@@ -41,6 +49,14 @@ P.setup = function() {
 
 P.draw = function() {
     background('#1b4b34');
+
+    if (toggleS1.value() != twoPend) {
+        change();
+    }
+
+    if (toggleS2.value() != united) {
+        united = !united;
+    }
     
     if (!twoPend) {
         if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
@@ -77,51 +93,51 @@ P.draw = function() {
     createShadow(P);
 }
 
-P.keyPressed = function() {
-    if (key == " ") {
-        twoPend = !twoPend;
-        if (twoPend) {
-            gravityS.value('9.8');
-            gravityS.update();
-            lenS.value(round(0.4*height)+'');
-            lenS.update();
+function change() {
+    twoPend = !twoPend;
+    if (twoPend) {
+        gravityS.value('9.8');
+        gravityS.update();
+        lenS.value(round(0.4*height)+'');
+        lenS.update();
 
-            gravityS1.value('9.8');
-            gravityS1.update();
-            lenS1.value(round(0.4*height)+'');
-            lenS1.update();
+        gravityS1.value('9.8');
+        gravityS1.update();
+        lenS1.value(round(0.4*height)+'');
+        lenS1.update();
 
-            united = false;
-            pendulum = new Pendulum(width/4, 'orange');
-            pendulum1 = new Pendulum(3*width/4, 'yellow');
-            lenS1.style("visibility", "visible");
-            gravityS1.style("visibility", "visible");
-            lenS1.elt.parentElement.style.visibility = "visible";
-            gravityS1.elt.parentElement.style.visibility = "visible";
-        } else {
-            gravityS.value('9.8');
-            gravityS.update();
-            lenS.value(round(0.4*height)+'');
-            lenS.update();
-
-            gravityS1.value('9.8');
-            gravityS1.update();
-            lenS1.value(round(0.4*height)+'');
-            lenS1.update();
-            
-            pendulum = new Pendulum(width/2, 'orange');
-            lenS1.style("visibility", "hidden");
-            gravityS1.style("visibility", "hidden");
-            lenS1.elt.parentElement.style.visibility = "hidden";
-            gravityS1.elt.parentElement.style.visibility = "hidden";
-        }
+        united = false;
+        pendulum = new Pendulum(width/4, 'orange');
+        pendulum1 = new Pendulum(3*width/4, 'yellow');
+        lenS1.style("visibility", "visible");
+        gravityS1.style("visibility", "visible");
+        lenS1.elt.parentElement.style.visibility = "visible";
+        gravityS1.elt.parentElement.style.visibility = "visible";
+        toggleS2.style("visibility", "visible");
+        toggleS2.elt.parentElement.style.visibility = "visible";
+        toggleS2.value('0');
     } else {
-        united = !united;
+        gravityS.value('9.8');
+        gravityS.update();
+        lenS.value(round(0.4*height)+'');
+        lenS.update();
+
+        gravityS1.value('9.8');
+        gravityS1.update();
+        lenS1.value(round(0.4*height)+'');
+        lenS1.update();
+        
+        pendulum = new Pendulum(width/2, 'orange');
+        lenS1.style("visibility", "hidden");
+        gravityS1.style("visibility", "hidden");
+        lenS1.elt.parentElement.style.visibility = "hidden";
+        gravityS1.elt.parentElement.style.visibility = "hidden";
+        toggleS2.style("visibility", "hidden");
+        toggleS2.elt.parentElement.style.visibility = "hidden";
     }
 }
 
 function reset() {
-    loop();
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
@@ -143,6 +159,9 @@ function reset() {
     gravityS1.style("visibility", "hidden");
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
+    toggleS2.style("visibility", "hidden");
+    toggleS2.elt.parentElement.style.visibility = "hidden";
+    toggleS1.value('0');
 }
 
 function run() {

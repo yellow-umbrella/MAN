@@ -4,7 +4,7 @@ module.exports = new p5((P) => { with (P) {
 let gravity;
 let pendulum;
 let running, scl = 150, description, twoPend = false, united = false;
-let lenS, gravityS, lenS1, gravityS1, toggleS1, toggleS2;
+let lenS, gravityS, lenS1, gravityS1, checkbox1, checkbox2;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -28,12 +28,16 @@ P.setup = function() {
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
 
-    toggleS1 = createToggleS(P, 165, '1 / 2 маятники:');
-    toggleS2 = createToggleS(P, 320, 'Накласти графіки:');
-    toggleS2.style("visibility", "hidden");
-    toggleS2.elt.parentElement.style.visibility = "hidden";
-    toggleS1.value('0');
-    toggleS2.value('0');
+    checkbox1 = createCheckbox('2 маятники', false);
+    checkbox1.position(5, 165);
+    checkbox2 = createCheckbox('Накласти графіки', false);
+    checkbox2.position(5, 320);
+    checkbox1.changed(change);
+    checkbox2.changed(() => {united = !united});
+    checkbox2.style("visibility", "hidden");
+    /*checkbox2.elt.parentElement.style.visibility = "hidden";
+    checkbox1.value('0');
+    checkbox2.value('0');*/
     
     
     pendulum = new Pendulum(width/2, 'orange');
@@ -50,13 +54,13 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
 
-    if (toggleS1.value() != twoPend) {
+    /*if (checkbox1.value() != twoPend) {
         change();
     }
 
-    if (toggleS2.value() != united) {
+    if (checkbox2.value() != united) {
         united = !united;
-    }
+    }*/
     
     if (!twoPend) {
         if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && mouseIsPressed) {
@@ -113,9 +117,9 @@ function change() {
         gravityS1.style("visibility", "visible");
         lenS1.elt.parentElement.style.visibility = "visible";
         gravityS1.elt.parentElement.style.visibility = "visible";
-        toggleS2.style("visibility", "visible");
-        toggleS2.elt.parentElement.style.visibility = "visible";
-        toggleS2.value('0');
+        checkbox2.style("visibility", "visible");
+        //checkbox2.elt.parentElement.style.visibility = "visible";
+        checkbox2.checked(false);
     } else {
         gravityS.value('9.8');
         gravityS.update();
@@ -132,8 +136,8 @@ function change() {
         gravityS1.style("visibility", "hidden");
         lenS1.elt.parentElement.style.visibility = "hidden";
         gravityS1.elt.parentElement.style.visibility = "hidden";
-        toggleS2.style("visibility", "hidden");
-        toggleS2.elt.parentElement.style.visibility = "hidden";
+        checkbox2.style("visibility", "hidden");
+        //checkbox2.elt.parentElement.style.visibility = "hidden";
     }
 }
 
@@ -159,9 +163,9 @@ function reset() {
     gravityS1.style("visibility", "hidden");
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
-    toggleS2.style("visibility", "hidden");
-    toggleS2.elt.parentElement.style.visibility = "hidden";
-    toggleS1.value('0');
+    checkbox2.style("visibility", "hidden");
+    //checkbox2.elt.parentElement.style.visibility = "hidden";
+    checkbox1.checked(false);
 }
 
 function run() {

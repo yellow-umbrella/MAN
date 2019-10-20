@@ -4,22 +4,19 @@ module.exports = new p5((P) => { with (P) {
 let focus;
 let rays = [];
 let ready = false, maxN = 100, running = true, description;
-let focusS;
+let focusS, clrS;
 let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     createTitle(P, 'Тонка лінза: Промені');
-    /*description = createDiv("За допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-    //description = createDescription(P, "за допомогою повзунка можна змінювати фокусну відстань, зліва від лінзи затиснувши ліву клавішу миші пустіть промені та спостерігайте їх заломлення в лінзі.");
-
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'lens');
 
     focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', ' м', 50);
+    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 100);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
@@ -138,15 +135,19 @@ class Ray {
         this.crack = createVector(x,y);
         this.end = createVector(x,y);
         this.started = false;
+        this.clr = clrS.value();
     }
 
     show() {
-        stroke(255, 255, 0, 100);
+        push();
+        colorMode(HSL, 360, 100, 100);
+        stroke(this.clr, 100, 50, 0.4);
         strokeWeight(4);
         point(this.start.x, this.start.y);
-        strokeWeight(2);
+        //strokeWeight(2);
         line(this.start.x, this.start.y, this.crack.x, this.crack.y);
         line(this.crack.x, this.crack.y, this.end.x, this.end.y);
+        pop();
     }
 
     direct(x, y) {

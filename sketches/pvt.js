@@ -14,11 +14,7 @@ P.setup = function() {
     stroke(255, 255, 255);
     
     createTitle(P, 'Ізопроцеси');
-    /*description = createDiv("Ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-    //description = createDescription(P, "ви можете обрати один з трьох ізопроцесів, змінювати температуру за допомогою повзунка та об'єм, рухаючи поршень на робочому просторі.");
-
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'pvt');
@@ -246,6 +242,9 @@ class Graph {
         let x = map(gas[this.x], 0, maxs[this.x], 0, this.width);
         let y = map(gas[this.y], 0, maxs[this.y], 0, this.height);
         if (this.type == 'vert') {
+            if (this.x == 'V' && this.y == 'P') {
+                y = map(gas[this.y], 0, 15*maxs.T/gas.V, 0, this.height);
+            }
             line(this.width/2, 0, this.width/2, -this.height);
             x = this.width/2; 
         } else if (this.type == 'hor') {
@@ -255,12 +254,12 @@ class Graph {
             line (0, 0, this.width, -this.height);
             y = map(x, 0, this.width, 0, this.height);
         } else if (this.type == 'hyp') {
-            let coeff = 5000.0;
+            let coeff = 15*this.height*gas.T*this.width/(maxs.P*maxs.V);
             beginShape();
             let firstX = 0;
-            for (let x = 1; x < this.width; x++) {
+            for (let x = coeff/this.height; x < this.width; x++) {
                 let y = coeff/x;
-                if (y < this.height) {
+                if (y <= this.height) {
                     vertex(x, -y);
                     if (firstX == 0)
                         firstX = x;
@@ -268,10 +267,10 @@ class Graph {
             }
             endShape();
             y = coeff/x;
-            if (y > this.height) {
-                y = this.height;
+            /*if (y > this.height) {
+                y = coeff/firstX;
                 x = firstX; 
-            }
+            }*/
         }
         strokeWeight(6)
         point(x, -y);

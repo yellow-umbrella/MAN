@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let particles = [];
 let running = true, description;
-let chargeS, toggleS;
+let chargeS, checkbox;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -17,7 +17,8 @@ P.setup = function() {
     //description = createDescription(P, "оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
 
     chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' нКл', 50);
-    toggleS = createToggleS(P);
+    checkbox = createCheckbox(' Показати підписи', true);
+    checkbox.position(5, 100);
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'charge');
@@ -66,6 +67,7 @@ function reset() {
     particles = [];
     chargeS.value('0');
     chargeS.update();
+    checkbox.checked(true);
 }
 
 function run() {
@@ -97,7 +99,7 @@ class Particle {
         strokeWeight(0.5);
         stroke(255);
         ellipse(this.pos.x, this.pos.y, 8);
-        if (toggleS.value()) {
+        if (checkbox.checked()) {
             noStroke();
             textSize(10);
             fill(tone, 100, max(sat, 80));

@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let balls = [];
 let started = false, ready = false, chosen = -1, running = true, description;
-let massS, toggleS;
+let massS, checkbox;
 let readyB, resetB, runB, infoB;
 
 P.setup = function() {
@@ -11,16 +11,12 @@ P.setup = function() {
     colorMode(HSL, 360, 100, 100);
     
     createTitle(P, 'Закон збереження імпульсу');
-    /*description = createDiv("За допомогою повзунка можна змінити масу тіла. Щоб створити новий м'ячик натисніть в будь-якому вільному місці робочого простору. Затиснувши ліву клавішу миші на м'ячику та потягнувши, а потім відпустивши, ви штовхнете його.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-
-    //description = createDescription(P, "за допомогою повзунка можна змінити масу тіла. Щоб створити новий м'ячик натисніть в будь-якому вільному місці робочого простору. Затиснувши ліву клавішу миші на м'ячику та потягнувши, а потім відпустивши, ви штовхнете його.");
     
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'impulse');
-    toggleS = createToggleS(P);
+    checkbox = createCheckbox(' Показати підписи', true);
+    checkbox.position(5, 100);
 
     massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса тiла: ', ' кг', 50);
 
@@ -68,6 +64,7 @@ function reset() {
     started = false;
     ready = false;
     chosen = -1;
+    checkbox.checked(true);
 }
 
 function run() {
@@ -110,7 +107,7 @@ P.mousePressed = function() {
             }
         }
         
-        if (check) {
+        if (check && mouseButton === LEFT) {
             balls.push(new Ball(pos.x, pos.y, balls.length));
         } else if (chosen == -1) {
             let pos = createVector(mouseX, mouseY);
@@ -144,7 +141,7 @@ class Ball {
         stroke(0);
         ellipse(this.pos.x, this.pos.y, this.radius*2);
         noStroke();
-        if (toggleS.value()) {
+        if (checkbox.checked()) {
             fill(0);
             textSize(4*this.mass);
             text(nf(this.mass, 1, 1) + ' кг', this.pos.x, this.pos.y - this.mass);

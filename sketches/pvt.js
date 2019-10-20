@@ -8,11 +8,12 @@ let resetB, runB, infoB;
 let constR;
 let graphs = [];
 let mins, maxs;
+let padding = 25;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
     stroke(255, 255, 255);
-    
+
     createTitle(P, 'Ізопроцеси');
     
     resetB = createResetB(P, reset);
@@ -51,8 +52,6 @@ P.setup = function() {
     };
     mins.P = 15*min(mins.T/gas.V, gas.T/maxs.V);
     maxs.P = 15*max(gas.T/mins.V, maxs.T/gas.V);
-    console.log(mins, maxs);
-
 }
 
 P.draw = function() {
@@ -111,17 +110,18 @@ class Gas {
             this.particles[i] = new Particle(this.pos.x, this.pos.x + this.width, this.pos.y - this.height, this.pos.y);
         }
         graphs = [];
-        let types = [];
-        if (constR.value() == 'T') {
-            types = ['hyp', 'vert', 'vert'];
-        } else if (constR.value() == 'P') {
-            types = ['hor', 'hor', 'diag'];
-        } else {
-            types = ['vert', 'diag', 'hor'];
+        let types = {
+            'T': ['hyp', 'vert', 'vert'],
+            'P': ['hor', 'hor', 'diag'],
+            'V': ['vert', 'diag', 'hor']
+        };
+        let graphHeight = (height - 4*padding)/3;
+        let graphY = padding + graphHeight;
+        let labels = [['P', 'V'], ['P', 'T'], ['V', 'T']];
+        for (let i = 0; i < 3; i++) {
+            graphs.push(new Graph(createVector(width/2, graphY*(i+1)), 
+                                  ...labels[i], types[constR.value()][i])); 
         }
-        graphs.push(new Graph(createVector(width/2, height/3-3), 'P', 'Па', 'V', 'м^3', types[0]));
-        graphs.push(new Graph(createVector(width/2, 2*height/3-6), 'P', 'Па', 'T', 'K', types[1]));
-        graphs.push(new Graph(createVector(width/2, height-10), 'V', 'м^3', 'T', 'K', types[2]));
     }
 
     show() {
@@ -220,13 +220,16 @@ class Particle {
 }
 
 class Graph {
-    constructor(pos, y, y1, x, x1, type) {
+    constructor(pos, y, x, type) {
+        this.units = {
+            'P' : 'Па',
+            'T' : 'K',
+            'V' : 'м^3'
+        }
         this.x = x; // x label
         this.y = y; // y label
-        this.x1 = x1;
-        this.y1 = y1;
         this.pos = pos; // position of (0,0)
-        this.height = height / 3.3;
+        this.height = (height - 4*padding)/3;
         this.width = width / 3;
         this.type = type; // vert, hor, diag, hyp
     }
@@ -234,14 +237,14 @@ class Graph {
     show(gas) {
         push();
         translate(this.pos.x, this.pos.y);
-        textSize(10);
+        textSize(12);
         fill(255);
         stroke(255);
         strokeWeight(0.5);
         textAlign(LEFT, CENTER);
-        text(this.x + ',' + this.x1, this.width + 15, 0);
+        text(this.x + ', ' + this.units[this.x], this.width + 15, 0);
         textAlign(RIGHT, BOTTOM);
-        text(this.y + ',' + this.y1, -10, -this.height);
+        text(this.y + ', ' + this.units[this.y], -10, -this.height);
         noFill();
         strokeWeight(1.5);
         arrow(P, 0, 0, this.width + 10, 0);
@@ -288,16 +291,11 @@ class Graph {
             }
             endShape();
             y = coeff/x;
-            /*if (y > this.height) {
-                y = coeff/firstX;
-                x = firstX; 
-            }*/
         }
         strokeWeight(5)
         point(x, -y);
         noStroke();
         fill('yellow');
-        textSize(10);
         textAlign(RIGHT, TOP);
         text(nf(gas[this.y], 1, 1), -5, -y-2);
         textAlign(CENTER, TOP);

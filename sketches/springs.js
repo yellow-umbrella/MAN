@@ -312,11 +312,11 @@ class Ball {
         let last = this.history[this.history.length-1];
         if (abs(last) < 0.01)
         last = 0;
-
-        text(nf(last/scl, 1, 2) + ' м', width/2-250-25, pivot-last/10);
+        textAlign(RIGHT, CENTER);
+        text(nf(last/scl, 1, 2), width/2-250-5, pivot-last/10);
         fill(255);
-        text('x', width/2-this.delta-10, pivot-50);
-        text('t', width/2+this.delta+10, pivot+10);
+        text('x, м', width/2-this.delta-10, pivot-50);
+        text('t', width/2+this.delta+15, pivot+10);
         pop();
     }
 }

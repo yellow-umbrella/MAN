@@ -256,10 +256,11 @@ class Pendulum {
         endShape();
         noStroke();
         fill(this.clr);
-        text(nf(this.history[this.history.length-1]/scl, 1, 2) + ' м', pivot-this.delta-25, height-50-30*this.history[this.history.length-1]/coeff);
+        textAlign(RIGHT, CENTER);
+        text(nf(this.history[this.history.length-1]/scl, 1, 2), pivot-this.delta-5, height-50-30*this.history[this.history.length-1]/coeff);
         fill(255);
-        text('x', pivot-this.delta-10, height-100);
-        text('t', pivot+this.delta+10, height-50+10);
+        text('x, м', pivot-this.delta-10, height-100);
+        text('t', pivot+this.delta+15, height-50+10);
         pop();
     }
 }

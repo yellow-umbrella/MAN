@@ -3,7 +3,7 @@ module.exports = new p5((P) => { with (P) {
 
 let mirrors = [], rays = [], description;
 let running = true, confirmed = false, EPS = 1E-8;
-let resetB, runB, infoB, confB;
+let resetB, runB, infoB, confB, clrS;
 let V;
 
 P.setup = function() {
@@ -11,12 +11,7 @@ P.setup = function() {
     stroke(255);
 
     createTitle(P, 'Плоскі дзеркала');
-    /*description = createDiv("Затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-
-    //description = createDescription(P, "затискаючи ліву клавішу миші створіть двосторонні дзеркала, підтвердіть створене за допомогою кнопки та пускайте промені так само як створювали дзеркала.")
-
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'mirrors');
@@ -24,6 +19,8 @@ P.setup = function() {
     confB.position(205, 0);
     confB.mousePressed(() => {confirmed = true;});
     confB.elt.title = 'підтвердити';
+
+    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 100);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     V = p5.Vector;
@@ -132,18 +129,22 @@ class Ray {
         this.dots = [];
         this.dots.push(createVector(x, y));
         this.finished = false;
+        this.clr = clrS.value();
     }
 
     show() {
-        let alfa = 100;
+        push();
+        colorMode(HSL, 360, 100, 100);
+        let alfa = 100/255;
         strokeWeight(4);
         let prevDot = this.dots[0].copy();
         for (let dot of this.dots) {
-            stroke(255, 255, 0, alfa);
+            stroke(this.clr, 100, 50, alfa);
             line(prevDot.x, prevDot.y, dot.x, dot.y);
             prevDot = dot.copy();
             alfa *= 0.8;
         }
+        pop();
     }
 
     change(x, y) {

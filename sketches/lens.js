@@ -3,8 +3,8 @@ module.exports = new p5((P) => { with (P) {
 
 let focus;
 let rays = [];
-let ready = false, maxN = 100, running = true, description;
-let focusS, clrS;
+let ready = false, maxN = 100, running = true, description, n = 5, added = true;
+let focusS, clrS, mouteR;
 let resetB, runB, infoB;
 
 P.setup = function() {
@@ -15,8 +15,18 @@ P.setup = function() {
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'lens');
 
-    focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', ' м', 50);
-    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 100);
+    mouteR = createRadio();
+    mouteR.option(' Промені', 'single');
+    mouteR.elt.innerHTML += '<br/>';
+    mouteR.option(' Пучок променів', 'many');
+    mouteR.elt.innerHTML += '<br/>';
+    mouteR.option(' Предмет', 'object');
+    mouteR.elt.innerHTML += '<br/>';
+    mouteR.position(5, 50);
+    mouteR.value('single');
+
+    focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', ' м', 150);
+    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 200);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
@@ -31,19 +41,38 @@ P.draw = function() {
     if (mouseIsPressed && mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running && /*rays.length <= 10 &&*/ rays.length > 0) {
         let x = mouseX - width/2;
         let y = mouseY - height/2;
+        let mouse = createVector(x, y);
         if (ready) {
-            rays[rays.length - 1].direct(x, y);
+            if (mouteR.value() == 'single') {
+                rays[rays.length - 1].direct(x, y);
+            } else if (mouteR.value() == 'many') {
+                let startPoint = rays[rays.length - 1].start.copy();
+                let vec = p5.Vector.sub(mouse, startPoint);
+                if (vec.mag() != 0) {
+                    if (!added) {
+                        for (let i = 1; i < n; i++) {
+                            rays.push(new Ray(startPoint.x, startPoint.y));
+                        }
+                        added = true;
+                    }
+                    vec.rotate(PI*n/180); 
+                    for (let i = 1; i <= n; i++) {
+                        vec.rotate(-PI/90);
+                        let direction = p5.Vector.add(startPoint, vec);
+                        rays[rays.length - i].direct(direction.x, direction.y);
+                    }
+                }
+            }
+
         }
     }
     
-    //if (started || ready) {
     for (let ray of rays) {
         if (ray.started) {
             ray.diffract();
         }
         ray.show();
     }
-        //}
         
     showLens();
     
@@ -61,6 +90,9 @@ function reset() {
     focusS.value('5');
     focusS.update();
     rays = [];
+    mouteR.value('single');
+    clrS.value('60');
+    clrS.update();
 }
 
 function run() {
@@ -103,29 +135,30 @@ function showLens() {
 }
 
 P.mousePressed = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
-        let x = mouseX - width/2;
-        let y = mouseY - height/2;
+    if (mouteR.value() == 'single' || mouteR.value() == 'many') {
+        if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
+            let x = mouseX - width/2;
+            let y = mouseY - height/2;
 
-        if (ready) {
-            //ready = false;
-            //started = true;
-            //rays[rays.length - 1].direct(x, y);
-        } else if (x < 0 && rays.length < maxN) {
-            rays.push(new Ray(x, y));
-            ready = true;
-            //started = false;
+            if (!ready && x < 0 && rays.length < maxN) {
+                rays.push(new Ray(x, y));
+                if (mouteR.value() == 'many') {
+                    added = false;
+                }
+                ready = true;
+            }
         }
     }
 }
 
 P.mouseReleased = function() {
-    if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
-        ready = !ready;
-        //started = !started;
-    }
-    if (rays.length == maxN) {
-        ready = false;
+    if (mouteR.value() == 'single' || mouteR.value() == 'many') {
+        if (mouseY > 0 && mouseX > 0 && mouseX < width && mouseY < height && running) {
+            ready = !ready;
+        }
+        if (rays.length >= maxN) {
+            ready = false;
+        }
     }
 }
 
@@ -154,6 +187,12 @@ class Ray {
         if (x <= this.start.x) {
             ready = true;
             this.started = false;
+            let direction = createVector(x, y);
+            let vec = p5.Vector.sub(direction, this.start);
+            vec.setMag(max(width, height));
+            direction = p5.Vector.add(vec, this.start);
+            this.crack = direction.copy();
+            this.end = direction.copy();
         } else {
             this.A = this.start.y - y;
             this.B = x - this.start.x;

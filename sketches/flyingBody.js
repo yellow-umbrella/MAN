@@ -6,7 +6,7 @@ let ball1, ball2;
 let ground, vel1, vel2, scl = 100;
 let running = true, kicked1 = false, kicked2 = false, first = true;
 let heightS;
-let resetB, runB, infoB;
+let resetB, runB, infoB, checkbox;
 let arrows;
 let rate = 50;
 
@@ -15,31 +15,19 @@ P.setup = function() {
     stroke(255);
     frameRate(rate);
 
-    /*const { remote } = require("electron");
-    let parent = remote.getCurrentWindow();
-    let child = new remote.BrowserWindow({height : 200, width: 300, parent: parent, 
-                                        modal: true, autoHideMenuBar: true, resizable: false,
-                                        minimizable: false, icon: './bulb.ico', show: false});
-    child.loadFile('descriptions/flyingBody.html');
-    child.once('ready-to-show', () => {
-        child.show()
-    });*/
-
     gravity = createVector(0, 9.8*scl/(rate*rate));
     ground = height - 50;
 
     createTitle(P, 'Тіло, кинуте під кутом');
-    /*description = createDiv("За допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
-    description.position(0, 550);
-    description.style('width', '200px');*/
-
-    //description = createDescription(P, "за допомогою повзунка оберіть початкову висоту. Затиснувши ліву клавішу миші на робочому просторі ви можете обрати напрям та модуль швидкості, а відпустивши кинути м'ячик.");
-
+    
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
+    checkbox = createCheckbox(" Переключити м'яч", false);
+    checkbox.position(5, 85);
+    checkbox.changed(change);
 
     ball1 = new Ball('yellow');
     ball2 = new Ball('orange');
@@ -56,7 +44,6 @@ P.setup = function() {
 P.draw = function() {
     background('#1b4b34');
     showGround();
-   // console.log(nfc(frameRate(), 1));
     
    if (kicked1) {
        if (running) {
@@ -128,6 +115,8 @@ function reset() {
     runB.html('&#xf04c;');
     runB.elt.title = 'зупинити';
     running = true;
+    checkbox.checked(false);
+    first = true;
     kicked1 = false;
     kicked2 = false;
     heightS.value('0');
@@ -192,16 +181,14 @@ P.mouseReleased = function() {
     }
 }
 
-P.keyPressed = function() {
-    if (key == " ") {
-        first = !first;
-        if (first) {
-            heightS.value(ball1.height);
-            heightS.update();
-        } else {
-            heightS.value(ball2.height);
-            heightS.update();
-        }
+function change() {
+    first = !first;
+    if (first) {
+        heightS.value(ball1.height);
+        heightS.update();
+    } else {
+        heightS.value(ball2.height);
+        heightS.update();
     }
 }
 

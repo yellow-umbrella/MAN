@@ -28,10 +28,10 @@ P.setup = function() {
     lenS1.elt.parentElement.style.visibility = "hidden";
     gravityS1.elt.parentElement.style.visibility = "hidden";
 
-    checkbox1 = createCheckbox(' 2 маятники', false);
-    checkbox1.position(5, 165);
-    checkbox2 = createCheckbox(' Накласти графіки', false);
-    checkbox2.position(5, 320);
+    checkbox1 = createToggle(P, 165, '2 маятники', false);
+    // checkbox1.position(5, 165);
+    checkbox2 = createToggle(P, 320, 'Накласти графіки', false);
+    // checkbox2.position(5, 320);
     checkbox1.changed(change);
     checkbox2.changed(() => {united = !united});
     checkbox2.style("visibility", "hidden");

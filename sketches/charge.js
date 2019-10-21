@@ -17,8 +17,9 @@ P.setup = function() {
     //description = createDescription(P, "оберіть потрібний заряд частинки за допомогою повзунка та натисніть в будь-якому місці робочого простору, щоб створити її. Створивши декілька частинок ви зможете спостерігати за їх взаємодією.");
 
     chargeS = createLabeledSlider(P, [-2, 2, 0, 0.1], 'Заряд: ', ' нКл', 50);
-    checkbox = createCheckbox(' Показати підписи', true);
-    checkbox.position(5, 100);
+    // checkbox = createCheckbox(' Показати підписи', true);
+    // checkbox.position(5, 100);
+    checkbox = createToggle(P);
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'charge');

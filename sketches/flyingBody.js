@@ -25,6 +25,7 @@ P.setup = function() {
     infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
+    heightS.input(() => data[1+!first].h0 = heightS.value()/scl);
     checkbox = createToggle(P, 85, "Переключити м'яч", false);
     checkbox.changed(change);
     checkbox.color(off='yellow', on='orange');
@@ -41,56 +42,93 @@ P.setup = function() {
     new p5((P2) => drawArrows(P2, arrows), 'main');
 }
 
-P.draw = function() {
-    background('#1b4b34');
-    showGround();
-    
-   if (kicked1) {
-       if (running) {
-            if (ball1.update()) {
-                ball1.height = 0;
+let data = {
+    1: {v0:    '0',
+        alpha: '0',
+        h0:    '0',
+        dist:  '--',
+        time:  '--',
+        h:     '--'
+    }, 
+    2: {v0:    '0',
+        alpha: '0',
+        h0:    '0',
+        dist:  '--',
+        time:  '--',
+        h:     '--'
+    } 
+};
+
+function showData(data) {
+    let dataLabels = 
+        ["Початкова швидкiсть, м/с", 
+         "Початковий кут, *", 
+         "Початкова висота, м", 
+         "Дальнiсть польоту, м", 
+         "Час польоту, с", 
+         "Висота польоту, с"];
+    push();
+    noStroke();
+    let i = 2;
+    fill('yellow');
+    text('M\'яч 1', width-80, 20);
+    fill('orange');
+    text('М\'яч 2', width-40, 20);
+    for (let field in data[1]) {
+        fill(255);
+        text(dataLabels[i-2], width-240, 20*i);
+        fill('yellow');
+        text(data[1][field], width-80, 20*i);
+        fill('orange');
+        text(data[2][field], width-40, 20*i);
+        i++;
+    }
+    stroke(255);
+    for (let i = 0; i < 8; i++) {
+        line(width-242, 20*i+5, width-2, 20*i+5);
+    }
+    for (let i of [240, 80, 40, 0]) {
+        line(width-i-2, 5, width-i-2, 145);
+    }
+    pop();
+}
+
+function processBall(which) {
+    let ball = [ball1, ball2][which];
+    let kicked = [kicked1, kicked2][which];
+    let vel = [vel1, vel2][which];
+    if (kicked) {
+        if (running) {
+            if (ball.update()) {
+                ball.height = 0;
                 if (first) {
                     heightS.value('0');
                     heightS.update();
                 }
-                kicked1 = false;
-                vel1.set(0, 0);
+                kicked = false;
+                vel.set(0, 0);
             }
         }
-        if (first) {
-            arrows.set(ball1.vel.x, ball1.vel.y);
+        if (first == !which) {
+            arrows.set(ball.vel.x, ball.vel.y);
         }
     } else {
-        if (first) {
-            ball1.height = heightS.value();
-            ball1.pos.y = ground-ball1.radius-ball1.height;
-            arrows.set(vel1.x*scl/rate, vel1.y*scl/rate);
+        if (first == !which) {
+            ball.height = heightS.value();
+            ball.pos.y = ground-ball.radius-ball.height;
+            arrows.set(vel.x*scl/rate, vel.y*scl/rate);
         }
     }
+    return kicked;
+}
 
-    if (kicked2) {
-        if (running) {
-            if (ball2.update()) {
-                ball2.height = 0;
-                if (!first) {
-                    heightS.value('0');
-                    heightS.update();
-                }
-                kicked2 = false;
-                vel2.set(0, 0);
-            }
-        }
-        if (!first) {
-            arrows.set(ball2.vel.x, ball2.vel.y);
-        }
-    } else {
-        if (!first) {
-            ball2.height = heightS.value();
-            ball2.pos.y = ground-ball2.radius-ball2.height;
-            arrows.set(vel2.x*scl/rate, vel2.y*scl/rate);
-        }
-    }
+P.draw = function() {
+    background('#1b4b34');
+    showGround();
 
+    kicked1 = processBall(0);
+    kicked2 = processBall(1);
+    
     if (first) {
         ball2.show();
         ball1.show();
@@ -102,12 +140,21 @@ P.draw = function() {
     if (mouseIsPressed && mouseY < ground-ball1.radius && mouseX > 0 && mouseY > 0) {
         if (first) {
             ball1.simulate(mouseX, mouseY);
+            data[1].v0 = nf(vel1.mag()*scl/rate, 1, 1);
+            let alpha = abs(degrees(vel1.heading()));
+            if (alpha > 90) alpha = 180-alpha;
+            data[1].alpha = nf(alpha, 1, 1);
         } else {
             ball2.simulate(mouseX, mouseY);
+            data[2].v0 = nf(vel2.mag()*scl/rate, 1, 1);
+            let alpha = abs(degrees(vel2.heading()));
+            if (alpha > 90) alpha = 180-alpha;
+            data[2].alpha = nf(alpha, 1, 1);
         }
     }
 
     createShadow(P);
+    showData(data);
 }
 
 function reset() {

@@ -103,7 +103,7 @@ function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt
                 toggle.elt.checked :
                 toggle.elt.checked = x);
     label.checked(dflt);
-    span.id(Math.random().toString(36).substring(2));
+    span.id(Math.random().toString(36).replace(/[^a-z]+/g, 'x'));
     label.color = (off = null, on = null) => {
         if (off) {
             span.style('background-color', off);

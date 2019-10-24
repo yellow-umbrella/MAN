@@ -58,6 +58,8 @@ function reset() {
     confirmed = false;
     mirrors = [];
     rays = [];
+    clrS.value('60');
+    clrS.update();
 }
 
 function run() {

@@ -271,11 +271,11 @@ label {
 }
 
 input:checked + .slider {
-  background-color: #33CC33;
+  background-color: rgb(25, 199, 103);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #33CC33;
+  box-shadow: 0 0 1px rgb(25, 199, 103);
 }
 
 input:checked + .slider:before {

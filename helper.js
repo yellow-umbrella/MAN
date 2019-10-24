@@ -88,7 +88,7 @@ function createResetB(P, callback) {
     return resetB;
 }
 
-function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt) {
+function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt = true) {
     let label = P.createElement('label', '<span class=cblabel>'+lbl+'</span>');
     let toggle = P.createElement('input');
     toggle.elt.type = 'checkbox';

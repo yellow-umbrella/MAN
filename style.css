@@ -268,6 +268,7 @@ label {
   background-color: white;
   transition: .4s;
   border-radius: 50%;
+  box-shadow: 0 0 3px grey;
 }
 
 input:checked + .slider {

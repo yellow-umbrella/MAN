@@ -27,6 +27,7 @@ P.setup = function() {
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
     checkbox = createToggle(P, 85, "Переключити м'яч", false);
     checkbox.changed(change);
+    checkbox.color(off='yellow', on='orange');
 
     ball1 = new Ball('yellow');
     ball2 = new Ball('orange');

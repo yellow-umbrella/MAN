@@ -88,7 +88,7 @@ function createResetB(P, callback) {
     return resetB;
 }
 
-function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt) {
+function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt = true) {
     let label = P.createElement('label', '<span class=cblabel>'+lbl+'</span>');
     let toggle = P.createElement('input');
     toggle.elt.type = 'checkbox';
@@ -103,6 +103,24 @@ function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt
                 toggle.elt.checked :
                 toggle.elt.checked = x);
     label.checked(dflt);
+    span.id(Math.random().toString(36).substring(2));
+    label.color = (off = null, on = null) => {
+        if (off) {
+            span.style('background-color', off);
+        } 
+        if (on) {
+            let style = `
+            input:checked + #${span.id()} {
+                background-color: ${on} !important;
+            }
+            input:checked + #${span.id()}:before {
+                box-shadow: 0 0 1px ${on} !important;
+            }
+            `
+            let css = P.createElement('style', style);
+            document.getElementsByTagName('head')[0].appendChild(css.elt);
+        }
+    }
     return label;
 }
 

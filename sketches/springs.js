@@ -22,21 +22,19 @@ P.setup = function() {
     
     massS1 = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 50, 1, 20, 'orange');
     coeffS1 = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 100, 1, 40, 'orange');
-    massS2 = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 200, 1, 20, 'yellow');
-    coeffS2 = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 250, 1, 40, 'yellow');
+    massS2 = createLabeledSlider(P, [0.5, 2, 1.25, 0.25], 'Маса тiла: ', ' кг', 215, 1, 20, 'yellow');
+    coeffS2 = createLabeledSlider(P, [0.025, 0.25, 0.125, 0.025], 'Жорсткість пружини: <br>', ' Н/м', 265, 1, 40, 'yellow');
 
-    massS2.style("visibility", "hidden");
-    coeffS2.style("visibility", "hidden");
-    massS2.elt.parentElement.style.visibility = "hidden";
-    coeffS2.elt.parentElement.style.visibility = "hidden";
+    massS2.style("display", "none");
+    coeffS2.style("display", "none");
+    massS2.elt.parentElement.style.display = "none";
+    coeffS2.elt.parentElement.style.display = "none";
 
-    checkbox1 = createCheckbox(' 2 маятники', false);
-    checkbox1.position(5, 160);
-    checkbox2 = createCheckbox(' Накласти графіки', false);
-    checkbox2.position(5, 320);
+    checkbox1 = createToggle(P, 160, '2 маятники', false);
+    checkbox2 = createToggle(P, 335, 'Накласти графіки', false);
     checkbox1.changed(change);
     checkbox2.changed(() => {united = !united});
-    checkbox2.style("visibility", "hidden");
+    checkbox2.style("display", "none");
 
     massS1.input(() => {massS1.update(); updateM1()});
     coeffS1.input(() => {coeffS1.update(); updateC1()});
@@ -144,11 +142,11 @@ function change() {
         spring2 = new Spring(ball2, coeffS2.value());
         ball2.history.push(ball2.pos.x - width/2);
         
-        massS2.style("visibility", "visible");
-        coeffS2.style("visibility", "visible");
-        massS2.elt.parentElement.style.visibility = "visible";
-        coeffS2.elt.parentElement.style.visibility = "visible";
-        checkbox2.style("visibility", "visible");
+        massS2.style("display", "inline-block");
+        coeffS2.style("display", "inline-block");
+        massS2.elt.parentElement.style.display = "inline-block";
+        coeffS2.elt.parentElement.style.display = "inline-block";
+        checkbox2.style("display", "inline-block");
         checkbox2.checked(false);
     } else {
         massS1.value('1.25');
@@ -159,11 +157,11 @@ function change() {
         spring1 = new Spring(ball1, coeffS1.value());
         ball1.history.push(ball1.pos.x - width/2);
         
-        massS2.style("visibility", "hidden");
-        coeffS2.style("visibility", "hidden");
-        massS2.elt.parentElement.style.visibility = "hidden";
-        coeffS2.elt.parentElement.style.visibility = "hidden";
-        checkbox2.style("visibility", "hidden");
+        massS2.style("display", "none");
+        coeffS2.style("display", "none");
+        massS2.elt.parentElement.style.display = "none";
+        coeffS2.elt.parentElement.style.display = "none";
+        checkbox2.style("display", "none");
     }
 }
 
@@ -223,11 +221,11 @@ function reset() {
     ball1 = new Ball(0.25*height, 'orange', massS1.value());
     spring1 = new Spring(ball1, coeffS1.value());
     
-    massS2.style("visibility", "hidden");
-    coeffS2.style("visibility", "hidden");
-    massS2.elt.parentElement.style.visibility = "hidden";
-    coeffS2.elt.parentElement.style.visibility = "hidden";
-    checkbox2.style("visibility", "hidden");
+    massS2.style("display", "none");
+    coeffS2.style("display", "none");
+    massS2.elt.parentElement.style.display = "none";
+    coeffS2.elt.parentElement.style.display = "none";
+    checkbox2.style("display", "none");
     checkbox1.checked(false);
 }
 

@@ -20,7 +20,7 @@ P.setup = function() {
     confB.mousePressed(() => {confirmed = true;});
     confB.elt.title = 'підтвердити';
 
-    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 100);
+    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 50);
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
     V = p5.Vector;

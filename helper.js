@@ -88,7 +88,7 @@ function createResetB(P, callback) {
     return resetB;
 }
 
-function createToggle(P, y = 100, lbl = 'Сховати/показати підписи:') {
+function createToggle(P, y = 100, lbl = 'Показати підписи:', dflt) {
     let label = P.createElement('label', '<span class=cblabel>'+lbl+'</span>');
     let toggle = P.createElement('input');
     toggle.elt.type = 'checkbox';
@@ -97,26 +97,14 @@ function createToggle(P, y = 100, lbl = 'Сховати/показати під�
     label.child(span);
     label.position(5, y+24);
     label.class('switch');
-    span.class('slider round');
+    span.class('slider');
     label.checked = 
         (x) => (x === undefined ? 
                 toggle.elt.checked :
                 toggle.elt.checked = x);
+    label.checked(dflt);
     return label;
 }
-
-// function createToggleS(P, y = 100, label = 'Сховати/показати підписи:') {
-//     let toggleS = P.createSlider(0, 1, 1, 1);
-//     toggleS.position(0, 20);
-//     toggleS.size(30);
-//     toggleS.class('toggle');
-//     toggleS.attribute('value', '1');
-//     toggleS.input(() => toggleS.attribute('value', toggleS.value()));
-//     let labelToggle = P.createElement('label', label);
-//     labelToggle.child(toggleS);
-//     labelToggle.position(5, y);
-//     return toggleS;
-// }
 
 function createShadow(P, x = 0, y = 0) {
     P.push();
@@ -145,7 +133,7 @@ function drawArrows(P, vel) { with (P) {
 
     P.setup = function() {
         let canvas = createCanvas(200, 440);
-        canvas.position(0, 110);
+        canvas.position(0, 150);
         canvas.class('arrows');
         stroke(255);
         noFill();

@@ -15,8 +15,6 @@ P.setup = function() {
     resetB = createResetB(P, reset);
     runB = createRunB(P, run);
     infoB = createInfoB(P, 'impulse');
-    // checkbox = createCheckbox(' Показати підписи', true);
-    // checkbox.position(5, 100);
     checkbox = createToggle(P);
 
     massS = createLabeledSlider(P, [2, 4, 3, 0.1], 'Маса тiла: ', ' кг', 50);

@@ -20,21 +20,19 @@ P.setup = function() {
 
     gravityS = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 50, 1, 40, 'orange');
     lenS = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 120, scl, 20, 'orange');
-    gravityS1 = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 210, 1, 40, 'yellow');
-    lenS1 = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 280, scl, 20, 'yellow');
+    gravityS1 = createLabeledSlider(P, [1.6, 10, 9.8, 0.1], 'Прискорення вільного <br> падіння: ', ' м/с<sup>2</sup>', 220, 1, 40, 'yellow');
+    lenS1 = createLabeledSlider(P, [height*0.1, height*0.7, height*0.4, 1].map(round), 'Довжина нитки: ', ' м', 290, scl, 20, 'yellow');
 
-    lenS1.style("visibility", "hidden");
-    gravityS1.style("visibility", "hidden");
-    lenS1.elt.parentElement.style.visibility = "hidden";
-    gravityS1.elt.parentElement.style.visibility = "hidden";
+    lenS1.style("display", "none");
+    gravityS1.style("display", "none");
+    lenS1.elt.parentElement.style.display = "none";
+    gravityS1.elt.parentElement.style.display = "none";
 
     checkbox1 = createToggle(P, 165, '2 маятники', false);
-    // checkbox1.position(5, 165);
-    checkbox2 = createToggle(P, 320, 'Накласти графіки', false);
-    // checkbox2.position(5, 320);
+    checkbox2 = createToggle(P, 330, 'Накласти графіки', false);
     checkbox1.changed(change);
     checkbox2.changed(() => {united = !united});
-    checkbox2.style("visibility", "hidden");
+    checkbox2.style("display", "none");
     
     pendulum = new Pendulum(width/2, 'orange');
     running = true;
@@ -108,11 +106,11 @@ function change() {
         pendulum1 = new Pendulum(3*width/4, 'yellow');
         pendulum1.history.push(pendulum1.pos.x - pendulum1.pivot.x);
         pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
-        lenS1.style("visibility", "visible");
-        gravityS1.style("visibility", "visible");
-        lenS1.elt.parentElement.style.visibility = "visible";
-        gravityS1.elt.parentElement.style.visibility = "visible";
-        checkbox2.style("visibility", "visible");
+        lenS1.style("display", "inline-block");
+        gravityS1.style("display", "inline-block");
+        lenS1.elt.parentElement.style.display = "inline-block";
+        gravityS1.elt.parentElement.style.display = "inline-block";
+        checkbox2.style("display", "inline-block");
         checkbox2.checked(false);
     } else {
         gravityS.value('9.8');
@@ -127,11 +125,11 @@ function change() {
         
         pendulum = new Pendulum(width/2, 'orange');
         pendulum.history.push(pendulum.pos.x - pendulum.pivot.x);
-        lenS1.style("visibility", "hidden");
-        gravityS1.style("visibility", "hidden");
-        lenS1.elt.parentElement.style.visibility = "hidden";
-        gravityS1.elt.parentElement.style.visibility = "hidden";
-        checkbox2.style("visibility", "hidden");
+        lenS1.style("display", "none");
+        gravityS1.style("display", "none");
+        lenS1.elt.parentElement.style.display = "none";
+        gravityS1.elt.parentElement.style.display = "none";
+        checkbox2.style("display", "none");
     }
 }
 
@@ -153,11 +151,11 @@ function reset() {
     pendulum = new Pendulum(width/2, 'orange');
     twoPend = false;
     united = false;
-    lenS1.style("visibility", "hidden");
-    gravityS1.style("visibility", "hidden");
-    lenS1.elt.parentElement.style.visibility = "hidden";
-    gravityS1.elt.parentElement.style.visibility = "hidden";
-    checkbox2.style("visibility", "hidden");
+    lenS1.style("display", "none");
+    gravityS1.style("display", "none");
+    lenS1.elt.parentElement.style.display = "none";
+    gravityS1.elt.parentElement.style.display = "none";
+    checkbox2.style("display", "none");
     checkbox1.checked(false);
 }
 

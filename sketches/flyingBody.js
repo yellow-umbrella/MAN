@@ -25,8 +25,7 @@ P.setup = function() {
     infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
-    checkbox = createCheckbox(" Переключити м'яч", false);
-    checkbox.position(5, 85);
+    checkbox = createToggle(P, 85, "Переключити м'яч", false);
     checkbox.changed(change);
 
     ball1 = new Ball('yellow');

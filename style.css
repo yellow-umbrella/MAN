@@ -255,6 +255,7 @@ label {
   bottom: 0;
   background-color: #ccc;
   transition: .4s;
+  border-radius: 20px;
 }
 
 .slider:before {
@@ -266,25 +267,18 @@ label {
   bottom: 2px;
   background-color: white;
   transition: .4s;
+  border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #33CC33;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #33CC33;
 }
 
 input:checked + .slider:before {
   transform: translateX(16px);
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 20px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-} 

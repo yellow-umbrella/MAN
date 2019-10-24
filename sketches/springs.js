@@ -227,6 +227,8 @@ function reset() {
     coeffS2.elt.parentElement.style.display = "none";
     checkbox2.style("display", "none");
     checkbox1.checked(false);
+    twoSpr = false;
+    united = false;
 }
 
 function run() {

@@ -296,22 +296,27 @@ class Thing {
             push();
             colorMode(HSL, 360, 100, 100);
             stroke(this.ray1.clr, 100, 50, 0.4);
-            line(0, this.h, this.f, this.H);
+            dashedLine(P, 0, this.h, this.f, this.H);
             if (this.f < this.d) {
                 stroke(this.ray2.clr, 100, 50, 0.4);
-                line(this.d, this.h, this.f, this.H);
+                dashedLine(P, this.d, this.h, this.f, this.H);
             }
             pop();
         }
         stroke('#a2ddc0');
         arrow(P, this.d, 0, this.d, this.h);
-        arrow(P, this.f, 0, this.f, this.H);
+        if (this.f < -0.001) {
+            arrow(P, this.f, this.H*0.99, this.f, this.H);
+            dashedLine(P, this.f, 0, this.f, this.H*0.99);
+        } else {
+            arrow(P, this.f, 0, this.f, this.H);
+        }
         noStroke();
         fill(255);
         textAlign(CENTER, CENTER);
         text('B', this.d - 10, this.h);
         text('A', this.d - 10, 10);
-        if (this.H > 0) {
+        if (abs(this.H) > 0.001) {
             text('B1', this.f - 10, this.H);
             text('A1', this.f - 10, 10);
         }

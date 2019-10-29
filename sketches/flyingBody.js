@@ -101,7 +101,7 @@ function processBall(which) {
         if (running) {
             if (ball.update()) {
                 ball.height = 0;
-                if (first) {
+                if (first == !which) {
                     heightS.value('0');
                     heightS.update();
                 }

@@ -2,14 +2,14 @@
 module.exports = new p5((P) => { with (P) {
 
 let focus;
-let rays = [], object;
+let rays = [], obj;
 let ready = false, maxN = 100, running = true, description, n = 5, added = true;
 let focusS, clrS, mouteR, distS, heightS;
 let resetB, runB, infoB;
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
-    createTitle(P, 'Тонка лінза: Промені');
+    createTitle(P, 'Тонка лінза');
     textSize(14);
     
     resetB = createResetB(P, reset);
@@ -37,8 +37,8 @@ P.setup = function() {
     heightS.style("display", "none");
     heightS.elt.parentElement.style.display = "none";
 
-    object = new Object();
-    object.update();
+    obj = new Thing();
+    obj.update();
 
     loadFont('./fonts/Roundedmplus1c.ttf', font => textFont(font));
 }
@@ -96,8 +96,8 @@ P.draw = function() {
         distS.elt.parentElement.style.display = "inline-block";
         heightS.style("display", "inline-block");
         heightS.elt.parentElement.style.display = "inline-block";
-        object.update();
-        object.show();
+        obj.update();
+        obj.show();
     } else {
         distS.style("display", "none");
         distS.elt.parentElement.style.display = "none";
@@ -266,7 +266,7 @@ class Ray {
     }
 }
 
-class Object {
+class Thing {
     constructor() {
 
     }
@@ -274,7 +274,7 @@ class Object {
     update() {
         this.d = -map(distS.value(), 0, 39, 0, width/2);
         this.h = -map(heightS.value(), -10, 10, -height*0.3, height*0.3); //TODO
-        if (this.d + focus == 0) {
+        if (abs(this.d + focus) <= 0.0001) {
             this.f = 0;
             this.H = 0;
         } else {
@@ -292,7 +292,8 @@ class Object {
         this.ray2.diffract();
         this.ray1.show();
         this.ray2.show();
-        if (this.f < 0) {
+        if (this.f < -0.001) {
+            push();
             colorMode(HSL, 360, 100, 100);
             stroke(this.ray1.clr, 100, 50, 0.4);
             line(0, this.h, this.f, this.H);
@@ -300,6 +301,7 @@ class Object {
                 stroke(this.ray2.clr, 100, 50, 0.4);
                 line(this.d, this.h, this.f, this.H);
             }
+            pop();
         }
         stroke('#a2ddc0');
         arrow(P, this.d, 0, this.d, this.h);
@@ -309,8 +311,10 @@ class Object {
         textAlign(CENTER, CENTER);
         text('B', this.d - 10, this.h);
         text('A', this.d - 10, 10);
-        text('B1', this.f - 10, this.H);
-        text('A1', this.f - 10, 10);
+        if (this.H > 0) {
+            text('B1', this.f - 10, this.H);
+            text('A1', this.f - 10, 10);
+        }
     }
 }
 }}, 'main');

@@ -103,8 +103,10 @@ P.draw = function() {
         distS.elt.parentElement.style.display = "none";
         heightS.style("display", "none");
         heightS.elt.parentElement.style.display = "none";
-        clrS.value('60');
-        clrS.update();
+        distS.value('9');
+        distS.update();
+        heightS.value('5');
+        heightS.update();
         clrS.style("display", "inline-block");
         clrS.elt.parentElement.style.display = "inline-block";
     }
@@ -127,6 +129,10 @@ function reset() {
     mouteR.value('single');
     clrS.value('60');
     clrS.update();
+    distS.value('9');
+    distS.update();
+    heightS.value('5');
+    heightS.update();
 }
 
 function run() {

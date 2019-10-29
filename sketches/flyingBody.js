@@ -106,13 +106,13 @@ function processBall(which) {
                 kicked = false;
                 vel.set(0, 0);
                 let d = data[!which+1];
-                let v0y = parseFloat(d.v0)*sin(d.absalpha);
+                let v0y = parseFloat(d.v0)*sin(d.absalpha)*rate/scl;
                 let g = 9.8;
                 d.time = nf((v0y + sqrt(v0y*v0y + 2*parseFloat(d.h0)*g))/g, 1, 2);
-                d.dist = nf(parseFloat(d.time)*parseFloat(d.v0)*cos(d.absalpha), 1, 2);
+                d.dist = nf(parseFloat(d.time)*parseFloat(d.v0)*rate/scl*cos(d.absalpha), 1, 2);
                 console.log(v0y);
                 if (v0y < 0) v0y = 0;
-                d.h = nf(v0y*v0y*0.5/g + parseFloat(d.h0), 1, 2);
+                d.h = nf((v0y*v0y*0.5/g + parseFloat(d.h0)), 1, 2);
                 console.log(d, g, v0y);
             }
 

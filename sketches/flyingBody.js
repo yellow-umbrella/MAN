@@ -37,7 +37,8 @@ P.setup = function() {
     infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
-    heightS.input(() => {data[1+!first].h = data[1+!first].dist = data[1+!first].time = '--'; 
+    heightS.input(() => {heightS.update();
+                         data[1+!first].h = data[1+!first].dist = data[1+!first].time = '--'; 
                          data[1+!first].h0 = heightS.value()/scl});
     checkbox = createToggle(P, 85, "Переключити м'яч", false);
     checkbox.changed(change);
@@ -71,6 +72,7 @@ function showData(data) {
     fill('orange');
     text('М\'яч 2', width-40, 20);
     for (let field in data[1]) {
+        if (field == 'absalpha') continue;
         fill(255);
         text(dataLabels[i-2], width-240, 20*i);
         fill('yellow');
@@ -104,13 +106,16 @@ function processBall(which) {
                 kicked = false;
                 vel.set(0, 0);
                 let d = data[!which+1];
-                let v0y = d.v0*sin(radians(d.alpha));
-                let g = gravity.mag();
-                d.time = nf((v0y + sqrt(v0y*v0y + 2*d.h0*g))/g/scl, 1, 2);
-                d.dist = nf(d.time*d.v0*cos(radians(d.alpha)), 1, 2);
+                let v0y = parseFloat(d.v0)*sin(d.absalpha);
+                let g = 9.8;
+                d.time = nf((v0y + sqrt(v0y*v0y + 2*parseFloat(d.h0)*g))/g, 1, 2);
+                d.dist = nf(parseFloat(d.time)*parseFloat(d.v0)*cos(d.absalpha), 1, 2);
+                console.log(v0y);
                 if (v0y < 0) v0y = 0;
-                d.h = nf(v0y*v0y*0.5/g/scl + d.h0, 1, 2);
+                d.h = nf(v0y*v0y*0.5/g + parseFloat(d.h0), 1, 2);
+                console.log(d, g, v0y);
             }
+
         }
         if (first == which) {
             arrows.set(ball.vel.x, ball.vel.y);
@@ -135,7 +140,7 @@ P.draw = function() {
 
     kicked1 = processBall(1);
     kicked2 = processBall(0);
-    
+
     if (first) {
         ball2.show();
         ball1.show();
@@ -150,7 +155,8 @@ P.draw = function() {
             data[1] = Object.assign({}, dataBackup);
             data[1].h0 = heightS.value()/scl;
             data[1].v0 = nf(vel1.mag()*scl/rate, 1, 1);
-            let alpha = abs(degrees(vel1.heading()));
+            data[1].absalpha = -vel1.heading();
+            let alpha = abs(degrees(data[1].absalpha));
             if (alpha > 90) alpha = 180-alpha;
             data[1].alpha = nf(alpha, 1, 1);
         } else {
@@ -158,7 +164,8 @@ P.draw = function() {
             data[2] = Object.assign({}, dataBackup);
             data[2].h0 = heightS.value()/scl;
             data[2].v0 = nf(vel2.mag()*scl/rate, 1, 1);
-            let alpha = abs(degrees(vel2.heading()));
+            data[2].absalpha = -vel2.heading()
+            let alpha = abs(degrees(data[2].absalpha));
             if (alpha > 90) alpha = 180-alpha;
             data[2].alpha = nf(alpha, 1, 1);
         }

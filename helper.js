@@ -21,6 +21,19 @@ function switchTo(name) {
     }
 }
 
+function dashedLine(P, x1, y1, x2, y2, dash=5.0) {
+    let count = Math.hypot(x1-x2, y1-y2)/dash;
+    for (let i = 0; i < count; i++) {
+        if (i % 2 == 0) {
+            P.line(P.map(i, 0, count, x1, x2),
+                   P.map(i, 0, count, y1, y2),
+                   P.map(P.min(i+1, count), 0, count, x1, x2), 
+                   P.map(P.min(i+1, count), 0, count, y1, y2));
+
+        }
+    }
+}
+
 function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20, clr='') {
     let slider = P.createSlider(...sld);
     let b = P.createElement('b', '');

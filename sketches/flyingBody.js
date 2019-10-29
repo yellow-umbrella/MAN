@@ -9,6 +9,18 @@ let heightS;
 let resetB, runB, infoB, checkbox;
 let arrows;
 let rate = 50;
+let dataBackup = {
+    v0:    '0',
+    alpha: '0',
+    h0:    '0',
+    dist:  '--',
+    time:  '--',
+    h:     '--'
+}; 
+let data = {
+    1: Object.assign({}, dataBackup), 
+    2: Object.assign({}, dataBackup)
+};
 
 P.setup = function() {
     createCanvas(windowWidth-marginLeft, windowHeight-marginTop);
@@ -25,7 +37,8 @@ P.setup = function() {
     infoB = createInfoB(P, 'flyingBody');
     
     heightS = createLabeledSlider(P, [0, ground-10, 0, 1], 'Початкова висота: ', ' м', 50, scl);
-    heightS.input(() => data[1+!first].h0 = heightS.value()/scl);
+    heightS.input(() => {data[1+!first].h = data[1+!first].dist = data[1+!first].time = '--'; 
+                         data[1+!first].h0 = heightS.value()/scl});
     checkbox = createToggle(P, 85, "Переключити м'яч", false);
     checkbox.changed(change);
     checkbox.color(off='yellow', on='orange');
@@ -42,23 +55,6 @@ P.setup = function() {
     new p5((P2) => drawArrows(P2, arrows), 'main');
 }
 
-let data = {
-    1: {v0:    '0',
-        alpha: '0',
-        h0:    '0',
-        dist:  '--',
-        time:  '--',
-        h:     '--'
-    }, 
-    2: {v0:    '0',
-        alpha: '0',
-        h0:    '0',
-        dist:  '--',
-        time:  '--',
-        h:     '--'
-    } 
-};
-
 function showData(data) {
     let dataLabels = 
         ["Початкова швидкiсть, м/с", 
@@ -66,7 +62,7 @@ function showData(data) {
          "Початкова висота, м", 
          "Дальнiсть польоту, м", 
          "Час польоту, с", 
-         "Висота польоту, с"];
+         "Висота польоту, м"];
     push();
     noStroke();
     let i = 2;
@@ -94,26 +90,33 @@ function showData(data) {
 }
 
 function processBall(which) {
-    let ball = [ball1, ball2][which];
-    let kicked = [kicked1, kicked2][which];
-    let vel = [vel1, vel2][which];
+    let ball = [ball2, ball1][which];
+    let kicked = [kicked2, kicked1][which];
+    let vel = [vel2, vel1][which];
     if (kicked) {
         if (running) {
             if (ball.update()) {
                 ball.height = 0;
-                if (first == !which) {
+                if (first == which) {
                     heightS.value('0');
                     heightS.update();
                 }
                 kicked = false;
                 vel.set(0, 0);
+                let d = data[!which+1];
+                let v0y = d.v0*sin(radians(d.alpha));
+                let g = gravity.mag();
+                d.time = nf((v0y + sqrt(v0y*v0y + 2*d.h0*g))/g/scl, 1, 2);
+                d.dist = nf(d.time*d.v0*cos(radians(d.alpha)), 1, 2);
+                if (v0y < 0) v0y = 0;
+                d.h = nf(v0y*v0y*0.5/g/scl + d.h0, 1, 2);
             }
         }
-        if (first == !which) {
+        if (first == which) {
             arrows.set(ball.vel.x, ball.vel.y);
         }
     } else {
-        if (first == !which) {
+        if (first == which) {
             ball.height = heightS.value();
             ball.pos.y = ground-ball.radius-ball.height;
             arrows.set(vel.x*scl/rate, vel.y*scl/rate);
@@ -122,12 +125,16 @@ function processBall(which) {
     return kicked;
 }
 
+// t = (v0y + sqrt(v02*v0y + 2gh))/g
+// l = t*v0x
+// h = v0y**2 / 2g + h0
+
 P.draw = function() {
     background('#1b4b34');
     showGround();
 
-    kicked1 = processBall(0);
-    kicked2 = processBall(1);
+    kicked1 = processBall(1);
+    kicked2 = processBall(0);
     
     if (first) {
         ball2.show();
@@ -140,12 +147,16 @@ P.draw = function() {
     if (mouseIsPressed && mouseY < ground-ball1.radius && mouseX > 0 && mouseY > 0) {
         if (first) {
             ball1.simulate(mouseX, mouseY);
+            data[1] = Object.assign({}, dataBackup);
+            data[1].h0 = heightS.value()/scl;
             data[1].v0 = nf(vel1.mag()*scl/rate, 1, 1);
             let alpha = abs(degrees(vel1.heading()));
             if (alpha > 90) alpha = 180-alpha;
             data[1].alpha = nf(alpha, 1, 1);
         } else {
             ball2.simulate(mouseX, mouseY);
+            data[2] = Object.assign({}, dataBackup);
+            data[2].h0 = heightS.value()/scl;
             data[2].v0 = nf(vel2.mag()*scl/rate, 1, 1);
             let alpha = abs(degrees(vel2.heading()));
             if (alpha > 90) alpha = 180-alpha;
@@ -172,6 +183,10 @@ function reset() {
     ball2 = new Ball('orange');
     vel1.setMag(0);
     vel2.setMag(0);
+    data = {
+        1: Object.assign({}, dataBackup), 
+        2: Object.assign({}, dataBackup)
+    };
 }
 
 function run() {

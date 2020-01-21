@@ -27,7 +27,12 @@ P.setup = function() {
     mouteR.value('single');
     
     focusS = createLabeledSlider(P, [-39, 39, 5, 2], 'Фокусна вiдстань: ', ' м', 150);
-    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '', 200);
+    clrS = createLabeledSlider(P, [20, 60, 60, 1], 'Колір променя: ', '⬤', 200);
+    clrS.output.elt.value = '';
+    clrS.unit.style('color', 'hsl('+clrS.value()+',100%,50%)'); 
+    clrS.update = () => {clrS.unit.style('color', 'hsl('+clrS.value()+',100%,50%)');}; 
+    
+
 
     distS = createLabeledSlider(P, [1, 39, 9, 1], 'Відстань до предмета: ', ' м', 200);
     distS.style("display", "none");

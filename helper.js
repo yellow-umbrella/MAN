@@ -19,7 +19,7 @@ function switchTo(name) {
     } else {
         document.querySelector("button.right").style.visibility = "hidden";
     }
-    toggleMenu('0', 'sidebar-left');
+    setTimeout(()=>toggleMenu('0', 'sidebar-left'), 200);
 }
 
 function dashedLine(P, x1, y1, x2, y2, dash=5.0) {
@@ -51,6 +51,7 @@ function createLabeledSlider(P, sld, name, units, y, scl = 1, sy = 20, clr='') {
     }
     slider.position(0, sy);
     slider.output = output;
+    slider.unit = unit;
     slider.update = () => {slider.output.elt.value = P.nf(slider.elt.value/scl, 1, 2)};
     slider.input(() => slider.update());
     return slider;

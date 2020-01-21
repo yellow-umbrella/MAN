@@ -31,14 +31,12 @@ P.setup = function() {
     clrS.output.elt.value = '';
     clrS.unit.style('color', 'hsl('+clrS.value()+',100%,50%)'); 
     clrS.update = () => {clrS.unit.style('color', 'hsl('+clrS.value()+',100%,50%)');}; 
-    
-
 
     distS = createLabeledSlider(P, [1, 39, 9, 1], 'Відстань до предмета: ', ' м', 200);
     distS.style("display", "none");
     distS.elt.parentElement.style.display = "none";
 
-    heightS = createLabeledSlider(P, [-10, 10, 5, 0,1], 'Висота предмета: ', ' м', 250);
+    heightS = createLabeledSlider(P, [-10, 10, 5, 0.1], 'Висота предмета: ', ' м', 250);
     heightS.style("display", "none");
     heightS.elt.parentElement.style.display = "none";
 

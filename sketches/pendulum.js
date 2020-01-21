@@ -2,7 +2,7 @@
 module.exports = new p5((P) => { with (P) {
 
 let gravity;
-let pendulum;
+let pendulum, pendulum1;
 let running, scl = 150, description, twoPend = false, united = false;
 let lenS, gravityS, lenS1, gravityS1, checkbox1, checkbox2;
 let resetB, runB, infoB;

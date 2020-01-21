@@ -10,15 +10,16 @@ function switchTo(name) {
     let main = document.getElementById("main");
     while (main.firstChild) 
         main.removeChild(main.firstChild);
-    delete require.cache[require.resolve('./sketches/'+name)]
+    delete require.cache[require.resolve('./sketches/'+name)];
     sketch = require("./sketches/"+name);
-    main.style.height = sketch.height+marginTop + 'px'
+    main.style.height = sketch.height+marginTop + 'px';
     document.getElementById("help").src = "./formulae/"+name+".html";
     if (name != "start") {
         document.querySelector("button.right").style.visibility = "visible";
     } else {
         document.querySelector("button.right").style.visibility = "hidden";
     }
+    toggleMenu('0', 'sidebar-left');
 }
 
 function dashedLine(P, x1, y1, x2, y2, dash=5.0) {

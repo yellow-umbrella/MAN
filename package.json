@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . phys-helper --overwrite --platform=win32 --arch=x64 --icon=bulb.ico"
+    "build64": "electron-packager . PhysHelper --overwrite --platform=all --arch=x64 --icon=bulb.ico --asar",
+    "build32": "electron-packager . PhysHelper --overwrite --platform=all --arch=ia32 --icon=bulb.ico --asar"
   },
   "repository": "https://github.com/yellow-umbrella/MAN",
   "keywords": [],

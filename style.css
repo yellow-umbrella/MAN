@@ -203,7 +203,7 @@ label {
 #init {
     margin-top: 10%;
     margin-bottom: 25%; 
-    color: #0d261a;
+    color: #c6ecd9;
     font-size: 1.4em;
     z-index: 3;
 }
@@ -215,7 +215,7 @@ label {
 }
 
 #author { 
-    color: #0d261a;
+    color: #c6ecd9;
     font-size: 1.4em;
     text-align: right;
     position: absolute;
